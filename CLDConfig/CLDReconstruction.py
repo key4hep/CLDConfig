@@ -17,6 +17,22 @@ read.OutputLevel = WARNING
 read.Files = ["/run/simulation/with/ctest/to/create/a/file.slcio"]
 algList.append(read)
 
+MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
+MyAIDAProcessor.OutputLevel = WARNING
+MyAIDAProcessor.ProcessorType = "AIDAProcessor"
+MyAIDAProcessor.Parameters = {
+                              "Compress": ["1"],
+                              "FileName": ["histograms"],
+                              "FileType": ["root"]
+                              }
+
+EventNumber = MarlinProcessorWrapper("EventNumber")
+EventNumber.OutputLevel = WARNING
+EventNumber.ProcessorType = "Statusmonitor"
+EventNumber.Parameters = {
+                          "HowOften": ["1"]
+                          }
+
 InitDD4hep = MarlinProcessorWrapper("InitDD4hep")
 InitDD4hep.OutputLevel = WARNING
 InitDD4hep.ProcessorType = "InitializeDD4hep"
@@ -211,22 +227,6 @@ MyTrackChecker.Parameters = {
                              "TreeName": ["checktree"],
                              "UseOnlyTree": ["true"]
                              }
-
-MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
-MyAIDAProcessor.OutputLevel = WARNING
-MyAIDAProcessor.ProcessorType = "AIDAProcessor"
-MyAIDAProcessor.Parameters = {
-                              "Compress": ["1"],
-                              "FileName": ["histograms"],
-                              "FileType": ["root"]
-                              }
-
-EventNumber = MarlinProcessorWrapper("EventNumber")
-EventNumber.OutputLevel = WARNING
-EventNumber.ProcessorType = "Statusmonitor"
-EventNumber.Parameters = {
-                          "HowOften": ["1"]
-                          }
 
 MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
 MyDDSimpleMuonDigi.OutputLevel = WARNING
