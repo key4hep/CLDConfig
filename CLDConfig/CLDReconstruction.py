@@ -18,16 +18,16 @@ read.Files = ["/run/simulation/with/ctest/to/create/a/file.slcio"]
 algList.append(read)
 
 InitDD4hep = MarlinProcessorWrapper("InitDD4hep")
-InitDD4hep.OutputLevel = WARNING 
-InitDD4hep.ProcessorType = "InitializeDD4hep" 
+InitDD4hep.OutputLevel = WARNING
+InitDD4hep.ProcessorType = "InitializeDD4hep"
 InitDD4hep.Parameters = {
                          "DD4hepXMLFile": ["/cvmfs/clicdp.cern.ch/iLCSoft/builds/nightly/x86_64-slc6-gcc62-opt/lcgeo/HEAD/FCCee/compact/FCCee_o1_v04/FCCee_o1_v04.xml"],
                          "EncodingStringParameter": ["GlobalTrackerReadoutID"]
                          }
 
 Config = MarlinProcessorWrapper("Config")
-Config.OutputLevel = WARNING 
-Config.ProcessorType = "CLICRecoConfig" 
+Config.OutputLevel = WARNING
+Config.ProcessorType = "CLICRecoConfig"
 Config.Parameters = {
                      "Overlay": ["False"],
                      "OverlayChoices": ["False", "91GeV", "365GeV"],
@@ -38,8 +38,8 @@ Config.Parameters = {
                      }
 
 VXDBarrelDigitiser = MarlinProcessorWrapper("VXDBarrelDigitiser")
-VXDBarrelDigitiser.OutputLevel = WARNING 
-VXDBarrelDigitiser.ProcessorType = "DDPlanarDigiProcessor" 
+VXDBarrelDigitiser.OutputLevel = WARNING
+VXDBarrelDigitiser.ProcessorType = "DDPlanarDigiProcessor"
 VXDBarrelDigitiser.Parameters = {
                                  "IsStrip": ["false"],
                                  "ResolutionU": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
@@ -51,8 +51,8 @@ VXDBarrelDigitiser.Parameters = {
                                  }
 
 VXDEndcapDigitiser = MarlinProcessorWrapper("VXDEndcapDigitiser")
-VXDEndcapDigitiser.OutputLevel = WARNING 
-VXDEndcapDigitiser.ProcessorType = "DDPlanarDigiProcessor" 
+VXDEndcapDigitiser.OutputLevel = WARNING
+VXDEndcapDigitiser.ProcessorType = "DDPlanarDigiProcessor"
 VXDEndcapDigitiser.Parameters = {
                                  "IsStrip": ["false"],
                                  "ResolutionU": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
@@ -64,8 +64,8 @@ VXDEndcapDigitiser.Parameters = {
                                  }
 
 InnerPlanarDigiProcessor = MarlinProcessorWrapper("InnerPlanarDigiProcessor")
-InnerPlanarDigiProcessor.OutputLevel = WARNING 
-InnerPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor" 
+InnerPlanarDigiProcessor.OutputLevel = WARNING
+InnerPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
 InnerPlanarDigiProcessor.Parameters = {
                                        "IsStrip": ["false"],
                                        "ResolutionU": ["0.007"],
@@ -77,8 +77,8 @@ InnerPlanarDigiProcessor.Parameters = {
                                        }
 
 InnerEndcapPlanarDigiProcessor = MarlinProcessorWrapper("InnerEndcapPlanarDigiProcessor")
-InnerEndcapPlanarDigiProcessor.OutputLevel = WARNING 
-InnerEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor" 
+InnerEndcapPlanarDigiProcessor.OutputLevel = WARNING
+InnerEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
 InnerEndcapPlanarDigiProcessor.Parameters = {
                                              "IsStrip": ["false"],
                                              "ResolutionU": ["0.005", "0.007", "0.007", "0.007", "0.007", "0.007", "0.007"],
@@ -90,8 +90,8 @@ InnerEndcapPlanarDigiProcessor.Parameters = {
                                              }
 
 OuterPlanarDigiProcessor = MarlinProcessorWrapper("OuterPlanarDigiProcessor")
-OuterPlanarDigiProcessor.OutputLevel = WARNING 
-OuterPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor" 
+OuterPlanarDigiProcessor.OutputLevel = WARNING
+OuterPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
 OuterPlanarDigiProcessor.Parameters = {
                                        "IsStrip": ["false"],
                                        "ResolutionU": ["0.007", "0.007", "0.007"],
@@ -103,8 +103,8 @@ OuterPlanarDigiProcessor.Parameters = {
                                        }
 
 OuterEndcapPlanarDigiProcessor = MarlinProcessorWrapper("OuterEndcapPlanarDigiProcessor")
-OuterEndcapPlanarDigiProcessor.OutputLevel = WARNING 
-OuterEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor" 
+OuterEndcapPlanarDigiProcessor.OutputLevel = WARNING
+OuterEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
 OuterEndcapPlanarDigiProcessor.Parameters = {
                                              "IsStrip": ["false"],
                                              "ResolutionU": ["0.007", "0.007", "0.007", "0.007", "0.007"],
@@ -116,8 +116,8 @@ OuterEndcapPlanarDigiProcessor.Parameters = {
                                              }
 
 MyTruthTrackFinder = MarlinProcessorWrapper("MyTruthTrackFinder")
-MyTruthTrackFinder.OutputLevel = WARNING 
-MyTruthTrackFinder.ProcessorType = "TruthTrackFinder" 
+MyTruthTrackFinder.OutputLevel = WARNING
+MyTruthTrackFinder.ProcessorType = "TruthTrackFinder"
 MyTruthTrackFinder.Parameters = {
                                  "FitForward": ["true"],
                                  "MCParticleCollectionName": ["MCParticle"],
@@ -129,8 +129,8 @@ MyTruthTrackFinder.Parameters = {
                                  }
 
 MyConformalTracking = MarlinProcessorWrapper("MyConformalTracking")
-MyConformalTracking.OutputLevel = WARNING 
-MyConformalTracking.ProcessorType = "ConformalTrackingV2" 
+MyConformalTracking.OutputLevel = WARNING
+MyConformalTracking.ProcessorType = "ConformalTrackingV2"
 MyConformalTracking.Parameters = {
                                   "DebugHits": ["DebugHits"],
                                   "DebugPlots": ["false"],
@@ -150,8 +150,8 @@ MyConformalTracking.Parameters = {
                                   }
 
 ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
-ClonesAndSplitTracksFinder.OutputLevel = WARNING 
-ClonesAndSplitTracksFinder.ProcessorType = "ClonesAndSplitTracksFinder" 
+ClonesAndSplitTracksFinder.OutputLevel = WARNING
+ClonesAndSplitTracksFinder.ProcessorType = "ClonesAndSplitTracksFinder"
 ClonesAndSplitTracksFinder.Parameters = {
                                          "EnergyLossOn": ["true"],
                                          "InputTrackCollectionName": ["SiTracksCT"],
@@ -167,8 +167,8 @@ ClonesAndSplitTracksFinder.Parameters = {
                                          }
 
 Refit = MarlinProcessorWrapper("Refit")
-Refit.OutputLevel = WARNING 
-Refit.ProcessorType = "RefitFinal" 
+Refit.OutputLevel = WARNING
+Refit.ProcessorType = "RefitFinal"
 Refit.Parameters = {
                     "EnergyLossOn": ["true"],
                     "InputRelationCollectionName": ["SiTrackRelations"],
@@ -184,8 +184,8 @@ Refit.Parameters = {
                     }
 
 MyClicEfficiencyCalculator = MarlinProcessorWrapper("MyClicEfficiencyCalculator")
-MyClicEfficiencyCalculator.OutputLevel = WARNING 
-MyClicEfficiencyCalculator.ProcessorType = "ClicEfficiencyCalculator" 
+MyClicEfficiencyCalculator.OutputLevel = WARNING
+MyClicEfficiencyCalculator.ProcessorType = "ClicEfficiencyCalculator"
 MyClicEfficiencyCalculator.Parameters = {
                                          "MCParticleCollectionName": ["MCParticle"],
                                          "MCParticleNotReco": ["MCParticleNotReco"],
@@ -202,8 +202,8 @@ MyClicEfficiencyCalculator.Parameters = {
                                          }
 
 MyTrackChecker = MarlinProcessorWrapper("MyTrackChecker")
-MyTrackChecker.OutputLevel = WARNING 
-MyTrackChecker.ProcessorType = "TrackChecker" 
+MyTrackChecker.OutputLevel = WARNING
+MyTrackChecker.ProcessorType = "TrackChecker"
 MyTrackChecker.Parameters = {
                              "MCParticleCollectionName": ["MCParticle"],
                              "TrackCollectionName": ["SiTracks_Refitted"],
@@ -213,8 +213,8 @@ MyTrackChecker.Parameters = {
                              }
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
-MyAIDAProcessor.OutputLevel = WARNING 
-MyAIDAProcessor.ProcessorType = "AIDAProcessor" 
+MyAIDAProcessor.OutputLevel = WARNING
+MyAIDAProcessor.ProcessorType = "AIDAProcessor"
 MyAIDAProcessor.Parameters = {
                               "Compress": ["1"],
                               "FileName": ["histograms"],
@@ -222,15 +222,15 @@ MyAIDAProcessor.Parameters = {
                               }
 
 EventNumber = MarlinProcessorWrapper("EventNumber")
-EventNumber.OutputLevel = WARNING 
-EventNumber.ProcessorType = "Statusmonitor" 
+EventNumber.OutputLevel = WARNING
+EventNumber.ProcessorType = "Statusmonitor"
 EventNumber.Parameters = {
                           "HowOften": ["1"]
                           }
 
 MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
-MyDDSimpleMuonDigi.OutputLevel = WARNING 
-MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi" 
+MyDDSimpleMuonDigi.OutputLevel = WARNING
+MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
 MyDDSimpleMuonDigi.Parameters = {
                                  "CalibrMUON": ["70.1"],
                                  "MUONCollections": ["YokeBarrelCollection", "YokeEndcapCollection"],
@@ -241,15 +241,15 @@ MyDDSimpleMuonDigi.Parameters = {
                                  }
 
 MyStatusmonitor = MarlinProcessorWrapper("MyStatusmonitor")
-MyStatusmonitor.OutputLevel = WARNING 
-MyStatusmonitor.ProcessorType = "Statusmonitor" 
+MyStatusmonitor.OutputLevel = WARNING
+MyStatusmonitor.ProcessorType = "Statusmonitor"
 MyStatusmonitor.Parameters = {
                               "HowOften": ["100"]
                               }
 
 MyRecoMCTruthLinker = MarlinProcessorWrapper("MyRecoMCTruthLinker")
-MyRecoMCTruthLinker.OutputLevel = WARNING 
-MyRecoMCTruthLinker.ProcessorType = "RecoMCTruthLinker" 
+MyRecoMCTruthLinker.OutputLevel = WARNING
+MyRecoMCTruthLinker.ProcessorType = "RecoMCTruthLinker"
 MyRecoMCTruthLinker.Parameters = {
                                   "BremsstrahlungEnergyCut": ["1"],
                                   "CalohitMCTruthLinkName": ["CalohitMCTruthLink"],
@@ -278,8 +278,8 @@ MyRecoMCTruthLinker.Parameters = {
                                   }
 
 MyHitResiduals = MarlinProcessorWrapper("MyHitResiduals")
-MyHitResiduals.OutputLevel = WARNING 
-MyHitResiduals.ProcessorType = "HitResiduals" 
+MyHitResiduals.OutputLevel = WARNING
+MyHitResiduals.ProcessorType = "HitResiduals"
 MyHitResiduals.Parameters = {
                              "EnergyLossOn": ["true"],
                              "MaxChi2Increment": ["1000"],
@@ -291,8 +291,8 @@ MyHitResiduals.Parameters = {
                              }
 
 LumiCalReco = MarlinProcessorWrapper("LumiCalReco")
-LumiCalReco.OutputLevel = WARNING 
-LumiCalReco.ProcessorType = "MarlinLumiCalClusterer" 
+LumiCalReco.OutputLevel = WARNING
+LumiCalReco.ProcessorType = "MarlinLumiCalClusterer"
 LumiCalReco.Parameters = {
                           "ClusterMinNumHits": ["15"],
                           "ElementsPercentInShowerPeakLayer": ["0.03"],
@@ -317,8 +317,8 @@ LumiCalReco.Parameters = {
                           }
 
 RenameCollection = MarlinProcessorWrapper("RenameCollection")
-RenameCollection.OutputLevel = WARNING 
-RenameCollection.ProcessorType = "MergeCollections" 
+RenameCollection.OutputLevel = WARNING
+RenameCollection.ProcessorType = "MergeCollections"
 RenameCollection.Parameters = {
                                "CollectionParameterIndex": ["0"],
                                "InputCollectionIDs": [],
@@ -327,8 +327,8 @@ RenameCollection.Parameters = {
                                }
 
 MyFastJetProcessor = MarlinProcessorWrapper("MyFastJetProcessor")
-MyFastJetProcessor.OutputLevel = WARNING 
-MyFastJetProcessor.ProcessorType = "FastJetProcessor" 
+MyFastJetProcessor.OutputLevel = WARNING
+MyFastJetProcessor.ProcessorType = "FastJetProcessor"
 MyFastJetProcessor.Parameters = {
                                  "algorithm": ["ValenciaPlugin", "1.2", "1.0", "0.7"],
                                  "clusteringMode": ["ExclusiveNJets", "2"],
@@ -340,8 +340,8 @@ MyFastJetProcessor.Parameters = {
                                  }
 
 JetClusteringAndRefiner = MarlinProcessorWrapper("JetClusteringAndRefiner")
-JetClusteringAndRefiner.OutputLevel = WARNING 
-JetClusteringAndRefiner.ProcessorType = "LcfiplusProcessor" 
+JetClusteringAndRefiner.OutputLevel = WARNING
+JetClusteringAndRefiner.ProcessorType = "LcfiplusProcessor"
 JetClusteringAndRefiner.Parameters = {
                                       "Algorithms": ["JetClustering", "JetVertexRefiner"],
                                       "JetClustering.AlphaParameter": ["1.0"],
@@ -401,8 +401,8 @@ JetClusteringAndRefiner.Parameters = {
                                       }
 
 Output_REC = MarlinProcessorWrapper("Output_REC")
-Output_REC.OutputLevel = WARNING 
-Output_REC.ProcessorType = "LCIOOutputProcessor" 
+Output_REC.OutputLevel = WARNING
+Output_REC.ProcessorType = "LCIOOutputProcessor"
 Output_REC.Parameters = {
                          "DropCollectionNames": [],
                          "DropCollectionTypes": [],
@@ -413,8 +413,8 @@ Output_REC.Parameters = {
                          }
 
 Output_DST = MarlinProcessorWrapper("Output_DST")
-Output_DST.OutputLevel = WARNING 
-Output_DST.ProcessorType = "LCIOOutputProcessor" 
+Output_DST.OutputLevel = WARNING
+Output_DST.ProcessorType = "LCIOOutputProcessor"
 Output_DST.Parameters = {
                          "DropCollectionNames": [],
                          "DropCollectionTypes": ["MCParticle", "LCRelation", "SimCalorimeterHit", "CalorimeterHit", "SimTrackerHit", "TrackerHit", "TrackerHitPlane", "Track", "ReconstructedParticle", "LCFloatVec"],
@@ -425,8 +425,8 @@ Output_DST.Parameters = {
                          }
 
 OverlayFalse = MarlinProcessorWrapper("OverlayFalse")
-OverlayFalse.OutputLevel = WARNING 
-OverlayFalse.ProcessorType = "OverlayTimingGeneric" 
+OverlayFalse.OutputLevel = WARNING
+OverlayFalse.ProcessorType = "OverlayTimingGeneric"
 OverlayFalse.Parameters = {
                            "BackgroundFileNames": [],
                            "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
@@ -442,8 +442,8 @@ OverlayFalse.Parameters = {
                            }
 
 Overlay91GeV = MarlinProcessorWrapper("Overlay91GeV")
-Overlay91GeV.OutputLevel = WARNING 
-Overlay91GeV.ProcessorType = "OverlayTimingGeneric" 
+Overlay91GeV.OutputLevel = WARNING
+Overlay91GeV.ProcessorType = "OverlayTimingGeneric"
 Overlay91GeV.Parameters = {
                            "BackgroundFileNames": ["pairs_Z_sim.slcio"],
                            "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
@@ -459,8 +459,8 @@ Overlay91GeV.Parameters = {
                            }
 
 Overlay365GeV = MarlinProcessorWrapper("Overlay365GeV")
-Overlay365GeV.OutputLevel = WARNING 
-Overlay365GeV.ProcessorType = "OverlayTimingGeneric" 
+Overlay365GeV.OutputLevel = WARNING
+Overlay365GeV.ProcessorType = "OverlayTimingGeneric"
 Overlay365GeV.Parameters = {
                             "BackgroundFileNames": ["pairs_Z_sim.slcio"],
                             "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
@@ -476,8 +476,8 @@ Overlay365GeV.Parameters = {
                             }
 
 MyDDCaloDigi_10ns = MarlinProcessorWrapper("MyDDCaloDigi_10ns")
-MyDDCaloDigi_10ns.OutputLevel = WARNING 
-MyDDCaloDigi_10ns.ProcessorType = "DDCaloDigi" 
+MyDDCaloDigi_10ns.OutputLevel = WARNING
+MyDDCaloDigi_10ns.ProcessorType = "DDCaloDigi"
 MyDDCaloDigi_10ns.Parameters = {
                                 "CalibECALMIP": ["0.0001"],
                                 "CalibHCALMIP": ["0.0001"],
@@ -559,8 +559,8 @@ MyDDCaloDigi_10ns.Parameters = {
                                 }
 
 MyDDCaloDigi_400ns = MarlinProcessorWrapper("MyDDCaloDigi_400ns")
-MyDDCaloDigi_400ns.OutputLevel = WARNING 
-MyDDCaloDigi_400ns.ProcessorType = "DDCaloDigi" 
+MyDDCaloDigi_400ns.OutputLevel = WARNING
+MyDDCaloDigi_400ns.ProcessorType = "DDCaloDigi"
 MyDDCaloDigi_400ns.Parameters = {
                                  "CalibECALMIP": ["0.0001"],
                                  "CalibHCALMIP": ["0.0001"],
@@ -642,8 +642,8 @@ MyDDCaloDigi_400ns.Parameters = {
                                  }
 
 MyDDMarlinPandora_10ns = MarlinProcessorWrapper("MyDDMarlinPandora_10ns")
-MyDDMarlinPandora_10ns.OutputLevel = WARNING 
-MyDDMarlinPandora_10ns.ProcessorType = "DDPandoraPFANewProcessor" 
+MyDDMarlinPandora_10ns.OutputLevel = WARNING
+MyDDMarlinPandora_10ns.ProcessorType = "DDPandoraPFANewProcessor"
 MyDDMarlinPandora_10ns.Parameters = {
                                      "ClusterCollectionName": ["PandoraClusters"],
                                      "CreateGaps": ["false"],
@@ -743,8 +743,8 @@ MyDDMarlinPandora_10ns.Parameters = {
                                      }
 
 MyDDMarlinPandora_400ns = MarlinProcessorWrapper("MyDDMarlinPandora_400ns")
-MyDDMarlinPandora_400ns.OutputLevel = WARNING 
-MyDDMarlinPandora_400ns.ProcessorType = "DDPandoraPFANewProcessor" 
+MyDDMarlinPandora_400ns.OutputLevel = WARNING
+MyDDMarlinPandora_400ns.ProcessorType = "DDPandoraPFANewProcessor"
 MyDDMarlinPandora_400ns.Parameters = {
                                       "ClusterCollectionName": ["PandoraClusters"],
                                       "CreateGaps": ["false"],
@@ -844,8 +844,8 @@ MyDDMarlinPandora_400ns.Parameters = {
                                       }
 
 MyCLICPfoSelectorDefault = MarlinProcessorWrapper("MyCLICPfoSelectorDefault")
-MyCLICPfoSelectorDefault.OutputLevel = WARNING 
-MyCLICPfoSelectorDefault.ProcessorType = "CLICPfoSelector" 
+MyCLICPfoSelectorDefault.OutputLevel = WARNING
+MyCLICPfoSelectorDefault.ProcessorType = "CLICPfoSelector"
 MyCLICPfoSelectorDefault.Parameters = {
                                        "ChargedPfoLooseTimingCut": ["3"],
                                        "ChargedPfoNegativeLooseTimingCut": ["-1"],
@@ -895,8 +895,8 @@ MyCLICPfoSelectorDefault.Parameters = {
                                        }
 
 MyCLICPfoSelectorLoose = MarlinProcessorWrapper("MyCLICPfoSelectorLoose")
-MyCLICPfoSelectorLoose.OutputLevel = WARNING 
-MyCLICPfoSelectorLoose.ProcessorType = "CLICPfoSelector" 
+MyCLICPfoSelectorLoose.OutputLevel = WARNING
+MyCLICPfoSelectorLoose.ProcessorType = "CLICPfoSelector"
 MyCLICPfoSelectorLoose.Parameters = {
                                      "ChargedPfoLooseTimingCut": ["3"],
                                      "ChargedPfoNegativeLooseTimingCut": ["-2.0"],
@@ -946,8 +946,8 @@ MyCLICPfoSelectorLoose.Parameters = {
                                      }
 
 MyCLICPfoSelectorTight = MarlinProcessorWrapper("MyCLICPfoSelectorTight")
-MyCLICPfoSelectorTight.OutputLevel = WARNING 
-MyCLICPfoSelectorTight.ProcessorType = "CLICPfoSelector" 
+MyCLICPfoSelectorTight.OutputLevel = WARNING
+MyCLICPfoSelectorTight.ProcessorType = "CLICPfoSelector"
 MyCLICPfoSelectorTight.Parameters = {
                                      "ChargedPfoLooseTimingCut": ["2.0"],
                                      "ChargedPfoNegativeLooseTimingCut": ["-0.5"],
@@ -997,8 +997,8 @@ MyCLICPfoSelectorTight.Parameters = {
                                      }
 
 VertexFinder = MarlinProcessorWrapper("VertexFinder")
-VertexFinder.OutputLevel = WARNING 
-VertexFinder.ProcessorType = "LcfiplusProcessor" 
+VertexFinder.OutputLevel = WARNING
+VertexFinder.ProcessorType = "LcfiplusProcessor"
 VertexFinder.Parameters = {
                            "Algorithms": ["PrimaryVertexFinder", "BuildUpVertex"],
                            "BeamSizeX": ["38.2E-3"],
@@ -1051,8 +1051,8 @@ VertexFinder.Parameters = {
                            }
 
 VertexFinderUnconstrained = MarlinProcessorWrapper("VertexFinderUnconstrained")
-VertexFinderUnconstrained.OutputLevel = WARNING 
-VertexFinderUnconstrained.ProcessorType = "LcfiplusProcessor" 
+VertexFinderUnconstrained.OutputLevel = WARNING
+VertexFinderUnconstrained.ProcessorType = "LcfiplusProcessor"
 VertexFinderUnconstrained.Parameters = {
                                         "Algorithms": ["PrimaryVertexFinder", "BuildUpVertex"],
                                         "BeamSizeX": ["38.2E-3"],
