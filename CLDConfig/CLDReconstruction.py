@@ -6,11 +6,16 @@ algList = []
 evtsvc = EventDataSvc()
 
 
-CONSTANTS = {
-             'CalorimeterIntegrationTimeWindow': "10",
+CONFIG = {
+             "CalorimeterIntegrationTimeWindow": "10",
+             "Overlay": ["False"],
+             "OverlayChoices": ["False", "91GeV", "365GeV"],
+             "Tracking": ["Conformal"],
+             "TrackingChoices": ["Truth", "Conformal"],
+             "VertexUnconstrained": ["OFF"],
+             "VertexUnconstrainedChoices": ["ON", "OFF"]
 }
 
-parseConstants(CONSTANTS)
 
 read = LcioEvent()
 read.OutputLevel = WARNING
@@ -40,18 +45,6 @@ InitDD4hep.Parameters = {
                          "DD4hepXMLFile": [os.environ["K4GEO"]+"/FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml"],
                          "EncodingStringParameter": ["GlobalTrackerReadoutID"]
                          }
-
-Config = MarlinProcessorWrapper("Config")
-Config.OutputLevel = WARNING
-Config.ProcessorType = "CLICRecoConfig"
-Config.Parameters = {
-                     "Overlay": ["False"],
-                     "OverlayChoices": ["False", "91GeV", "365GeV"],
-                     "Tracking": ["Conformal"],
-                     "TrackingChoices": ["Truth", "Conformal"],
-                     "VertexUnconstrained": ["OFF"],
-                     "VertexUnconstrainedChoices": ["ON", "OFF"]
-                     }
 
 VXDBarrelDigitiser = MarlinProcessorWrapper("VXDBarrelDigitiser")
 VXDBarrelDigitiser.OutputLevel = WARNING
@@ -1107,7 +1100,6 @@ VertexFinderUnconstrained.Parameters = {
 algList.append(MyAIDAProcessor)
 algList.append(EventNumber)
 algList.append(InitDD4hep)
-algList.append(Config)
 # algList.append(OverlayFalse)  # Config.OverlayFalse
 # algList.append(Overlay91GeV)  # Config.Overlay91GeV
 # algList.append(Overlay365GeV)  # Config.Overlay365GeV
