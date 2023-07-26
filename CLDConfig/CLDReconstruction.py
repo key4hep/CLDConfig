@@ -19,7 +19,7 @@ CONFIG = {
 
 read = LcioEvent()
 read.OutputLevel = WARNING
-read.Files = ["/run/simulation/with/ctest/to/create/a/file.slcio"]
+read.Files = ["/run/simulation/with/ddsim/to/create/a/file.slcio"]
 algList.append(read)
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
