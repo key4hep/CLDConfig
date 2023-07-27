@@ -1,9 +1,10 @@
 from Gaudi.Configuration import *
 
-from Configurables import LcioEvent, EventDataSvc, MarlinProcessorWrapper
+from Configurables import LcioEvent, k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.parseConstants import *
 algList = []
-evtsvc = EventDataSvc()
+
+evtsvc = k4DataSvc("EventDataSvc")
 
 
 CONFIG = {
