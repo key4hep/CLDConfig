@@ -46,6 +46,64 @@ InitDD4hep.Parameters = {
                          "EncodingStringParameter": ["GlobalTrackerReadoutID"]
                          }
 
+OverlayParameters = {
+    "MCParticleCollectionName": ["MCParticle"],
+    "MCPhysicsParticleCollectionName": ["MCPhysicsParticles"],
+    "Delta_t": ["20"],
+    "NBunchtrain": ["20"],
+    "Collection_IntegrationTimes": [
+        "VertexBarrelCollection", "380",
+        "VertexEndcapCollection", "380",
+        "InnerTrackerBarrelCollection", "380",
+        "InnerTrackerEndcapCollection", "380",
+        "OuterTrackerBarrelCollection", "380",
+        "OuterTrackerEndcapCollection", "380",
+        "ECalBarrelCollection", "380",
+        "ECalEndcapCollection", "380",
+        "HCalBarrelCollection", "380",
+        "HCalEndcapCollection", "380",
+        "HCalRingCollection", "380",
+        "YokeBarrelCollection", "380",
+        "YokeEndcapCollection", "380",
+        "LumiCalCollection", "380"
+     ],
+    "PhysicsBX": ["1"],
+    "Poisson_random_NOverlay": ["false"],
+    "RandomBx": ["false"],
+    "TPCDriftvelocity": ["0.05"],
+    "BackgroundFileNames": ["pairs_Z_sim.slcio"],
+}
+
+OverlayFalse = MarlinProcessorWrapper("OverlayFalse")
+OverlayFalse.OutputLevel = WARNING
+OverlayFalse.ProcessorType = "OverlayTimingGeneric"
+OverlayFalse.Parameters = OverlayParameters.copy()
+OverlayFalse.Parameters |= {
+                           "BackgroundFileNames": [],
+                           "NBunchtrain": ["0"],
+                           "NumberBackground": ["0."],
+                           }
+
+# XXX: Caution, this probably needs an update
+Overlay91GeV = MarlinProcessorWrapper("Overlay91GeV")
+Overlay91GeV.OutputLevel = WARNING
+Overlay91GeV.ProcessorType = "OverlayTimingGeneric"
+Overlay91GeV.Parameters = OverlayParameters.copy()
+Overlay91GeV.Parameters |= {
+                           "NumberBackground": ["1."],
+                           }
+
+# XXX: Caution, this probably needs an update
+Overlay365GeV = MarlinProcessorWrapper("Overlay365GeV")
+Overlay365GeV.OutputLevel = WARNING
+Overlay365GeV.ProcessorType = "OverlayTimingGeneric"
+Overlay365GeV.Parameters = OverlayParameters.copy()
+Overlay365GeV.Parameters |= {
+                            "Delta_t": ["3396"],
+                            "NBunchtrain": ["3"],
+                            "NumberBackground": ["1."],
+                            }
+
 VXDBarrelDigitiser = MarlinProcessorWrapper("VXDBarrelDigitiser")
 VXDBarrelDigitiser.OutputLevel = WARNING
 VXDBarrelDigitiser.ProcessorType = "DDPlanarDigiProcessor"
@@ -416,57 +474,6 @@ Output_DST.Parameters = {
                          "LCIOOutputFile": ["Output_DST.slcio"],
                          "LCIOWriteMode": ["WRITE_NEW"]
                          }
-
-OverlayFalse = MarlinProcessorWrapper("OverlayFalse")
-OverlayFalse.OutputLevel = WARNING
-OverlayFalse.ProcessorType = "OverlayTimingGeneric"
-OverlayFalse.Parameters = {
-                           "BackgroundFileNames": [],
-                           "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
-                           "Delta_t": ["20"],
-                           "MCParticleCollectionName": ["MCParticle"],
-                           "MCPhysicsParticleCollectionName": ["MCPhysicsParticles"],
-                           "NBunchtrain": ["0"],
-                           "NumberBackground": ["0."],
-                           "PhysicsBX": ["1"],
-                           "Poisson_random_NOverlay": ["false"],
-                           "RandomBx": ["false"],
-                           "TPCDriftvelocity": ["0.05"]
-                           }
-
-Overlay91GeV = MarlinProcessorWrapper("Overlay91GeV")
-Overlay91GeV.OutputLevel = WARNING
-Overlay91GeV.ProcessorType = "OverlayTimingGeneric"
-Overlay91GeV.Parameters = {
-                           "BackgroundFileNames": ["pairs_Z_sim.slcio"],
-                           "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
-                           "Delta_t": ["20"],
-                           "MCParticleCollectionName": ["MCParticle"],
-                           "MCPhysicsParticleCollectionName": ["MCPhysicsParticles"],
-                           "NBunchtrain": ["20"],
-                           "NumberBackground": ["1."],
-                           "PhysicsBX": ["1"],
-                           "Poisson_random_NOverlay": ["false"],
-                           "RandomBx": ["false"],
-                           "TPCDriftvelocity": ["0.05"]
-                           }
-
-Overlay365GeV = MarlinProcessorWrapper("Overlay365GeV")
-Overlay365GeV.OutputLevel = WARNING
-Overlay365GeV.ProcessorType = "OverlayTimingGeneric"
-Overlay365GeV.Parameters = {
-                            "BackgroundFileNames": ["pairs_Z_sim.slcio"],
-                            "Collection_IntegrationTimes": ["VertexBarrelCollection", "380", "VertexEndcapCollection", "380", "InnerTrackerBarrelCollection", "380", "InnerTrackerEndcapCollection", "380", "OuterTrackerBarrelCollection", "380", "OuterTrackerEndcapCollection", "380", "ECalBarrelCollection", "380", "ECalEndcapCollection", "380", "ECalPlugCollection", "380", "HCalBarrelCollection", "380", "HCalEndcapCollection", "380", "HCalRingCollection", "380", "YokeBarrelCollection", "380", "YokeEndcapCollection", "380", "LumiCalCollection", "380", "BeamCalCollection", "380"],
-                            "Delta_t": ["3396"],
-                            "MCParticleCollectionName": ["MCParticle"],
-                            "MCPhysicsParticleCollectionName": ["MCPhysicsParticles"],
-                            "NBunchtrain": ["3"],
-                            "NumberBackground": ["1."],
-                            "PhysicsBX": ["1"],
-                            "Poisson_random_NOverlay": ["false"],
-                            "RandomBx": ["false"],
-                            "TPCDriftvelocity": ["0.05"]
-                            }
 
 MyDDCaloDigi_10ns = MarlinProcessorWrapper("MyDDCaloDigi_10ns")
 MyDDCaloDigi_10ns.OutputLevel = WARNING
