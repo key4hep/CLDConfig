@@ -984,9 +984,13 @@ algList.append(InnerPlanarDigiProcessor)
 algList.append(InnerEndcapPlanarDigiProcessor)
 algList.append(OuterPlanarDigiProcessor)
 algList.append(OuterEndcapPlanarDigiProcessor)
-# algList.append(MyTruthTrackFinder)  # Config.TrackingTruth
-# algList.append(MyConformalTracking)  # Config.TrackingConformal
-# algList.append(ClonesAndSplitTracksFinder)  # Config.TrackingConformal
+
+if CONFIG["Tracking"] == "Truth":
+    algList.append(MyTruthTrackFinder)
+elif CONFIG["Tracking"] == "Conformal":
+    algList.append(MyConformalTracking)
+    algList.append(ClonesAndSplitTracksFinder)
+
 algList.append(Refit)
 algList.append(MyDDCaloDigi[CONFIG["CalorimeterIntegrationTimeWindow"]])
 algList.append(MyDDSimpleMuonDigi)
