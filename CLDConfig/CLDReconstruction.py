@@ -74,32 +74,33 @@ OverlayParameters = {
     "TPCDriftvelocity": ["0.05"],
     "BackgroundFileNames": ["pairs_Z_sim.slcio"],
 }
+Overlay = {}
 
-OverlayFalse = MarlinProcessorWrapper("OverlayFalse")
-OverlayFalse.OutputLevel = WARNING
-OverlayFalse.ProcessorType = "OverlayTimingGeneric"
-OverlayFalse.Parameters = OverlayParameters.copy()
-OverlayFalse.Parameters |= {
+Overlay["False"] = MarlinProcessorWrapper("OverlayFalse")
+Overlay["False"].OutputLevel = WARNING
+Overlay["False"].ProcessorType = "OverlayTimingGeneric"
+Overlay["False"].Parameters = OverlayParameters.copy()
+Overlay["False"].Parameters |= {
                            "BackgroundFileNames": [],
                            "NBunchtrain": ["0"],
                            "NumberBackground": ["0."],
                            }
 
 # XXX: Caution, this probably needs an update
-Overlay91GeV = MarlinProcessorWrapper("Overlay91GeV")
-Overlay91GeV.OutputLevel = WARNING
-Overlay91GeV.ProcessorType = "OverlayTimingGeneric"
-Overlay91GeV.Parameters = OverlayParameters.copy()
-Overlay91GeV.Parameters |= {
+Overlay["91GeV"] = MarlinProcessorWrapper("Overlay91GeV")
+Overlay["91GeV"].OutputLevel = WARNING
+Overlay["91GeV"].ProcessorType = "OverlayTimingGeneric"
+Overlay["91GeV"].Parameters = OverlayParameters.copy()
+Overlay["91GeV"].Parameters |= {
                            "NumberBackground": ["1."],
                            }
 
 # XXX: Caution, this probably needs an update
-Overlay365GeV = MarlinProcessorWrapper("Overlay365GeV")
-Overlay365GeV.OutputLevel = WARNING
-Overlay365GeV.ProcessorType = "OverlayTimingGeneric"
-Overlay365GeV.Parameters = OverlayParameters.copy()
-Overlay365GeV.Parameters |= {
+Overlay["365GeV"] = MarlinProcessorWrapper("Overlay365GeV")
+Overlay["365GeV"].OutputLevel = WARNING
+Overlay["365GeV"].ProcessorType = "OverlayTimingGeneric"
+Overlay["365GeV"].Parameters = OverlayParameters.copy()
+Overlay["365GeV"].Parameters |= {
                             "Delta_t": ["3396"],
                             "NBunchtrain": ["3"],
                             "NumberBackground": ["1."],
@@ -1048,9 +1049,7 @@ VertexFinderUnconstrained.Parameters = {
 algList.append(MyAIDAProcessor)
 algList.append(EventNumber)
 algList.append(InitDD4hep)
-# algList.append(OverlayFalse)  # Config.OverlayFalse
-# algList.append(Overlay91GeV)  # Config.Overlay91GeV
-# algList.append(Overlay365GeV)  # Config.Overlay365GeV
+algList.append(Overlay[CONFIG["Overlay"]])
 algList.append(VXDBarrelDigitiser)
 algList.append(VXDEndcapDigitiser)
 algList.append(InnerPlanarDigiProcessor)
@@ -1071,8 +1070,12 @@ algList.append(MyTrackChecker)
 algList.append(MyCLICPfoSelectorDefault)
 algList.append(MyCLICPfoSelectorLoose)
 algList.append(MyCLICPfoSelectorTight)
-# algList.append(RenameCollection)  # Config.OverlayFalse
-# algList.append(MyFastJetProcessor)  # Config.OverlayNotFalse
+
+if CONFIG["Overlay"] == "False":
+    algList.append(RenameCollection)
+else:
+    algList.append(MyFastJetProcessor)
+
 algList.append(VertexFinder)
 algList.append(JetClusteringAndRefiner)
 # algList.append(VertexFinderUnconstrained)  # Config.VertexUnconstrainedON
