@@ -8,7 +8,8 @@ evtsvc = k4DataSvc("EventDataSvc")
 
 
 CONFIG = {
-             "CalorimeterIntegrationTimeWindow": "10",
+             "CalorimeterIntegrationTimeWindow": "10ns",
+             "CalorimeterIntegrationTimeWindowChoices": ["10ns", "400ns"],
              "Overlay": ["False"],
              "OverlayChoices": ["False", "91GeV", "365GeV"],
              "Tracking": ["Conformal"],
@@ -550,12 +551,13 @@ MyDDCaloDigiParameters = {
                                 "HCALTimeResolution": ["10"],
 }
 
-#TODO: make this nice with a dictionary
-MyDDCaloDigi_10ns = MarlinProcessorWrapper("MyDDCaloDigi_10ns")
-MyDDCaloDigi_10ns.OutputLevel = WARNING
-MyDDCaloDigi_10ns.ProcessorType = "DDCaloDigi"
-MyDDCaloDigi_10ns.Parameters = MyDDCaloDigiParameters.copy()
-MyDDCaloDigi_10ns.Parameters |= {
+MyDDCaloDigi = {}
+
+MyDDCaloDigi["10ns"] = MarlinProcessorWrapper("MyDDCaloDigi_10ns")
+MyDDCaloDigi["10ns"].OutputLevel = WARNING
+MyDDCaloDigi["10ns"].ProcessorType = "DDCaloDigi"
+MyDDCaloDigi["10ns"].Parameters = MyDDCaloDigiParameters.copy()
+MyDDCaloDigi["10ns"].Parameters |= {
                                 "CalibrECAL": ["37.5227197175", "37.5227197175"],
                                 "ECALEndcapCorrectionFactor": ["1.03245503522"],
                                 "ECALBarrelTimeWindowMax": ["10"],
@@ -567,11 +569,11 @@ MyDDCaloDigi_10ns.Parameters |= {
                                 "HCALEndcapTimeWindowMax": ["10"],
                                 }
 
-MyDDCaloDigi_400ns = MarlinProcessorWrapper("MyDDCaloDigi_400ns")
-MyDDCaloDigi_400ns.OutputLevel = WARNING
-MyDDCaloDigi_400ns.ProcessorType = "DDCaloDigi"
-MyDDCaloDigi_400ns.Parameters = MyDDCaloDigiParameters.copy()
-MyDDCaloDigi_400ns.Parameters |= {
+MyDDCaloDigi["400ns"] = MarlinProcessorWrapper("MyDDCaloDigi_400ns")
+MyDDCaloDigi["400ns"].OutputLevel = WARNING
+MyDDCaloDigi["400ns"].ProcessorType = "DDCaloDigi"
+MyDDCaloDigi["400ns"].Parameters = MyDDCaloDigiParameters.copy()
+MyDDCaloDigi["400ns"].Parameters |= {
                                  "CalibrECAL": ["37.4591745147", "37.4591745147"],
                                  "ECALEndcapCorrectionFactor": ["1.01463983425"],
                                  "ECALBarrelTimeWindowMax": ["400"],
@@ -667,11 +669,13 @@ MyDDMarlinPandoraParameters = {
                                      "StripSplittingOn": ["0"],
 }
 
-MyDDMarlinPandora_10ns = MarlinProcessorWrapper("MyDDMarlinPandora_10ns")
-MyDDMarlinPandora_10ns.OutputLevel = WARNING
-MyDDMarlinPandora_10ns.ProcessorType = "DDPandoraPFANewProcessor"
-MyDDMarlinPandora_10ns.Parameters = MyDDMarlinPandoraParameters.copy()
-MyDDMarlinPandora_10ns.Parameters |= {
+MyDDMarlinPandora = {}
+
+MyDDMarlinPandora["10ns"] = MarlinProcessorWrapper("MyDDMarlinPandora_10ns")
+MyDDMarlinPandora["10ns"].OutputLevel = WARNING
+MyDDMarlinPandora["10ns"].ProcessorType = "DDPandoraPFANewProcessor"
+MyDDMarlinPandora["10ns"].Parameters = MyDDMarlinPandoraParameters.copy()
+MyDDMarlinPandora["10ns"].Parameters |= {
                                      "PandoraSettingsXmlFile": ["PandoraSettingsFCCee/PandoraSettingsDefault.xml"],
                                      "SoftwareCompensationWeights": ["2.40821", "-0.0515852", "0.000711414", "-0.0254891", "-0.0121505", "-1.63084e-05", "0.062149", "0.0690735", "-0.223064"],
                                      "ECalToMipCalibration": ["175.439"],
@@ -688,11 +692,11 @@ MyDDMarlinPandora_10ns.Parameters |= {
                                      "MaxHCalHitHadronicEnergy": ["10000000."],
                                      }
 
-MyDDMarlinPandora_400ns = MarlinProcessorWrapper("MyDDMarlinPandora_400ns")
-MyDDMarlinPandora_400ns.OutputLevel = WARNING
-MyDDMarlinPandora_400ns.ProcessorType = "DDPandoraPFANewProcessor"
-MyDDMarlinPandora_400ns.Parameters = MyDDMarlinPandoraParameters.copy()
-MyDDMarlinPandora_400ns.Parameters |= {
+MyDDMarlinPandora["400ns"] = MarlinProcessorWrapper("MyDDMarlinPandora_400ns")
+MyDDMarlinPandora["400ns"].OutputLevel = WARNING
+MyDDMarlinPandora["400ns"].ProcessorType = "DDPandoraPFANewProcessor"
+MyDDMarlinPandora["400ns"].Parameters = MyDDMarlinPandoraParameters.copy()
+MyDDMarlinPandora["400ns"].Parameters |= {
                                       "PandoraSettingsXmlFile": ["PandoraSettingsFCCee/PandoraSettingsDefault_400nsCalTimeWindow.xml"],
                                       "SoftwareCompensationWeights": ["2.43375", "-0.0430951", "0.000244914", "-0.145478", "-0.00044577", "-8.37222e-05", "0.237484", "0.243491", "-0.0713701"],
                                       "ECalToMipCalibration": ["175.439"],
@@ -984,9 +988,9 @@ algList.append(OuterEndcapPlanarDigiProcessor)
 # algList.append(MyConformalTracking)  # Config.TrackingConformal
 # algList.append(ClonesAndSplitTracksFinder)  # Config.TrackingConformal
 algList.append(Refit)
-algList.append(MyDDCaloDigi_${CalorimeterIntegrationTimeWindow}ns)
+algList.append(MyDDCaloDigi[CONFIG["CalorimeterIntegrationTimeWindow"]])
 algList.append(MyDDSimpleMuonDigi)
-algList.append(MyDDMarlinPandora_${CalorimeterIntegrationTimeWindow}ns)
+algList.append(MyDDMarlinPandora[CONFIG["CalorimeterIntegrationTimeWindow"]])
 algList.append(LumiCalReco)
 algList.append(MyClicEfficiencyCalculator)
 algList.append(MyRecoMCTruthLinker)
