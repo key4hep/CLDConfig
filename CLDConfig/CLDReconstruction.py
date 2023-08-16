@@ -33,12 +33,6 @@ MyAIDAProcessor.Parameters = {
                               "FileType": ["root"]
                               }
 
-EventNumber = MarlinProcessorWrapper("EventNumber")
-EventNumber.OutputLevel = WARNING
-EventNumber.ProcessorType = "Statusmonitor"
-EventNumber.Parameters = {
-                          "HowOften": ["1"]
-                          }
 
 InitDD4hep = MarlinProcessorWrapper("InitDD4hep")
 InitDD4hep.OutputLevel = WARNING
@@ -974,8 +968,13 @@ VertexFinderUnconstrained.Parameters = {
                                         "UseMCP": ["0"]
                                         }
 
+EventNumber = MarlinProcessorWrapper("EventNumber")
+EventNumber.OutputLevel = WARNING
+EventNumber.ProcessorType = "Statusmonitor"
+EventNumber.Parameters = {
+                          "HowOften": ["1"]
+                          }
 algList.append(MyAIDAProcessor)
-algList.append(EventNumber)
 algList.append(InitDD4hep)
 algList.append(Overlay[CONFIG["Overlay"]])
 algList.append(VXDBarrelDigitiser)
@@ -1011,6 +1010,7 @@ else:
 algList.append(VertexFinder)
 algList.append(JetClusteringAndRefiner)
 # algList.append(VertexFinderUnconstrained)  # Config.VertexUnconstrainedON
+algList.append(EventNumber)
 algList.append(Output_REC)
 algList.append(Output_DST)
 
