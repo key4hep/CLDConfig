@@ -1009,7 +1009,8 @@ else:
 
 algList.append(VertexFinder)
 algList.append(JetClusteringAndRefiner)
-# algList.append(VertexFinderUnconstrained)  # Config.VertexUnconstrainedON
+if CONFIG["VertexUnconstrained"] == "True":
+    algList.append(VertexFinderUnconstrained)
 algList.append(EventNumber)
 algList.append(Output_REC)
 algList.append(Output_DST)
