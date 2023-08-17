@@ -10,29 +10,109 @@ evtsvc = k4DataSvc("EventDataSvc")
 CONFIG = {
              "CalorimeterIntegrationTimeWindow": "10ns",
              "CalorimeterIntegrationTimeWindowChoices": ["10ns", "400ns"],
-             "Overlay": ["False"],
+             "Overlay": "False",
              "OverlayChoices": ["False", "91GeV", "365GeV"],
-             "Tracking": ["Conformal"],
+             "Tracking": "Conformal",
              "TrackingChoices": ["Truth", "Conformal"],
-             "VertexUnconstrained": ["OFF"],
-             "VertexUnconstrainedChoices": ["ON", "OFF"]
+             "VertexUnconstrained": "OFF",
+             "VertexUnconstrainedChoices": ["ON", "OFF"],
+             "InputMode": "LCIO",
+             "InputModeChoices": ["LCIO", "EDM4hep"], # could also mix inputs but then things get ugly
+             "OutputMode": "EDM4Hep",
+             "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
 }
 
+output_basename = "output"
 
-read = LcioEvent()
-read.OutputLevel = WARNING
-read.Files = ["/run/simulation/with/ddsim/to/create/a/file.slcio"]
-algList.append(read)
+from k4FWCore.parseArgs import parser
+parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
+parser.add_argument("--outputBasename", help="Basename of the output file(s)")
+my_opts = parser.parse_known_args()[0]
+
+if my_opts.outputBasename is not None:
+    output_basename = my_opts.outputBasename
+
+input_files = [""]
+if my_opts.inputFiles is not None:
+    input_files = my_opts.inputFiles
+print(f"opts: {my_opts}")
+print(f"input_files: {input_files}")
+
+if input_files[0].endswith(".slcio"):
+    CONFIG["InputMode"] = "LCIO"
+elif input_files[0].endswith("edm4hep.root"):
+    CONFIG["InputMode"] = "EDM4hep"
+
+if CONFIG["InputMode"] == "LCIO":
+    from Configurables import LcioEvent
+    read = LcioEvent()
+    read.OutputLevel = WARNING
+    read.Files = input_files
+    algList.append(read)
+elif CONFIG["InputMode"] == "EDM4hep":
+    evtsvc.inputs = input_files
+    from Configurables import PodioInput
+    inp = PodioInput('InputReader')
+    inp.collections = [
+      'EventHeader',
+      'MCParticles',
+      'VertexBarrelCollection',
+      'VertexEndcapCollection',
+      'InnerTrackerBarrelCollection',
+      'OuterTrackerBarrelCollection',
+      'ECalEndcapCollection',
+      'ECalEndcapCollectionContributions',
+      'ECalBarrelCollection',
+      'ECalBarrelCollectionContributions',
+      'HCalBarrelCollection',
+      'HCalBarrelCollectionContributions',
+      'InnerTrackerEndcapCollection',
+      'OuterTrackerEndcapCollection',
+      'HCalEndcapCollection',
+      'HCalEndcapCollectionContributions',
+      'HCalRingCollection',
+      'HCalRingCollectionContributions',
+      'YokeBarrelCollection',
+      'YokeBarrelCollectionContributions',
+      'YokeEndcapCollection',
+      'YokeEndcapCollectionContributions',
+      'LumiCalCollection',
+      'LumiCalCollectionContributions',
+    ]
+    inp.OutputLevel = WARNING
+
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
 MyAIDAProcessor.OutputLevel = WARNING
 MyAIDAProcessor.ProcessorType = "AIDAProcessor"
 MyAIDAProcessor.Parameters = {
                               "Compress": ["1"],
-                              "FileName": ["histograms"],
+                              "FileName": [f"{output_basename}_aida"],
                               "FileType": ["root"]
                               }
 
+if CONFIG["InputMode"] == "LCIO":
+    from Configurables import EDM4hep2LcioTool
+    EDM4hep2Lcio = EDM4hep2LcioTool("EDM4hep2Lcio")
+    EDM4hep2Lcio.convertAll = False
+    EDM4hep2Lcio.collNameMapping = {
+        'MCParticles':                     'MCParticle',
+        'VertexBarrelCollection':          'VertexBarrelCollection',
+        'VertexEndcapCollection':          'VertexEndcapCollection',
+        'InnerTrackerBarrelCollection':    'InnerTrackerBarrelCollection',
+        'OuterTrackerBarrelCollection':    'OuterTrackerBarrelCollection',
+        'InnerTrackerEndcapCollection':    'InnerTrackerEndcapCollection',
+        'OuterTrackerEndcapCollection':    'OuterTrackerEndcapCollection',
+        'ECalEndcapCollection':            'ECalEndcapCollection',
+        'ECalBarrelCollection':            'ECalBarrelCollection',
+        'HCalBarrelCollection':            'HCalBarrelCollection',
+        'HCalEndcapCollection':            'HCalEndcapCollection',
+        'HCalRingCollection':              'HCalRingCollection',
+        'YokeBarrelCollection':            'YokeBarrelCollection',
+        'YokeEndcapCollection':            'YokeEndcapCollection',
+        'LumiCalCollection':               'LumiCalCollection',
+    }
+    EDM4hep2Lcio.OutputLevel = DEBUG
 
 InitDD4hep = MarlinProcessorWrapper("InitDD4hep")
 InitDD4hep.OutputLevel = WARNING
@@ -951,30 +1031,7 @@ EventNumber.Parameters = {
                           "HowOften": ["1"]
                           }
 
-Output_REC = MarlinProcessorWrapper("Output_REC")
-Output_REC.OutputLevel = WARNING
-Output_REC.ProcessorType = "LCIOOutputProcessor"
-Output_REC.Parameters = {
-                         "DropCollectionNames": [],
-                         "DropCollectionTypes": [],
-                         "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles"],
-                         "KeepCollectionNames": [],
-                         "LCIOOutputFile": ["Output_REC.slcio"],
-                         "LCIOWriteMode": ["WRITE_NEW"]
-                         }
-
-Output_DST = MarlinProcessorWrapper("Output_DST")
-Output_DST.OutputLevel = WARNING
-Output_DST.ProcessorType = "LCIOOutputProcessor"
-Output_DST.Parameters = {
-                         "DropCollectionNames": [],
-                         "DropCollectionTypes": ["MCParticle", "LCRelation", "SimCalorimeterHit", "CalorimeterHit", "SimTrackerHit", "TrackerHit", "TrackerHitPlane", "Track", "ReconstructedParticle", "LCFloatVec"],
-                         "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"],
-                         "KeepCollectionNames": ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"],
-                         "LCIOOutputFile": ["Output_DST.slcio"],
-                         "LCIOWriteMode": ["WRITE_NEW"]
-                         }
-
+# TODO: put this somewhere else, needs to be in front of the output for now :(
 algList.append(MyAIDAProcessor)
 algList.append(InitDD4hep)
 algList.append(Overlay[CONFIG["Overlay"]])
@@ -1013,8 +1070,49 @@ algList.append(JetClusteringAndRefiner)
 if CONFIG["VertexUnconstrained"] == "True":
     algList.append(VertexFinderUnconstrained)
 algList.append(EventNumber)
-algList.append(Output_REC)
-algList.append(Output_DST)
+
+if CONFIG["OutputMode"] == "LCIO":
+    Output_REC = MarlinProcessorWrapper("Output_REC")
+    Output_REC.OutputLevel = WARNING
+    Output_REC.ProcessorType = "LCIOOutputProcessor"
+    Output_REC.Parameters = {
+                             "DropCollectionNames": [],
+                             "DropCollectionTypes": [],
+                             "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles"],
+                             "KeepCollectionNames": [],
+                             "LCIOOutputFile": [f"{output_basename}_REC.slcio"],
+                             "LCIOWriteMode": ["WRITE_NEW"]
+                             }
+
+    Output_DST = MarlinProcessorWrapper("Output_DST")
+    Output_DST.OutputLevel = WARNING
+    Output_DST.ProcessorType = "LCIOOutputProcessor"
+    Output_DST.Parameters = {
+                             "DropCollectionNames": [],
+                             "DropCollectionTypes": ["MCParticle", "LCRelation", "SimCalorimeterHit", "CalorimeterHit", "SimTrackerHit", "TrackerHit", "TrackerHitPlane", "Track", "ReconstructedParticle", "LCFloatVec"],
+                             "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"],
+                             "KeepCollectionNames": ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"],
+                             "LCIOOutputFile": [f"{output_basename}_DST.slcio"],
+                             "LCIOWriteMode": ["WRITE_NEW"]
+                             }
+    algList.append(Output_REC)
+    algList.append(Output_DST)
+
+if CONFIG["OutputMode"] == "EDM4hep":
+    from Configurables import Lcio2EDM4hepTool
+    lcioConvTool = Lcio2EDM4hepTool("lcio2EDM4hep")
+    lcioConvTool.convertAll = True
+    lcioConvTool.collNameMapping = {
+        "MCParticle": "MCParticles"
+    }
+    lcioConvTool.OutputLevel = DEBUG
+# attach to the last non output processor
+    EventNumber.Lcio2EDM4hepTool = lcioConvTool
+
+    from Configurables import PodioOutput
+    out = PodioOutput("PodioOutput", filename = f"{output_basename}_edm4hep.root")
+    out.outputCommands = ["keep *"]
+    algList.append(out)
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
