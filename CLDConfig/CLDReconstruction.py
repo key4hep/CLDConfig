@@ -646,7 +646,7 @@ MyDDMarlinPandora["10ns"].OutputLevel = WARNING
 MyDDMarlinPandora["10ns"].ProcessorType = "DDPandoraPFANewProcessor"
 MyDDMarlinPandora["10ns"].Parameters = MyDDMarlinPandoraParameters.copy()
 MyDDMarlinPandora["10ns"].Parameters |= {
-                                     "PandoraSettingsXmlFile": ["PandoraSettingsFCCee/PandoraSettingsDefault.xml"],
+                                     "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault.xml"],
                                      "SoftwareCompensationWeights": ["2.40821", "-0.0515852", "0.000711414", "-0.0254891", "-0.0121505", "-1.63084e-05", "0.062149", "0.0690735", "-0.223064"],
                                      "ECalToMipCalibration": ["175.439"],
                                      "HCalToMipCalibration": ["45.6621"],
@@ -667,7 +667,7 @@ MyDDMarlinPandora["400ns"].OutputLevel = WARNING
 MyDDMarlinPandora["400ns"].ProcessorType = "DDPandoraPFANewProcessor"
 MyDDMarlinPandora["400ns"].Parameters = MyDDMarlinPandoraParameters.copy()
 MyDDMarlinPandora["400ns"].Parameters |= {
-                                      "PandoraSettingsXmlFile": ["PandoraSettingsFCCee/PandoraSettingsDefault_400nsCalTimeWindow.xml"],
+                                      "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault_400nsCalTimeWindow.xml"],
                                       "SoftwareCompensationWeights": ["2.43375", "-0.0430951", "0.000244914", "-0.145478", "-0.00044577", "-8.37222e-05", "0.237484", "0.243491", "-0.0713701"],
                                       "ECalToMipCalibration": ["175.439"],
                                       "HCalToMipCalibration": ["49.7512"],
