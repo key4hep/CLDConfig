@@ -1,6 +1,6 @@
 from Gaudi.Configuration import *
 
-from Configurables import LcioEvent, k4DataSvc, MarlinProcessorWrapper
+from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.parseConstants import *
 algList = []
 
