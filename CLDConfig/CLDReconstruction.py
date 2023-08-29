@@ -1130,7 +1130,7 @@ if CONFIG["OutputMode"] == "LCIO":
     algList.append(Output_REC)
     algList.append(Output_DST)
 
-if CONFIG["OutputMode"] == "EDM4hep":
+if CONFIG["OutputMode"] == "EDM4Hep":
     from Configurables import Lcio2EDM4hepTool
     lcioConvTool = Lcio2EDM4hepTool("lcio2EDM4hep")
     lcioConvTool.convertAll = True
