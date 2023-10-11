@@ -1,3 +1,4 @@
+import os
 from Gaudi.Configuration import *
 
 from Configurables import k4DataSvc, MarlinProcessorWrapper
