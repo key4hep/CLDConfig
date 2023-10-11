@@ -42,11 +42,10 @@ output_basename = "output"
 
 from k4FWCore.parseArgs import parser
 parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
-parser.add_argument("--outputBasename", help="Basename of the output file(s)")
+parser.add_argument("--outputBasename", help="Basename of the output file(s)", default=output_basename)
 my_opts = parser.parse_known_args()[0]
 
-if my_opts.outputBasename is not None:
-    output_basename = my_opts.outputBasename
+output_basename = my_opts.outputBasename
 
 input_files = [""]
 if my_opts.inputFiles is not None:
