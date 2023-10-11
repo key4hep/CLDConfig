@@ -4,9 +4,11 @@ from Gaudi.Configuration import *
 from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.parseConstants import *
 algList = []
+svcList = []
+
 
 evtsvc = k4DataSvc("EventDataSvc")
-
+svcList.append(evtsvc)
 
 CONFIG = {
              "CalorimeterIntegrationTimeWindow": "10ns",
@@ -1151,6 +1153,6 @@ from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
                 EvtMax = 3,
-                ExtSvc = [evtsvc],
+                ExtSvc = svcList,
                 OutputLevel=WARNING
               )
