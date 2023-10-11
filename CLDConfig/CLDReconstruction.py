@@ -25,6 +25,19 @@ CONFIG = {
              "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
 }
 
+from Configurables import GeoSvc, TrackingCellIDEncodingSvc
+geoservice = GeoSvc("GeoSvc")
+geoservice.detectors = [os.environ["K4GEO"]+"/FCCee/CLD/compact/CLD_o2_v05/CLD_o2_v05.xml"]
+geoservice.OutputLevel = INFO
+geoservice.EnableGeant4Geo = False
+svcList.append(geoservice)
+
+cellIDSvc = TrackingCellIDEncodingSvc("CellIDSvc")
+cellIDSvc.EncodingStringParameterName = "GlobalTrackerReadoutID"
+cellIDSvc.GeoSvcName = geoservice.name()
+cellIDSvc.OutputLevel = INFO
+svcList.append(cellIDSvc)
+
 output_basename = "output"
 
 from k4FWCore.parseArgs import parser
@@ -116,14 +129,6 @@ if CONFIG["InputMode"] == "LCIO":
         'LumiCalCollection':               'LumiCalCollection',
     }
     EDM4hep2Lcio.OutputLevel = DEBUG
-
-InitDD4hep = MarlinProcessorWrapper("InitDD4hep")
-InitDD4hep.OutputLevel = WARNING
-InitDD4hep.ProcessorType = "InitializeDD4hep"
-InitDD4hep.Parameters = {
-                         "DD4hepXMLFile": [os.environ["K4GEO"]+"/FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml"],
-                         "EncodingStringParameter": ["GlobalTrackerReadoutID"]
-                         }
 
 OverlayParameters = {
     "MCParticleCollectionName": ["MCParticle"],
@@ -1068,7 +1073,6 @@ EventNumber.Parameters = {
 
 # TODO: put this somewhere else, needs to be in front of the output for now :(
 algList.append(MyAIDAProcessor)
-algList.append(InitDD4hep)
 algList.append(Overlay[CONFIG["Overlay"]])
 algList.append(VXDBarrelDigitiser)
 algList.append(VXDEndcapDigitiser)
