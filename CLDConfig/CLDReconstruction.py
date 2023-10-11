@@ -55,7 +55,7 @@ print(f"input_files: {input_files}")
 
 if input_files[0].endswith(".slcio"):
     CONFIG["InputMode"] = "LCIO"
-elif input_files[0].endswith("edm4hep.root"):
+elif input_files[0].endswith(".root"):
     CONFIG["InputMode"] = "EDM4hep"
 
 if CONFIG["InputMode"] == "LCIO":
@@ -106,7 +106,7 @@ MyAIDAProcessor.Parameters = {
                               "FileType": ["root"]
                               }
 
-if CONFIG["InputMode"] == "LCIO":
+if CONFIG["InputMode"] == "EDM4hep":
     from Configurables import EDM4hep2LcioTool
     EDM4hep2Lcio = EDM4hep2LcioTool("EDM4hep2Lcio")
     EDM4hep2Lcio.convertAll = False
@@ -128,6 +128,7 @@ if CONFIG["InputMode"] == "LCIO":
         'LumiCalCollection':               'LumiCalCollection',
     }
     EDM4hep2Lcio.OutputLevel = DEBUG
+    MyAIDAProcessor.EDM4hep2LcioTool = EDM4hep2Lcio
 
 OverlayParameters = {
     "MCParticleCollectionName": ["MCParticle"],
