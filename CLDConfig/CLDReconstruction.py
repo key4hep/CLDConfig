@@ -95,7 +95,7 @@ elif CONFIG["InputMode"] == "EDM4hep":
       'LumiCalCollectionContributions',
     ]
     inp.OutputLevel = WARNING
-
+    algList.append(inp)
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
 MyAIDAProcessor.OutputLevel = WARNING
