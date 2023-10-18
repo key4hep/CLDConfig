@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="us-ascii"?>
+<!--
+-- Copyright (c) 2014-2023 Key4hep-Project.
+--
+-- This file is part of Key4hep.
+-- See https://key4hep.github.io/key4hep-doc/ for further info.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License");
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+  -->
 <marlin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ilcsoft.desy.de/marlin/marlin.xsd">
 
   <constants>
@@ -48,8 +66,8 @@
 
     <!-- === calorimeter digitization and pandora reco === -->
     <processor name="MyDDCaloDigi_${CalorimeterIntegrationTimeWindow}ns"/>
-    <processor name="MyDDSimpleMuonDigi"/> 
-    <processor name="MyDDMarlinPandora_${CalorimeterIntegrationTimeWindow}ns"/> 
+    <processor name="MyDDSimpleMuonDigi"/>
+    <processor name="MyDDMarlinPandora_${CalorimeterIntegrationTimeWindow}ns"/>
     <processor name="LumiCalReco"/>
 
     <!-- ========== monitoring  ========== -->
@@ -76,8 +94,8 @@
 
     <if condition="Config.VertexUnconstrainedON">
       <processor name="VertexFinderUnconstrained"/>
-    </if> 
-    
+    </if>
+
 
     <!-- ========== output  ========== -->
 
@@ -94,7 +112,7 @@
     <!-- Limit the number of processed records (run+evt): -->
     <parameter name="MaxRecordNumber" value="-1" />
     <parameter name="SkipNEvents" value="0" />
-    <parameter name="SupressCheck" value="false" />  
+    <parameter name="SupressCheck" value="false" />
     <parameter name="Verbosity" options="DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT"> WARNING  </parameter>
     <parameter name="RandomSeed" value="1234567890" />
   </global>
@@ -237,7 +255,7 @@
     <!--resolution in direction of u-->
     <parameter name="ResolutionU" type="float">0.007 </parameter> <!-- when only one number is provided, the hits in all the layers wll be smeared with the same resolution => it works for both CLIC_o2_v04 with 2 layers and CLIC_o3_v5 with 3 layers  -->
     <!--resolution in direction of v-->
-    <parameter name="ResolutionV" type="float">0.09 </parameter> <!-- when only one number is provided, the hits in all the layers wll be smeared with the same resolution => it works for both CLIC_o2_v04 with 2 layers and CLIC_o3_v5 with 3 layers  --> 
+    <parameter name="ResolutionV" type="float">0.09 </parameter> <!-- when only one number is provided, the hits in all the layers wll be smeared with the same resolution => it works for both CLIC_o2_v04 with 2 layers and CLIC_o3_v5 with 3 layers  -->
     <!--Name of the Input SimTrackerHit collection-->
     <parameter name="SimTrackHitCollectionName" type="string" lcioInType="SimTrackerHit"> InnerTrackerBarrelCollection </parameter>
     <!--Name of TrackerHit SimTrackHit relation collection-->
@@ -372,7 +390,7 @@
     <parameter name="SortTreeResults" type="bool">true </parameter>
 
     <!--steps for the pattern recognition-->
-    <parameter name="Steps" type="StringVec"> 
+    <parameter name="Steps" type="StringVec">
       [VXDBarrel]
       @Collections : VXDTrackerHits
       @Parameters : MaxCellAngle : 0.01; MaxCellAngleRZ : 0.01; Chi2Cut : 100; MinClustersOnTrack : 4; MaxDistance : 0.03; SlopeZRange: 10.0; HighPTCut: 10.0;
@@ -407,7 +425,7 @@
 
     <!--Angular range for initial cell seeding-->
     <parameter name="ThetaRange" type="double"> 0.05 </parameter>
- 
+
     <!--verbosity level of this processor ("DEBUG0-4,MESSAGE0-4,WARNING0-4,ERROR0-4,SILENT")-->
     <!--parameter name="Verbosity" type="string">DEBUG </parameter-->
   </processor>
@@ -600,7 +618,7 @@
     <parameter name="ECAL_pixel_spread" type="float">0.05 </parameter>
     <!--length scale for absorbtion along scintillator strip (mm)-->
     <parameter name="ECAL_strip_absorbtionLength" type="float">1e+06 </parameter>
-    
+
     <!--Use ECAL hit times-->
     <parameter name="UseEcalTiming" type="int">1 </parameter>
     <!--Correct ECAL hit times for propagation: radial distance/c-->
@@ -674,7 +692,7 @@
     <parameter name="HCALTimeWindowMin" type="float">-1 </parameter>
     <!--Use simple time window cut on hit times? If false: use original hit-time clustering algorithm. If true: use time window defined by HCALBarrelTimeWindowMin and HCALBarrelTimeWindowMax-->
     <parameter name="HCALSimpleTimingCut" type="bool">true </parameter>
-    <!--HCAL Minimum Delta Time in ns for resolving two hits--> <!-- used only if HCALSimpleTimingCut is false --> 
+    <!--HCAL Minimum Delta Time in ns for resolving two hits--> <!-- used only if HCALSimpleTimingCut is false -->
     <parameter name="HCALDeltaTimeHitResolution" type="float">10 </parameter>
     <!--HCAL Time Resolution used to smear hit times-->
     <parameter name="HCALTimeResolution" type="float">10 </parameter>
@@ -752,10 +770,10 @@
     <!--Energy Corrections in Marlin Pandora-->
     <!--parameter name="InputEnergyCorrectionPoints" type="FloatVec">InputEnergyCorrectionPoints_XXXX</parameter-->
     <!--parameter name="OutputEnergyCorrectionPoints" type="FloatVec">OutputEnergyCorrectionPoints_XXXX</parameter-->
-    
+
     <!--Decides whether to create gaps in the geometry (ILD-specific)-->
     <parameter name="CreateGaps" type="bool">false </parameter>
-    
+
     <!--Track quality settings: need to be optimized! More in processor-->
     <!--Cut on fractional of expected number of BarrelTracker hits-->
     <parameter name="MinBarrelTrackerHitFractionOfExpected" type="int">0 </parameter>
@@ -771,7 +789,7 @@
     <parameter name="MinTrackECalDistanceFromIp" type="float">0 </parameter>
     <!--Track quality cut: the minimum number of track hits-->
     <parameter name="MinTrackHits" type="int">0 </parameter>
-    
+
     <!-- MORE TRACKING  CUTS -->
     <!--Max distance from track to BarrelTracker r max to id whether track reaches ecal-->
     <parameter name="ReachesECalBarrelTrackerOuterDistance" type="float">-100 </parameter>
@@ -1353,7 +1371,7 @@
       <parameter name="PrimaryVertexFinder.BeamspotConstraint" type="bool">1 </parameter>
     </processor>
 
-    <!-- Primary and Secondary vertex finder for resolutions ================================= --> 
+    <!-- Primary and Secondary vertex finder for resolutions ================================= -->
     <processor name="VertexFinderUnconstrained" type="LcfiplusProcessor">
       <!-- run primary and secondary vertex finders -->
       <parameter name="PFOCollection" type="string" value="TightSelectedPandoraPFOs" />
