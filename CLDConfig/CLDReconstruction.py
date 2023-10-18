@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 import os
+import sys
 from Gaudi.Configuration import *
 
 from Configurables import k4DataSvc, MarlinProcessorWrapper
@@ -65,11 +66,17 @@ my_opts = parser.parse_known_args()[0]
 
 output_basename = my_opts.outputBasename
 
-input_files = [""]
+# Set input files here or via --inputFiles
+input_files = []
+
 if my_opts.inputFiles is not None:
     input_files = my_opts.inputFiles
 print(f"opts: {my_opts}")
 print(f"input_files: {input_files}")
+
+if not input_files:
+    print("Error: missing input files, set them via --inputFiles")
+    sys.exit(1)
 
 if input_files[0].endswith(".slcio"):
     CONFIG["InputMode"] = "LCIO"
