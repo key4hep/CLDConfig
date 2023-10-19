@@ -26,11 +26,32 @@ def _CLDConfig(test_fun):
     test_fun()
     os.chdir("..")
 
+detectorModel = os.path.join(os.environ["K4GEO"], "FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml")
 
 @_CLDConfig
-def test_lcio_edm4hep():
-    command = "k4run --inputFiles=../test.slcio --outputBasename=rec_test CLDReconstruction.py".split()
-    detectorModel = os.path.join(os.environ["K4GEO"], "FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml")
+def test_ddsim_lcio():
+    command = "ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.slcio".split()
+    command.extend(["--compactFile", detectorModel])
+    res = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    assert res.returncode == 0, res.stdout
+
+@_CLDConfig
+def test_ddsim_edm4hep():
+    command = "ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.edm4hep.root".split()
+    command.extend(["--compactFile", detectorModel])
+    res = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    assert res.returncode == 0, res.stdout
+
+@_CLDConfig
+def test_lcio_input():
+    command = "k4run --inputFiles=test.slcio --outputBasename=rec_test_lcio CLDReconstruction.py".split()
+    command.extend(["--GeoSvc.detectors", detectorModel])
+    res = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    assert res.returncode == 0, res.stdout
+
+@_CLDConfig
+def test_edm4hep_input():
+    command = "k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep CLDReconstruction.py".split()
     command.extend(["--GeoSvc.detectors", detectorModel])
     res = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     assert res.returncode == 0, res.stdout

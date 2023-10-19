@@ -15,10 +15,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Download test inputs
-      run: |
-        wget http://lreichen.webtest.cern.ch/test.slcio
-
     - name: Start container
       run: |
         docker run \
