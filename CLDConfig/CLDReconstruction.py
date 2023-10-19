@@ -129,6 +129,7 @@ if CONFIG["InputMode"] == "EDM4hep":
     EDM4hep2Lcio = EDM4hep2LcioTool("EDM4hep2Lcio")
     EDM4hep2Lcio.convertAll = False
     EDM4hep2Lcio.collNameMapping = {
+        'EventHeader':                     'EventHeader',
         'MCParticles':                     'MCParticle',
         'VertexBarrelCollection':          'VertexBarrelCollection',
         'VertexEndcapCollection':          'VertexEndcapCollection',
