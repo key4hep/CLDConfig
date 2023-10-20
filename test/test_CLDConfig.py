@@ -19,6 +19,7 @@
 import os
 import subprocess
 from decorator import decorator
+import pytest
 
 @decorator
 def _CLDConfig(test_fun):
@@ -29,6 +30,7 @@ def _CLDConfig(test_fun):
 detectorModel = os.path.join(os.environ["K4GEO"], "FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml")
 
 @_CLDConfig
+@pytest.mark.dependency()
 def test_ddsim_lcio():
     command = "ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.slcio".split()
     command.extend(["--compactFile", detectorModel])
@@ -36,6 +38,7 @@ def test_ddsim_lcio():
     assert res.returncode == 0, res.stdout
 
 @_CLDConfig
+@pytest.mark.dependency()
 def test_ddsim_edm4hep():
     command = "ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.edm4hep.root".split()
     command.extend(["--compactFile", detectorModel])
@@ -43,6 +46,7 @@ def test_ddsim_edm4hep():
     assert res.returncode == 0, res.stdout
 
 @_CLDConfig
+@pytest.mark.dependency(depends=["test_ddsim_lcio"])
 def test_lcio_input():
     command = "k4run --inputFiles=test.slcio --outputBasename=rec_test_lcio CLDReconstruction.py".split()
     command.extend(["--GeoSvc.detectors", detectorModel])
@@ -50,6 +54,7 @@ def test_lcio_input():
     assert res.returncode == 0, res.stdout
 
 @_CLDConfig
+@pytest.mark.dependency(depends=["test_ddsim_edm4hep"])
 def test_edm4hep_input():
     command = "k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep CLDReconstruction.py".split()
     command.extend(["--GeoSvc.detectors", detectorModel])
