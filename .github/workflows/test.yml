@@ -27,5 +27,6 @@ jobs:
       run: |
         docker exec CLDConfig_CI /bin/bash -c 'source ${{ matrix.SETUP }};
           cd CLDConfig;
-          pytest;
+          cmake .;
+          ctest --output-on-failure;
         '
