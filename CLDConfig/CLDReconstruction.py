@@ -62,6 +62,7 @@ output_basename = "output"
 from k4FWCore.parseArgs import parser
 parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
 parser.add_argument("--outputBasename", help="Basename of the output file(s)", default=output_basename)
+parser.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 my_opts = parser.parse_known_args()[0]
 
 output_basename = my_opts.outputBasename
@@ -1098,8 +1099,10 @@ EventNumber.Parameters = {
                           }
 
 # TODO: put this somewhere else, needs to be in front of the output for now :(
+# setup AIDA histogramming and add eventual background overlay
 algList.append(MyAIDAProcessor)
 algList.append(Overlay[CONFIG["Overlay"]])
+# tracker hit digitisation
 algList.append(VXDBarrelDigitiser)
 algList.append(VXDEndcapDigitiser)
 algList.append(InnerPlanarDigiProcessor)
@@ -1107,6 +1110,7 @@ algList.append(InnerEndcapPlanarDigiProcessor)
 algList.append(OuterPlanarDigiProcessor)
 algList.append(OuterEndcapPlanarDigiProcessor)
 
+# tracking
 if CONFIG["Tracking"] == "Truth":
     algList.append(MyTruthTrackFinder)
 elif CONFIG["Tracking"] == "Conformal":
@@ -1114,26 +1118,33 @@ elif CONFIG["Tracking"] == "Conformal":
     algList.append(ClonesAndSplitTracksFinder)
 
 algList.append(Refit)
-algList.append(MyDDCaloDigi[CONFIG["CalorimeterIntegrationTimeWindow"]])
-algList.append(MyDDSimpleMuonDigi)
-algList.append(MyDDMarlinPandora[CONFIG["CalorimeterIntegrationTimeWindow"]])
-algList.append(LumiCalReco)
+
+# calorimeter digitization and pandora
+if not my_opts.trackingOnly:
+    algList.append(MyDDCaloDigi[CONFIG["CalorimeterIntegrationTimeWindow"]])
+    algList.append(MyDDSimpleMuonDigi)
+    algList.append(MyDDMarlinPandora[CONFIG["CalorimeterIntegrationTimeWindow"]])
+    algList.append(LumiCalReco)
+# monitoring and Reco to MCTruth linking
 algList.append(MyClicEfficiencyCalculator)
 algList.append(MyRecoMCTruthLinker)
 algList.append(MyTrackChecker)
-algList.append(MyCLICPfoSelectorDefault)
-algList.append(MyCLICPfoSelectorLoose)
-algList.append(MyCLICPfoSelectorTight)
+# pfo selector (might need re-optimisation)
+if not my_opts.trackingOnly:
+    algList.append(MyCLICPfoSelectorDefault)
+    algList.append(MyCLICPfoSelectorLoose)
+    algList.append(MyCLICPfoSelectorTight)
+# misc.
+    if CONFIG["Overlay"] == "False":
+        algList.append(RenameCollection)
+    else:
+        algList.append(MyFastJetProcessor)
 
-if CONFIG["Overlay"] == "False":
-    algList.append(RenameCollection)
-else:
-    algList.append(MyFastJetProcessor)
-
-algList.append(VertexFinder)
-algList.append(JetClusteringAndRefiner)
-if CONFIG["VertexUnconstrained"] == "True":
-    algList.append(VertexFinderUnconstrained)
+    algList.append(VertexFinder)
+    algList.append(JetClusteringAndRefiner)
+    if CONFIG["VertexUnconstrained"] == "True":
+        algList.append(VertexFinderUnconstrained)
+# event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
 
 if CONFIG["OutputMode"] == "LCIO":
