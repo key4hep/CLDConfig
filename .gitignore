@@ -19,3 +19,4 @@ _deps
 *.root
 *.slcio
 build/*
+.vscode
