@@ -1203,7 +1203,7 @@ if CONFIG["OutputMode"] == "EDM4Hep":
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
-                EvtMax = 3,
+                EvtMax = 3, # Overridden by the --num-events switch to k4run
                 ExtSvc = svcList,
                 OutputLevel=WARNING
               )
