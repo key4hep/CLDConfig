@@ -37,7 +37,7 @@ SIM.macroFile = ""
 ## number of events to simulate, used in batch mode
 SIM.numberOfEvents = 0
 ## Outputfile from the simulation
-SIM.outputFile = "CLD_SIM.root"
+SIM.outputFile = "CLD_SIM.edm4hep.root"
 ## Verbosity use integers from 1(most) to 7(least) verbose
 ## or strings: VERBOSE, DEBUG, INFO, WARNING, ERROR, FATAL, ALWAYS
 SIM.printLevel = 3
