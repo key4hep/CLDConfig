@@ -36,7 +36,7 @@ SIM.inputFiles = []
 SIM.macroFile = ""
 ## number of events to simulate, used in batch mode
 SIM.numberOfEvents = 0
-## Outputfile from the simulation,only lcio output is supported
+## Outputfile from the simulation
 SIM.outputFile = "dummyOutput.slcio"
 ## Verbosity use integers from 1(most) to 7(least) verbose
 ## or strings: VERBOSE, DEBUG, INFO, WARNING, ERROR, FATAL, ALWAYS
