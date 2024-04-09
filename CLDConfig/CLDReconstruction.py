@@ -18,7 +18,7 @@
 #
 import os
 import sys
-from Gaudi.Configuration import *
+from Gaudi.Configuration import INFO, WARNING, DEBUG
 
 from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.parseConstants import *
