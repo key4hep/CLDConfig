@@ -21,7 +21,6 @@ import sys
 from Gaudi.Configuration import INFO, WARNING, DEBUG
 
 from Configurables import k4DataSvc, MarlinProcessorWrapper
-from k4MarlinWrapper.parseConstants import *
 from k4FWCore.parseArgs import parser
 
 
