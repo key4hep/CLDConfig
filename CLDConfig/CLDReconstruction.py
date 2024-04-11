@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 import os
-import sys
 from Gaudi.Configuration import INFO, WARNING, DEBUG
 
 from Configurables import k4DataSvc, MarlinProcessorWrapper
+from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
 from k4FWCore.parseArgs import parser
 
 
@@ -44,8 +44,6 @@ CONFIG = {
              "TrackingChoices": ["Truth", "Conformal"],
              "VertexUnconstrained": "OFF",
              "VertexUnconstrainedChoices": ["ON", "OFF"],
-             "InputMode": "LCIO",
-             "InputModeChoices": ["LCIO", "EDM4hep"], # could also mix inputs but then things get ugly
              "OutputMode": "EDM4Hep",
              "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
 }
@@ -63,58 +61,12 @@ cellIDSvc.GeoSvcName = geoservice.name()
 cellIDSvc.OutputLevel = INFO
 svcList.append(cellIDSvc)
 
-if reco_args.inputFiles is not None:
-    input_files = reco_args.inputFiles
-print(f"opts: {my_opts}")
-print(f"input_files: {input_files}")
-
-if not input_files:
-    print("Error: missing input files, set them via --inputFiles")
-    sys.exit(1)
-
-if input_files[0].endswith(".slcio"):
-    CONFIG["InputMode"] = "LCIO"
-elif input_files[0].endswith(".root"):
-    CONFIG["InputMode"] = "EDM4hep"
-
-if CONFIG["InputMode"] == "LCIO":
-    from Configurables import LcioEvent
-    read = LcioEvent()
-    read.OutputLevel = WARNING
-    read.Files = input_files
+if reco_args.inputFiles:
+    read = create_reader(reco_args.inputFiles, evtsvc)
+    read.OutputLevel = INFO
     algList.append(read)
-elif CONFIG["InputMode"] == "EDM4hep":
-    evtsvc.inputs = input_files
-    from Configurables import PodioInput
-    inp = PodioInput('InputReader')
-    inp.collections = [
-      'EventHeader',
-      'MCParticles',
-      'VertexBarrelCollection',
-      'VertexEndcapCollection',
-      'InnerTrackerBarrelCollection',
-      'OuterTrackerBarrelCollection',
-      'ECalEndcapCollection',
-      'ECalEndcapCollectionContributions',
-      'ECalBarrelCollection',
-      'ECalBarrelCollectionContributions',
-      'HCalBarrelCollection',
-      'HCalBarrelCollectionContributions',
-      'InnerTrackerEndcapCollection',
-      'OuterTrackerEndcapCollection',
-      'HCalEndcapCollection',
-      'HCalEndcapCollectionContributions',
-      'HCalRingCollection',
-      'HCalRingCollectionContributions',
-      'YokeBarrelCollection',
-      'YokeBarrelCollectionContributions',
-      'YokeEndcapCollection',
-      'YokeEndcapCollectionContributions',
-      'LumiCalCollection',
-      'LumiCalCollectionContributions',
-    ]
-    inp.OutputLevel = WARNING
-    algList.append(inp)
+else:
+    read = None
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
 MyAIDAProcessor.OutputLevel = WARNING
@@ -124,31 +76,6 @@ MyAIDAProcessor.Parameters = {
                               "FileName": [f"{reco_args.outputBasename}_aida"],
                               "FileType": ["root"]
                               }
-
-if CONFIG["InputMode"] == "EDM4hep":
-    from Configurables import EDM4hep2LcioTool
-    EDM4hep2Lcio = EDM4hep2LcioTool("EDM4hep2Lcio")
-    EDM4hep2Lcio.convertAll = False
-    EDM4hep2Lcio.collNameMapping = {
-        'EventHeader':                     'EventHeader',
-        'MCParticles':                     'MCParticle',
-        'VertexBarrelCollection':          'VertexBarrelCollection',
-        'VertexEndcapCollection':          'VertexEndcapCollection',
-        'InnerTrackerBarrelCollection':    'InnerTrackerBarrelCollection',
-        'OuterTrackerBarrelCollection':    'OuterTrackerBarrelCollection',
-        'InnerTrackerEndcapCollection':    'InnerTrackerEndcapCollection',
-        'OuterTrackerEndcapCollection':    'OuterTrackerEndcapCollection',
-        'ECalEndcapCollection':            'ECalEndcapCollection',
-        'ECalBarrelCollection':            'ECalBarrelCollection',
-        'HCalBarrelCollection':            'HCalBarrelCollection',
-        'HCalEndcapCollection':            'HCalEndcapCollection',
-        'HCalRingCollection':              'HCalRingCollection',
-        'YokeBarrelCollection':            'YokeBarrelCollection',
-        'YokeEndcapCollection':            'YokeEndcapCollection',
-        'LumiCalCollection':               'LumiCalCollection',
-    }
-    EDM4hep2Lcio.OutputLevel = DEBUG
-    MyAIDAProcessor.EDM4hep2LcioTool = EDM4hep2Lcio
 
 OverlayParameters = {
     "MCParticleCollectionName": ["MCParticle"],
@@ -1192,6 +1119,9 @@ if CONFIG["OutputMode"] == "EDM4Hep":
     out = PodioOutput("PodioOutput", filename = f"{reco_args.outputBasename}_edm4hep.root")
     out.outputCommands = ["keep *"]
     algList.append(out)
+
+# We need to convert the inputs in case we have EDM4hep input
+attach_edm4hep2lcio_conversion(algList, read)
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
