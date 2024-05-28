@@ -28,6 +28,7 @@ from py_utils import SequenceLoader
 parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
 parser.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
+parser.add_argument("--enableLCFIPlus", action="store_true", help="Enable LCFIPlus dependent parts", default=False)
 reco_args = parser.parse_known_args()[0]
 
 algList = []
@@ -123,7 +124,9 @@ sequenceLoader.load("Diagnostics/Tracking")
 if not reco_args.trackingOnly:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
-    sequenceLoader.load("HighLevelReco/JetAndVertex")
+    # FIXME: LCFIPlus causes occasional breakage: https://github.com/lcfiplus/LCFIPlus/issues/69
+    if reco_args.enableLCFIPlus:
+        sequenceLoader.load("HighLevelReco/JetAndVertex")
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
 
