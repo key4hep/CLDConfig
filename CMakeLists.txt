@@ -19,6 +19,7 @@ limitations under the License.
 project(CLDConfig)
 
 include(GNUInstallDirs)
+include(CTest)
 
 if(BUILD_TESTING)
   add_subdirectory(test)
