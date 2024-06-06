@@ -192,8 +192,12 @@ VertexFinderUnconstrained.Parameters = {
 
 JetAndVertexSequence = [
     VertexFinder,
-    JetClusteringAndRefiner,
 ]
+
+# FIXME: LCFIPlus causes occasional breakage: https://github.com/lcfiplus/LCFIPlus/issues/69
+# due to not adding the jet clustering parameters to every event as PID information
+if reco_args.enableLCFIJet:
+    JetAndVertexSequence.append(JetClusteringAndRefiner)
 
 if CONFIG["VertexUnconstrained"] == "ON":
     JetAndVertexSequence.append(VertexFinderUnconstrained)
