@@ -25,8 +25,8 @@ VXDBarrelDigitiser.OutputLevel = WARNING
 VXDBarrelDigitiser.IsStrip = False
 VXDBarrelDigitiser.ResolutionU = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003]
 VXDBarrelDigitiser.ResolutionV = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003]
-VXDBarrelDigitiser.SimTrackerHitCollectionName = "VertexBarrelCollection"
-VXDBarrelDigitiser.SimTrkHitRelCollection = "VXDTrackerHitRelations"
+VXDBarrelDigitiser.SimTrackerHitCollectionName = ["VertexBarrelCollection"]
+VXDBarrelDigitiser.SimTrkHitRelCollection = ["VXDTrackerHitRelations"]
 VXDBarrelDigitiser.SubDetectorName = "Vertex"
 
 VXDEndcapDigitiser = DDPlanarDigi("VXDEndcapDigitiser")
@@ -34,10 +34,10 @@ VXDEndcapDigitiser.OutputLevel = WARNING
 VXDEndcapDigitiser.IsStrip = False
 VXDEndcapDigitiser.ResolutionU = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003]
 VXDEndcapDigitiser.ResolutionV = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003]
-VXDEndcapDigitiser.SimTrackerHitCollectionName = "VertexEndcapCollection"
-VXDEndcapDigitiser.SimTrkHitRelCollection = "VXDEndcapTrackerHitRelations"
+VXDEndcapDigitiser.SimTrackerHitCollectionName = ["VertexEndcapCollection"]
+VXDEndcapDigitiser.SimTrkHitRelCollection = ["VXDEndcapTrackerHitRelations"]
 VXDEndcapDigitiser.SubDetectorName = "Vertex"
-VXDEndcapDigitiser.TrackerHitCollectionName = "VXDEndcapTrackerHits"
+VXDEndcapDigitiser.TrackerHitCollectionName = ["VXDEndcapTrackerHits"]
 
 
 InnerPlanarDigiProcessor = DDPlanarDigi("InnerPlanarDigiProcessor")
@@ -45,40 +45,40 @@ InnerPlanarDigiProcessor.OutputLevel = WARNING
 InnerPlanarDigiProcessor.IsStrip = False
 InnerPlanarDigiProcessor.ResolutionU = [0.007]
 InnerPlanarDigiProcessor.ResolutionV = [0.09]
-InnerPlanarDigiProcessor.SimTrackerHitCollectionName = "InnerTrackerBarrelCollection"
-InnerPlanarDigiProcessor.SimTrkHitRelCollection = "InnerTrackerBarrelHitsRelations"
+InnerPlanarDigiProcessor.SimTrackerHitCollectionName = ["InnerTrackerBarrelCollection"]
+InnerPlanarDigiProcessor.SimTrkHitRelCollection = ["InnerTrackerBarrelHitsRelations"]
 InnerPlanarDigiProcessor.SubDetectorName = "InnerTrackers"
-InnerPlanarDigiProcessor.TrackerHitCollectionName = "ITrackerHits"
+InnerPlanarDigiProcessor.TrackerHitCollectionName = ["ITrackerHits"]
 
 InnerEndcapPlanarDigiProcessor = DDPlanarDigi("InnerEndcapPlanarDigiProcessor")
 InnerEndcapPlanarDigiProcessor.OutputLevel = WARNING
 InnerEndcapPlanarDigiProcessor.IsStrip = False
 InnerEndcapPlanarDigiProcessor.ResolutionU = [0.005, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007]
 InnerEndcapPlanarDigiProcessor.ResolutionV = [0.005, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09]
-InnerEndcapPlanarDigiProcessor.SimTrackerHitCollectionName = "InnerTrackerEndcapCollection"
-InnerEndcapPlanarDigiProcessor.SimTrkHitRelCollection = "InnerTrackerEndcapHitsRelations"
+InnerEndcapPlanarDigiProcessor.SimTrackerHitCollectionName = ["InnerTrackerEndcapCollection"]
+InnerEndcapPlanarDigiProcessor.SimTrkHitRelCollection = ["InnerTrackerEndcapHitsRelations"]
 InnerEndcapPlanarDigiProcessor.SubDetectorName = "InnerTrackers"
-InnerEndcapPlanarDigiProcessor.TrackerHitCollectionName = "ITrackerEndcapHits"
+InnerEndcapPlanarDigiProcessor.TrackerHitCollectionName = ["ITrackerEndcapHits"]
 
 OuterPlanarDigiProcessor = DDPlanarDigi("OuterPlanarDigiProcessor")
 OuterPlanarDigiProcessor.OutputLevel = WARNING
 OuterPlanarDigiProcessor.IsStrip = False
 OuterPlanarDigiProcessor.ResolutionU = [0.007, 0.007, 0.007]
 OuterPlanarDigiProcessor.ResolutionV = [0.09, 0.09, 0.09]
-OuterPlanarDigiProcessor.SimTrackerHitCollectionName = "OuterTrackerBarrelCollection"
-OuterPlanarDigiProcessor.SimTrkHitRelCollection = "OuterTrackerBarrelHitsRelations"
+OuterPlanarDigiProcessor.SimTrackerHitCollectionName = ["OuterTrackerBarrelCollection"]
+OuterPlanarDigiProcessor.SimTrkHitRelCollection = ["OuterTrackerBarrelHitsRelations"]
 OuterPlanarDigiProcessor.SubDetectorName = "OuterTrackers"
-OuterPlanarDigiProcessor.TrackerHitCollectionName = "OTrackerHits"
+OuterPlanarDigiProcessor.TrackerHitCollectionName = ["OTrackerHits"]
 
 OuterEndcapPlanarDigiProcessor = DDPlanarDigi("OuterEndcapPlanarDigiProcessor")
 OuterEndcapPlanarDigiProcessor.OutputLevel = WARNING
 OuterEndcapPlanarDigiProcessor.IsStrip = False
 OuterEndcapPlanarDigiProcessor.ResolutionU = [0.007, 0.007, 0.007, 0.007, 0.007]
 OuterEndcapPlanarDigiProcessor.ResolutionV = [0.09, 0.09, 0.09, 0.09, 0.09]
-OuterEndcapPlanarDigiProcessor.SimTrackerHitCollectionName = "OuterTrackerEndcapCollection"
-OuterEndcapPlanarDigiProcessor.SimTrkHitRelCollection = "OuterTrackerEndcapHitsRelations"
+OuterEndcapPlanarDigiProcessor.SimTrackerHitCollectionName = ["OuterTrackerEndcapCollection"]
+OuterEndcapPlanarDigiProcessor.SimTrkHitRelCollection = ["OuterTrackerEndcapHitsRelations"]
 OuterEndcapPlanarDigiProcessor.SubDetectorName = "OuterTrackers"
-OuterEndcapPlanarDigiProcessor.TrackerHitCollectionName = "OTrackerEndcapHits"
+OuterEndcapPlanarDigiProcessor.TrackerHitCollectionName = ["OTrackerEndcapHits"]
 
 TrackingDigiSequence = [
     VXDBarrelDigitiser,
