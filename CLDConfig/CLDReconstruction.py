@@ -23,6 +23,7 @@ from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
 from k4FWCore.parseArgs import parser
 from py_utils import SequenceLoader
+from Configurables import Lcio2EDM4hepTool, EDM4hep2LcioTool
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -103,6 +104,19 @@ EventNumber.Parameters = {
 # setup AIDA histogramming and add eventual background overlay
 algList.append(MyAIDAProcessor)
 sequenceLoader.load("Overlay/Overlay")
+
+trackDigiConverter = Lcio2EDM4hepTool("TrackDigiConverter")
+trackDigiConverter.convertAll = False
+trackDigiConverter.collNameMapping = {"VertexBarrelCollection": "VertexBarrelCollection",
+                                      "VertexEndcapCollection": "VertexEndcapCollection",
+                                      "InnerTrackerBarrelCollection": "InnerTrackerBarrelCollection",
+                                      "InnerTrackerEndcapCollection": "InnerTrackerEndcapCollection",
+                                      "OuterTrackerBarrelCollection": "OuterTrackerBarrelCollection",
+                                      "OuterTrackerEndcapCollection": "OuterTrackerEndcapCollection",}
+trackDigiConverter.OutputLevel = DEBUG
+
+algList[-1].Lcio2EDM4hepTool = trackDigiConverter
+
 # tracker hit digitisation
 sequenceLoader.load("Tracking/TrackingDigi")
 
