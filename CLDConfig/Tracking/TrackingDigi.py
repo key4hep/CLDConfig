@@ -28,6 +28,7 @@ VXDBarrelDigitiser.ResolutionV = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003]
 VXDBarrelDigitiser.SimTrackerHitCollectionName = ["VertexBarrelCollection"]
 VXDBarrelDigitiser.SimTrkHitRelCollection = ["VXDTrackerHitRelations"]
 VXDBarrelDigitiser.SubDetectorName = "Vertex"
+VXDBarrelDigitiser.TrackerHitCollectionName = ["VXDTrackerHits"]
 
 VXDEndcapDigitiser = DDPlanarDigi("VXDEndcapDigitiser")
 VXDEndcapDigitiser.OutputLevel = WARNING
