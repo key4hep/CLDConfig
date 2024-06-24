@@ -117,6 +117,8 @@ trackDigiConverter.OutputLevel = DEBUG
 
 algList[-1].Lcio2EDM4hepTool = trackDigiConverter
 
+index = len(algList)
+
 # tracker hit digitisation
 sequenceLoader.load("Tracking/TrackingDigi")
 
@@ -125,6 +127,26 @@ if CONFIG["Tracking"] == "Truth":
     sequenceLoader.load("Tracking/TruthTracking")
 elif CONFIG["Tracking"] == "Conformal":
     sequenceLoader.load("Tracking/ConformalTracking")
+
+trackingConverter = EDM4hep2LcioTool("InputConverter")
+trackingConverter.convertAll = False
+trackingConverter.collNameMapping = {"VXDTrackerHitRelations" : "VXDTrackerHitRelations",
+                                     "VXDTrackerHits" : "VXDTrackerHits",
+                                     "VXDEndcapTrackerHitRelations" : "VXDEndcapTrackerHitRelations",
+                                     "VXDEndcapTrackerHits" : "VXDEndcapTrackerHits",
+                                     "InnerTrackerBarrelHitsRelations" : "InnerTrackerBarrelHitsRelations",
+                                     "ITrackerHits" : "ITrackerHits",
+                                     "InnerTrackerEndcapHitsRelations" : "InnerTrackerEndcapHitsRelations",
+                                     "ITrackerEndcapHits" : "ITrackerEndcapHits",
+                                     "OuterTrackerBarrelHitsRelations" : "OuterTrackerBarrelHitsRelations",
+                                     "OTrackerHits" : "OTrackerHits",
+                                     "OuterTrackerEndcapHitsRelations" : "OuterTrackerEndcapHitsRelations",
+                                     "OuterTrackerEndcapHits" : "OuterTrackerEndcapHits",
+                                     }
+
+trackingConverter.OutputLevel = DEBUG
+
+algList[index].EDM4hep2LcioTool = trackingConverter
 
 sequenceLoader.load("Tracking/Refit")
 
