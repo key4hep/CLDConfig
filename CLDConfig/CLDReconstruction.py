@@ -117,10 +117,10 @@ trackDigiConverter.OutputLevel = DEBUG
 
 algList[-1].Lcio2EDM4hepTool = trackDigiConverter
 
-index = len(algList)
-
 # tracker hit digitisation
 sequenceLoader.load("Tracking/TrackingDigi")
+
+index = len(algList)
 
 # tracking
 if CONFIG["Tracking"] == "Truth":
@@ -128,7 +128,7 @@ if CONFIG["Tracking"] == "Truth":
 elif CONFIG["Tracking"] == "Conformal":
     sequenceLoader.load("Tracking/ConformalTracking")
 
-trackingConverter = EDM4hep2LcioTool("InputConverter")
+trackingConverter = EDM4hep2LcioTool("trackingConverter")
 trackingConverter.convertAll = False
 trackingConverter.collNameMapping = {"VXDTrackerHitRelations" : "VXDTrackerHitRelations",
                                      "VXDTrackerHits" : "VXDTrackerHits",
