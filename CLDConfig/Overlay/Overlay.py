@@ -40,6 +40,7 @@ OverlayParameters = {
         "YokeBarrelCollection", "380",
         "YokeEndcapCollection", "380",
         "LumiCalCollection", "380"
+        "ECalBarrelEta", "380"
      ],
     "PhysicsBX": ["1"],
     "Poisson_random_NOverlay": ["false"],
