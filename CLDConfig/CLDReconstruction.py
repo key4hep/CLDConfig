@@ -141,7 +141,7 @@ trackingConverter.collNameMapping = {"VXDTrackerHitRelations" : "VXDTrackerHitRe
                                      "OuterTrackerBarrelHitsRelations" : "OuterTrackerBarrelHitsRelations",
                                      "OTrackerHits" : "OTrackerHits",
                                      "OuterTrackerEndcapHitsRelations" : "OuterTrackerEndcapHitsRelations",
-                                     "OuterTrackerEndcapHits" : "OuterTrackerEndcapHits",
+                                     "OTrackerEndcapHits" : "OTrackerEndcapHits",
                                      }
 
 trackingConverter.OutputLevel = DEBUG
