@@ -18,7 +18,7 @@ limitations under the License.
 ]]
 include(CTest)
 
-set(DETECTOR $ENV{K4GEO}/FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml)
+set(DETECTOR $ENV{K4GEO}/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml)
 set(CLDConfig_DIR ${CMAKE_CURRENT_LIST_DIR}/../CLDConfig)
 
 add_test(NAME ddsim_lcio
@@ -49,3 +49,15 @@ add_test(NAME trkOnly
          COMMAND k4run --trackingOnly --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
 )
 set_property(TEST trkOnly APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME LCFIJet
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --enableLCFIJet --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+)
+set_property(TEST LCFIJet APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME Help
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --help CLDReconstruction.py
+)
+set_property(TEST Help APPEND PROPERTY PASS_REGULAR_EXPRESSION "show this help message and exit")
