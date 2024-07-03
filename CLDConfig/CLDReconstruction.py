@@ -22,7 +22,7 @@ from Gaudi.Configuration import INFO, WARNING, DEBUG
 from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
 from k4FWCore.parseArgs import parser
-from py_utils import SequenceLoader
+from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -40,6 +40,7 @@ svcList = []
 evtsvc = k4DataSvc("EventDataSvc")
 svcList.append(evtsvc)
 
+# TODO: partly replace by arguments
 CONFIG = {
              "CalorimeterIntegrationTimeWindow": "10ns",
              "CalorimeterIntegrationTimeWindowChoices": ["10ns", "400ns"],
@@ -55,6 +56,7 @@ CONFIG = {
 
 from Configurables import GeoSvc, TrackingCellIDEncodingSvc
 geoservice = GeoSvc("GeoSvc")
+# TODO: add argument for this
 geoservice.detectors = [os.environ["K4GEO"]+"/FCCee/CLD/compact/CLD_o2_v05/CLD_o2_v05.xml"]
 geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
@@ -99,7 +101,6 @@ EventNumber.Parameters = {
                           "HowOften": ["1"]
                           }
 
-# TODO: put this somewhere else, needs to be in front of the output for now :(
 # setup AIDA histogramming and add eventual background overlay
 algList.append(MyAIDAProcessor)
 sequenceLoader.load("Overlay/Overlay")
@@ -131,51 +132,32 @@ if not reco_args.trackingOnly:
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
 
-if CONFIG["OutputMode"] == "LCIO":
-    Output_REC = MarlinProcessorWrapper("Output_REC")
-    Output_REC.OutputLevel = WARNING
-    Output_REC.ProcessorType = "LCIOOutputProcessor"
-    Output_REC.Parameters = {
-                             "DropCollectionNames": [],
-                             "DropCollectionTypes": [],
-                             "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles"],
-                             "KeepCollectionNames": [],
-                             "LCIOOutputFile": [f"{reco_args.outputBasename}_REC.slcio"],
-                             "LCIOWriteMode": ["WRITE_NEW"]
-                             }
 
-    Output_DST = MarlinProcessorWrapper("Output_DST")
-    Output_DST.OutputLevel = WARNING
-    Output_DST.ProcessorType = "LCIOOutputProcessor"
-    Output_DST.Parameters = {
-                             "DropCollectionNames": [],
-                             "DropCollectionTypes": ["MCParticle", "LCRelation", "SimCalorimeterHit", "CalorimeterHit", "SimTrackerHit", "TrackerHit", "TrackerHitPlane", "Track", "ReconstructedParticle", "LCFloatVec"],
-                             "FullSubsetCollections": ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"],
-                             "KeepCollectionNames": ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"],
-                             "LCIOOutputFile": [f"{reco_args.outputBasename}_DST.slcio"],
-                             "LCIOWriteMode": ["WRITE_NEW"]
-                             }
+DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
+
+DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"]
+
+# TODO: replace all the ugly strings by something sensible like Enum
+if CONFIG["OutputMode"] == "LCIO":
+    Output_REC = create_writer("lcio", "Output_REC", f"{reco_args.outputBasename}_REC")
     algList.append(Output_REC)
+
+    Output_DST = create_writer("lcio", "Output_DST", f"{reco_args.outputBasename}_DST", DST_KEEPLIST, DST_SUBSETLIST)
     algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
-    from Configurables import Lcio2EDM4hepTool
-    lcioConvTool = Lcio2EDM4hepTool("lcio2EDM4hep")
-    lcioConvTool.convertAll = True
-    lcioConvTool.collNameMapping = {
-        "MCParticle": "MCParticles"
-    }
-    lcioConvTool.OutputLevel = DEBUG
-# attach to the last non output processor
-    EventNumber.Lcio2EDM4hepTool = lcioConvTool
+    Output_REC = create_writer("edm4hep", "Output_REC", f"{reco_args.outputBasename}_REC")
+    algList.append(Output_REC)
 
-    from Configurables import PodioOutput
-    out = PodioOutput("PodioOutput", filename = f"{reco_args.outputBasename}_edm4hep.root")
-    out.outputCommands = ["keep *"]
-    algList.append(out)
+    Output_DST = create_writer("edm4hep", "Output_DST", f"{reco_args.outputBasename}_DST", DST_KEEPLIST)
+    algList.append(Output_DST)
+
 
 # We need to convert the inputs in case we have EDM4hep input
 attach_edm4hep2lcio_conversion(algList, read)
+
+# We need to convert the outputs in case we have EDM4hep output
+attach_lcio2edm4hep_conversion(algList)
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
