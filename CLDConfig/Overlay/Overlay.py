@@ -40,7 +40,7 @@ OverlayParameters = {
         "YokeBarrelCollection", "380",
         "YokeEndcapCollection", "380",
         "LumiCalCollection", "380",
-        "ECalBarrelEta", "380",
+        "ECalBarrelEta", "380",  # for CLD_o4_v05 with LAr
      ],
     "PhysicsBX": ["1"],
     "Poisson_random_NOverlay": ["false"],
