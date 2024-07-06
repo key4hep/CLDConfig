@@ -219,6 +219,8 @@ hps = RootHistSvc("HistogramPersistencySvc")
 root_hist_svc = RootHistoSink("RootHistoSink")
 root_hist_svc.FileName = "hist.root"
 
+svcList.append(root_hist_svc)
+
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
