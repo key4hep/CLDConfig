@@ -24,6 +24,8 @@ from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conve
 from k4FWCore.parseArgs import parser
 from py_utils import SequenceLoader
 from Configurables import Lcio2EDM4hepTool, EDM4hep2LcioTool
+from Configurables import RootHistSvc
+from Configurables import Gaudi__Histograming__Sink__Root as RootHistoSink
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -212,6 +214,10 @@ if CONFIG["OutputMode"] == "EDM4Hep":
 
 # We need to convert the inputs in case we have EDM4hep input
 attach_edm4hep2lcio_conversion(algList, read)
+
+hps = RootHistSvc("HistogramPersistencySvc")
+root_hist_svc = RootHistoSink("RootHistoSink")
+root_hist_svc.FileName = "hist.root"
 
 from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
