@@ -26,6 +26,11 @@ add_test(NAME ddsim_lcio
          COMMAND ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.slcio --compactFile ${DETECTOR}
 )
 
+add_test(NAME ddsim_cld_arc
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND ddsim -S cld_arc_steer.py -N 10 -G --gun.direction "1 0 0"
+)
+
 # FIXME: need to call k4run from CLDConfig dir where the pandora config lives
 add_test(NAME lcio_input
          WORKING_DIRECTORY ${CLDConfig_DIR}
