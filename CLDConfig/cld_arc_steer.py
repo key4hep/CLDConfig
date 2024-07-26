@@ -15,10 +15,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 # File: cld_arc_steer.py
 # Description: this file extends the ddsim steering file used for CLD
 #              with the specifications to run the ARC subdetector
+#
 
 # First, load cld steering file
 
@@ -62,4 +64,3 @@ SIM.filter.filters["opticalphotons"] = dict(
         )
 SIM.filter.mapDetFilter["ARCBARREL"] = "opticalphotons"
 SIM.filter.mapDetFilter["ARCENDCAP"] = "opticalphotons"
-
