@@ -1,5 +1,5 @@
 #[[
-Copyright (c) 2014-2023 Key4hep-Project.
+Copyright (c) 2014-2024 Key4hep-Project.
 
 This file is part of Key4hep.
 See https://key4hep.github.io/key4hep-doc/ for further info.
@@ -18,12 +18,17 @@ limitations under the License.
 ]]
 include(CTest)
 
-set(DETECTOR $ENV{K4GEO}/FCCee/CLD/compact/FCCee_o1_v04/FCCee_o1_v04.xml)
+set(DETECTOR $ENV{K4GEO}/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml)
 set(CLDConfig_DIR ${CMAKE_CURRENT_LIST_DIR}/../CLDConfig)
 
 add_test(NAME ddsim_lcio
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND ddsim -S cld_steer.py -N 3 --inputFile ../test/yyxyev_000.stdhep --outputFile test.slcio --compactFile ${DETECTOR}
+)
+
+add_test(NAME ddsim_cld_arc
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND ddsim -S cld_arc_steer.py -N 10 -G --gun.direction "1 0 0"
 )
 
 # FIXME: need to call k4run from CLDConfig dir where the pandora config lives
@@ -49,3 +54,15 @@ add_test(NAME trkOnly
          COMMAND k4run --trackingOnly --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
 )
 set_property(TEST trkOnly APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME LCFIJet
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --enableLCFIJet --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+)
+set_property(TEST LCFIJet APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME Help
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --help CLDReconstruction.py
+)
+set_property(TEST Help APPEND PROPERTY PASS_REGULAR_EXPRESSION "show this help message and exit")

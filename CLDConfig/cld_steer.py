@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2014-2023 Key4hep-Project.
+# Copyright (c) 2014-2024 Key4hep-Project.
 #
 # This file is part of Key4hep.
 # See https://key4hep.github.io/key4hep-doc/ for further info.
@@ -23,7 +23,7 @@ from g4units import mm, GeV, MeV, m, deg
 SIM = DD4hepSimulation()
 
 ## The compact XML file
-SIM.compactFile = ""
+SIM.compactFile = os.environ["K4GEO"]+"/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml"
 ## Lorentz boost for the crossing angle, in radian!
 SIM.crossingAngleBoost = 0.015
 SIM.enableDetailedShowerMode = True
@@ -36,8 +36,8 @@ SIM.inputFiles = []
 SIM.macroFile = ""
 ## number of events to simulate, used in batch mode
 SIM.numberOfEvents = 0
-## Outputfile from the simulation,only lcio output is supported
-SIM.outputFile = "dummyOutput.slcio"
+## Outputfile from the simulation
+SIM.outputFile = "CLD_SIM.edm4hep.root"
 ## Verbosity use integers from 1(most) to 7(least) verbose
 ## or strings: VERBOSE, DEBUG, INFO, WARNING, ERROR, FATAL, ALWAYS
 SIM.printLevel = 3
@@ -157,7 +157,7 @@ SIM.gun.direction = (0, 0, 1)
 ##     Setting a distribution will set isotrop = True
 ##
 SIM.gun.distribution = None
-SIM.gun.energy = 10000.0
+SIM.gun.energy = None
 
 ##  isotropic distribution for the particle gun
 ##

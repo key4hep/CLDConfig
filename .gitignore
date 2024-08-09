@@ -19,4 +19,6 @@ _deps
 *.root
 *.slcio
 build/*
+install/*
 .vscode
+*.pyc

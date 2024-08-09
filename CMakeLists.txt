@@ -1,5 +1,5 @@
 #[[
-Copyright (c) 2014-2023 Key4hep-Project.
+Copyright (c) 2014-2024 Key4hep-Project.
 
 This file is part of Key4hep.
 See https://key4hep.github.io/key4hep-doc/ for further info.
@@ -18,5 +18,12 @@ limitations under the License.
 ]]
 project(CLDConfig)
 
-add_subdirectory(test)
-enable_testing()
+include(GNUInstallDirs)
+include(CTest)
+
+if(BUILD_TESTING)
+  add_subdirectory(test)
+  enable_testing()
+endif()
+
+install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/CLDConfig/ DESTINATION ${CMAKE_INSTALL_DATADIR}/${CMAKE_PROJECT_NAME})
