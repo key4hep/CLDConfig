@@ -28,11 +28,12 @@ import ROOT
 ROOT.gROOT.SetBatch(True)
 
 
-parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
-parser.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
-parser.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
-parser.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
-parser.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml")
+parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
+parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
+parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
+parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
+parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
+parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml")
 reco_args = parser.parse_known_args()[0]
 
 algList = []
