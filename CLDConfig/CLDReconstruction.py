@@ -34,6 +34,9 @@ parser_group.add_argument("--outputBasename", help="Basename of the output file(
 parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml")
+tracking_group = parser_group.add_mutually_exclusive_group()
+tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
+tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
 reco_args = parser.parse_known_args()[0]
 
 algList = []
@@ -47,8 +50,6 @@ CONFIG = {
              "CalorimeterIntegrationTimeWindowChoices": ["10ns", "400ns"],
              "Overlay": "False",
              "OverlayChoices": ["False", "91GeV", "365GeV"],
-             "Tracking": "Conformal",
-             "TrackingChoices": ["Truth", "Conformal"],
              "VertexUnconstrained": "OFF",
              "VertexUnconstrainedChoices": ["ON", "OFF"],
              "OutputMode": "EDM4Hep",
@@ -108,9 +109,9 @@ sequenceLoader.load("Overlay/Overlay")
 sequenceLoader.load("Tracking/TrackingDigi")
 
 # tracking
-if CONFIG["Tracking"] == "Truth":
+if reco_args.truthTracking:
     sequenceLoader.load("Tracking/TruthTracking")
-elif CONFIG["Tracking"] == "Conformal":
+elif reco_args.conformalTracking:
     sequenceLoader.load("Tracking/ConformalTracking")
 
 sequenceLoader.load("Tracking/Refit")
