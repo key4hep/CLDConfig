@@ -32,6 +32,7 @@ parser.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1"
 parser.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
+parser.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml")
 reco_args = parser.parse_known_args()[0]
 
 algList = []
@@ -55,7 +56,7 @@ CONFIG = {
 
 from Configurables import GeoSvc, TrackingCellIDEncodingSvc
 geoservice = GeoSvc("GeoSvc")
-geoservice.detectors = [os.environ["K4GEO"]+"/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml"]
+geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
 svcList.append(geoservice)
