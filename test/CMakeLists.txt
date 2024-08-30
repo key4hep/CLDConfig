@@ -61,6 +61,24 @@ add_test(NAME LCFIJet
 )
 set_property(TEST LCFIJet APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
+add_test(NAME tracking_truth
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --trackingOnly --truthTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_truth_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+)
+set_property(TEST tracking_truth APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME tracking_conformal
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --trackingOnly --conformalTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_conformal_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+)
+set_property(TEST tracking_conformal APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME tracking_both
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --trackingOnly --conformalTracking --truthTracking CLDReconstruction.py
+)
+set_property(TEST tracking_both APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: argument --truthTracking: not allowed with argument --conformalTracking")
+
 add_test(NAME Help
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND k4run --help CLDReconstruction.py
