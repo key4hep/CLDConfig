@@ -40,6 +40,13 @@ parser.add_argument(
     default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml"
 )
 
+parser.add_argument(
+    "--drawSecondaries",
+    action="store_true",
+    help="Enable drawing of secondary MCParticles",
+    default=False
+)
+
 reco_args = parser.parse_known_args()[0]
 
 algList = []
@@ -79,6 +86,7 @@ MyCEDViewer.Parameters = {
                           "DrawDetectorID": ["0"],
                           "DrawHelixForPFOs": ["0"],
                           "DrawHelixForTrack": ["0"],
+                          "DrawMCParticlesCreatedInSimulation": ["true" if reco_args.drawSecondaries else "false"],
                           "DrawInLayer": [
                               "VXDCollection", "0", "5", "1",
                               "SITCollection", "0", "5", "1",
@@ -197,7 +205,7 @@ MyCEDViewer.Parameters = {
                           "UseColorForHelixTracks": ["1"],
                           "UseTrackerExtentForLimitsOfHelix": ["true"],
                           "UsingParticleGun": ["false"],
-                          "WaitForKeyboard": ["1"]
+                          "WaitForKeyboard": ["1"],
                           }
 
 algList.append(MyCEDViewer)
