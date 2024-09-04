@@ -37,7 +37,7 @@ parser.add_argument(
     "--compactFile",
     help="Compact detector file to use",
     type=str,
-    default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v06/CLD_o2_v06.xml"
+    default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml"
 )
 
 reco_args = parser.parse_known_args()[0]
