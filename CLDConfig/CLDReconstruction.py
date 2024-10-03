@@ -84,7 +84,7 @@ if reco_args.inputFiles:
     read.OutputLevel = INFO
     algList.append(read)
 else:
-    print('WARNING: No input files specified, this will fail')
+    print('WARNING: No input files specified, the CLD Reconstruction will fail')
     read = None
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
