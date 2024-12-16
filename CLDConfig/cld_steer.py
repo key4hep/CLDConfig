@@ -199,6 +199,8 @@ SIM.output.random = 6
 ## Configuration for the Particle Handler/ MCTruth treatment
 ################################################################################
 
+SIM.part.userParticleHandler = "Geant4TVUserParticleHandler"
+
 ##  Keep all created particles
 SIM.part.keepAllParticles = False
 
