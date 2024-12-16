@@ -64,3 +64,6 @@ SIM.filter.filters["opticalphotons"] = dict(
         )
 SIM.filter.mapDetFilter["ARCBARREL"] = "opticalphotons"
 SIM.filter.mapDetFilter["ARCENDCAP"] = "opticalphotons"
+
+# explicitly use the cylinder volume base particle handler
+SIM.part.userParticleHandler = "Geant4TCUserParticleHandler"
