@@ -16,8 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import INFO, WARNING, DEBUG
 from Configurables import MarlinProcessorWrapper
+from Configurables import ToolSvc, Lcio2EDM4hepTool, EDM4hep2LcioTool
 
 
 # geoservice comes from the `global_vars` of the SequenceLoader
@@ -38,24 +39,24 @@ MyConformalTracking.Parameters = {
                                   "MCParticleCollectionName": ["MCParticle"],
                                   "MaxHitInvertedFit": ["0"],
                                   "MinClustersOnTrackAfterFit": ["3"],
-                                  "RelationsNames": ["VXDTrackerHitRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
+                                  "RelationsNames": ["VTXTrackerBarrelHitsRelations", "VTXTrackerEndcapHitsRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
                                   "RetryTooManyTracks": ["false"],
                                   "SiTrackCollectionName": ["SiTracksCT"],
                                   "SortTreeResults": ["true"],
                                   "Steps":
                                   [
-                                      "[VXDBarrel]",
-                                      "@Collections", ":", "VXDTrackerHits",
+                                      "[VTXTrackerBarrel]",
+                                      "@Collections", ":", "VTXTrackerBarrelHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks",
-                                      "[VXDEncap]",
-                                      "@Collections", ":", "VXDEndcapTrackerHits",
+                                      "[VTXTrackerEndcap]",
+                                      "@Collections", ":", "VTXTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
                                       "@Functions", ":", "CombineCollections,", "ExtendTracks",
                                       "[LowerCellAngle1]",
-                                      "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits",
+                                      "@Collections", ":", "VTXTrackerBarrelHits,", "VTXTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.05;", "MaxCellAngleRZ", ":", "0.05;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks",
@@ -65,21 +66,35 @@ MyConformalTracking.Parameters = {
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "BuildNewTracks,", "SortTracks",
                                       "[Tracker]",
-                                      "@Collections", ":", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
+                                      "@Collections", ":", "InnerTrackerBarrelHits,", "OuterTrackerBarrelHits,", "InnerTrackerEndcapHits,", "OuterTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "2000;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "1.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "ExtendTracks",
                                       "[Displaced]",
-                                      "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits,", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
+                                      "@Collections", ":", "VTXTrackerBarrelHits,", "VTXTrackerEndcapHits,", "InnerTrackerBarrelHits,", "OuterTrackerBarrelHits,", "InnerTrackerEndcapHits,", "OuterTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "1000;", "MinClustersOnTrack", ":", "5;", "MaxDistance", ":", "0.015;", "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "OnlyZSchi2cut,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks"
                                   ],
                                   "ThetaRange": ["0.05"],
                                   "TooManyTracks": ["100000"],
-                                  "TrackerHitCollectionNames": ["VXDTrackerHits", "VXDEndcapTrackerHits", "ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
+                                  "TrackerHitCollectionNames": ["VTXTrackerBarrelHits", "VTXTrackerEndcapHits", "InnerTrackerBarrelHits", "OuterTrackerBarrelHits", "InnerTrackerEndcapHits", "OuterTrackerEndcapHits"],
                                   "trackPurity": ["0.7"]
                                   }
+# EDM4hep to LCIO converter
+edmConvTool = EDM4hep2LcioTool("EDM4hep2lcio")
+edmConvTool.convertAll = False
+# Next Step : do the conversion only for new collections
+edmConvTool.collNameMapping = {
+    "VTXTrackerBarrelHits": "VTXTrackerBarrelHits",
+    "VTXTrackerEndcapHits": "VTXTrackerEndcapHits",
+    "InnerTrackerBarrelHits": "InnerTrackerBarrelHits",
+    "OuterTrackerBarrelHits": "OuterTrackerBarrelHits",
+    "InnerTrackerEndcapHits": "InnerTrackerEndcapHits",
+    "OuterTrackerEndcapHits": "OuterTrackerEndcapHits"
+}
+edmConvTool.OutputLevel = WARNING
+MyConformalTracking.EDM4hep2LcioTool = edmConvTool
 
 ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
 ClonesAndSplitTracksFinder.OutputLevel = WARNING

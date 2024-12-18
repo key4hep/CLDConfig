@@ -17,92 +17,92 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from Configurables import VTXdigitizer
 
 
-VXDBarrelDigitiser = MarlinProcessorWrapper("VXDBarrelDigitiser")
-VXDBarrelDigitiser.OutputLevel = WARNING
-VXDBarrelDigitiser.ProcessorType = "DDPlanarDigiProcessor"
-VXDBarrelDigitiser.Parameters = {
-                                 "IsStrip": ["false"],
-                                 "ResolutionU": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
-                                 "ResolutionV": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
-                                 "SimTrackHitCollectionName": ["VertexBarrelCollection"],
-                                 "SimTrkHitRelCollection": ["VXDTrackerHitRelations"],
-                                 "SubDetectorName": ["Vertex"],
-                                 "TrackerHitCollectionName": ["VXDTrackerHits"]
-                                 }
+VTXBarrelDigitizer = VTXdigitizer("VTXBarrelDigitizer",
+                                  inputSimHits = "VertexBarrelCollection",
+                                  outputDigiHits = "VTXTrackerBarrelHits",
+                                  outputSimDigiAssociation = "VTXTrackerBarrelHitsRelations",
+                                  detectorName = "Vertex",
+                                  readoutName = "VertexBarrelCollection",
+                                  xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                  yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                  tResolution = [1000,1000,1000,1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
-VXDEndcapDigitiser = MarlinProcessorWrapper("VXDEndcapDigitiser")
-VXDEndcapDigitiser.OutputLevel = WARNING
-VXDEndcapDigitiser.ProcessorType = "DDPlanarDigiProcessor"
-VXDEndcapDigitiser.Parameters = {
-                                 "IsStrip": ["false"],
-                                 "ResolutionU": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
-                                 "ResolutionV": ["0.003", "0.003", "0.003", "0.003", "0.003", "0.003"],
-                                 "SimTrackHitCollectionName": ["VertexEndcapCollection"],
-                                 "SimTrkHitRelCollection": ["VXDEndcapTrackerHitRelations"],
-                                 "SubDetectorName": ["Vertex"],
-                                 "TrackerHitCollectionName": ["VXDEndcapTrackerHits"]
-                                 }
+VTXEndcapDigitizer = VTXdigitizer("VTXEndcapDigitizer",
+                                  inputSimHits = "VertexEndcapCollection",
+                                  outputDigiHits = "VTXTrackerEndcapHits",
+                                  outputSimDigiAssociation = "VTXTrackerEndcapHitsRelations",
+                                  detectorName = "Vertex",
+                                  readoutName = "VertexEndcapCollection",
+                                  xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                  yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                  tResolution = [1000,1000,1000,1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
-InnerPlanarDigiProcessor = MarlinProcessorWrapper("InnerPlanarDigiProcessor")
-InnerPlanarDigiProcessor.OutputLevel = WARNING
-InnerPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
-InnerPlanarDigiProcessor.Parameters = {
-                                       "IsStrip": ["false"],
-                                       "ResolutionU": ["0.007"],
-                                       "ResolutionV": ["0.09"],
-                                       "SimTrackHitCollectionName": ["InnerTrackerBarrelCollection"],
-                                       "SimTrkHitRelCollection": ["InnerTrackerBarrelHitsRelations"],
-                                       "SubDetectorName": ["InnerTrackers"],
-                                       "TrackerHitCollectionName": ["ITrackerHits"]
-                                       }
+InnerTrackerBarrelDigitizer = VTXdigitizer("InnerTrackerBarrelDigitizer",
+                                  inputSimHits = "InnerTrackerBarrelCollection",
+                                  outputDigiHits = "InnerTrackerBarrelHits",
+                                  outputSimDigiAssociation = "InnerTrackerBarrelHitsRelations",
+                                  detectorName = "InnerTrackers",
+                                  readoutName = "InnerTrackerBarrelCollection",
+                                  xResolution = [0.007, 0.007, 0.007],
+                                  yResolution = [0.09, 0.09, 0.09],
+                                  tResolution = [1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
-InnerEndcapPlanarDigiProcessor = MarlinProcessorWrapper("InnerEndcapPlanarDigiProcessor")
-InnerEndcapPlanarDigiProcessor.OutputLevel = WARNING
-InnerEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
-InnerEndcapPlanarDigiProcessor.Parameters = {
-                                             "IsStrip": ["false"],
-                                             "ResolutionU": ["0.005", "0.007", "0.007", "0.007", "0.007", "0.007", "0.007"],
-                                             "ResolutionV": ["0.005", "0.09", "0.09", "0.09", "0.09", "0.09", "0.09"],
-                                             "SimTrackHitCollectionName": ["InnerTrackerEndcapCollection"],
-                                             "SimTrkHitRelCollection": ["InnerTrackerEndcapHitsRelations"],
-                                             "SubDetectorName": ["InnerTrackers"],
-                                             "TrackerHitCollectionName": ["ITrackerEndcapHits"]
-                                             }
+InnerTrackerEndcapDigitizer = VTXdigitizer("InnerTrackerEndcapDigitizer",
+                                  inputSimHits = "InnerTrackerEndcapCollection",
+                                  outputDigiHits = "InnerTrackerEndcapHits",
+                                  outputSimDigiAssociation = "InnerTrackerEndcapHitsRelations",
+                                  detectorName = "InnerTrackers",
+                                  readoutName = "InnerTrackerEndcapCollection",
+                                  xResolution = [0.005, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007],
+                                  yResolution = [0.005, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
+                                  tResolution = [1000,1000,1000,1000,1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
-OuterPlanarDigiProcessor = MarlinProcessorWrapper("OuterPlanarDigiProcessor")
-OuterPlanarDigiProcessor.OutputLevel = WARNING
-OuterPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
-OuterPlanarDigiProcessor.Parameters = {
-                                       "IsStrip": ["false"],
-                                       "ResolutionU": ["0.007", "0.007", "0.007"],
-                                       "ResolutionV": ["0.09", "0.09", "0.09"],
-                                       "SimTrackHitCollectionName": ["OuterTrackerBarrelCollection"],
-                                       "SimTrkHitRelCollection": ["OuterTrackerBarrelHitsRelations"],
-                                       "SubDetectorName": ["OuterTrackers"],
-                                       "TrackerHitCollectionName": ["OTrackerHits"]
-                                       }
+OuterTrackerBarrelDigitizer = VTXdigitizer("OuterTrackerBarrelDigitizer",
+                                  inputSimHits = "OuterTrackerBarrelCollection",
+                                  outputDigiHits = "OuterTrackerBarrelHits",
+                                  outputSimDigiAssociation = "OuterTrackerBarrelHitsRelations",
+                                  detectorName = "OuterTrackers",
+                                  readoutName = "OuterTrackerBarrelCollection",
+                                  xResolution = [0.007, 0.007, 0.007],
+                                  yResolution = [0.09, 0.09, 0.09],
+                                  tResolution = [1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
-OuterEndcapPlanarDigiProcessor = MarlinProcessorWrapper("OuterEndcapPlanarDigiProcessor")
-OuterEndcapPlanarDigiProcessor.OutputLevel = WARNING
-OuterEndcapPlanarDigiProcessor.ProcessorType = "DDPlanarDigiProcessor"
-OuterEndcapPlanarDigiProcessor.Parameters = {
-                                             "IsStrip": ["false"],
-                                             "ResolutionU": ["0.007", "0.007", "0.007", "0.007", "0.007"],
-                                             "ResolutionV": ["0.09", "0.09", "0.09", "0.09", "0.09"],
-                                             "SimTrackHitCollectionName": ["OuterTrackerEndcapCollection"],
-                                             "SimTrkHitRelCollection": ["OuterTrackerEndcapHitsRelations"],
-                                             "SubDetectorName": ["OuterTrackers"],
-                                             "TrackerHitCollectionName": ["OTrackerEndcapHits"]
-                                             }
+OuterTrackerEndcapDigitizer = VTXdigitizer("OuterTrackerEndcapDigitizer",
+                                  inputSimHits = "OuterTrackerEndcapCollection",
+                                  outputDigiHits = "OuterTrackerEndcapHits",
+                                  outputSimDigiAssociation = "OuterTrackerEndcapHitsRelations",
+                                  detectorName = "OuterTrackers",
+                                  readoutName = "OuterTrackerEndcapCollection",
+                                  xResolution = [0.007, 0.007, 0.007, 0.007],
+                                  yResolution = [0.09, 0.09, 0.09, 0.09],
+                                  tResolution = [1000,1000,1000,1000],
+                                  forceHitsOntoSurface = False,
+                                  OutputLevel = WARNING
+                                  )
 
 TrackingDigiSequence = [
-    VXDBarrelDigitiser,
-    VXDEndcapDigitiser,
-    InnerPlanarDigiProcessor,
-    InnerEndcapPlanarDigiProcessor,
-    OuterPlanarDigiProcessor,
-    OuterEndcapPlanarDigiProcessor,
+    VTXBarrelDigitizer,
+    VTXEndcapDigitizer,
+    InnerTrackerBarrelDigitizer,
+    InnerTrackerEndcapDigitizer,
+    OuterTrackerBarrelDigitizer,
+    OuterTrackerEndcapDigitizer
 ]
