@@ -149,21 +149,14 @@ if CONFIG["OutputMode"] == "LCIO":
     algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
-    # Attach the LCIO -> EDM4hep conversion to the last processor that is run before the output
-    lcioToEDM4hepOutput = Lcio2EDM4hepTool("OutputConversion")
-    # Take care of the different naming conventions
-    lcioToEDM4hepOutput.collNameMapping = {"MCParticle": "MCParticles"}
-    lcioToEDM4hepOutput.OutputLevel = INFO
-    # Make sure that all collections are always available by patching in missing ones on-the-fly
+      # Make sure that all collections are always available by patching in missing ones on-the-fly
     collPatcherRec = MarlinProcessorWrapper(
         "CollPacherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
     )
     collPatcherRec.Parameters = {
         "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
     }
-    collPatcherRec.Lcio2EDM4hepTool = lcioToEDM4hepOutput
     algList.append(collPatcherRec)
-
 
     Output_REC = create_writer("edm4hep", "Output_REC", f"{reco_args.outputBasename}_REC")
     algList.append(Output_REC)
