@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 import os
-from typing import Union, Optional, Dict, Any
+from typing import Union, Optional, Dict, Any, List
 import importlib.util
 import importlib.abc
 from importlib.machinery import SourceFileLoader
@@ -206,3 +206,25 @@ def create_writer(format: str, writer_name: str, output_name: str, keep_list: It
     else:
         return None
         # TODO: warn about format being unsupported but without killing --help
+
+def parse_collection_patch_file(patch_file: Union[str, os.PathLike]) -> List[str]:
+    """Parse a collection patch file such that it can be used by the
+    PatchCollections processor.
+    This function reads the file that has been passed in and effectively
+    flattens its contents into one list of strings. The main assumption is that
+    the file has been produced via `check_missing_colls --minimal <...>` in
+    which case it can be directly consumed. Note that no real error checking is
+    done to detect malformed inputs in which case something else at a later
+    stage will most likely break.
+    Args:
+        patch_file (Union[str, os.PathLike]): The path to the file that should
+                                              be parsed
+    Returns:
+        List[str]: A list of strings (pairs of "names" and "types") that can be
+                   consumed by the PatchCollections processor
+    """
+    with open(patch_file, "r") as pfile:
+        patch_colls = [l.split() for l in pfile.readlines()]
+
+    # Flatten the list of lists into one large list
+    return [s for strings in patch_colls for s in strings]
