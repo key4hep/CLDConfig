@@ -151,7 +151,7 @@ if CONFIG["OutputMode"] == "LCIO":
 if CONFIG["OutputMode"] == "EDM4Hep":
       # Make sure that all collections are always available by patching in missing ones on-the-fly
     collPatcherRec = MarlinProcessorWrapper(
-        "CollPacherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
+        "CollPatcherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
     )
     collPatcherRec.Parameters = {
         "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
