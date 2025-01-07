@@ -149,7 +149,7 @@ if CONFIG["OutputMode"] == "LCIO":
     algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
-      # Make sure that all collections are always available by patching in missing ones on-the-fly
+    # Make sure that all collections are always available by patching in missing ones on-the-fly
     collPatcherRec = MarlinProcessorWrapper(
         "CollPatcherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
     )
