@@ -71,6 +71,6 @@
      RelationCaloHit                                    LCRelation[CalorimeterHit,SimCalorimeterHit]      
      HCALBarrel                                         CalorimeterHit                                    
      RefinedVertices                                    Vertex                                            
-yth                                                  VertexJets|y01,y12,y23,y34,y45,y56,y67,y78,y89,y910
-RefinedVertex                                                  RefinedVertexJets|SingleVertexProbability
-yth                                                  RefinedVertexJets|y01,y12,y23,y34,y45,y56,y67,y78,y89,y910
+     yth                                                VertexJets|y01,y12,y23,y34,y45,y56,y67,y78,y89,y910
+     RefinedVertex                                      RefinedVertexJets|SingleVertexProbability
+     yth                                                RefinedVertexJets|y01,y12,y23,y34,y45,y56,y67,y78,y89,y910
