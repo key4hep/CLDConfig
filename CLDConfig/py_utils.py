@@ -228,4 +228,3 @@ def parse_collection_patch_file(patch_file: Union[str, os.PathLike]) -> List[str
 
     # Flatten the list of lists into one large list
     return [s for strings in patch_colls for s in strings]
-    
