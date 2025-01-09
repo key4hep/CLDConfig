@@ -22,7 +22,7 @@ from Gaudi.Configuration import INFO, WARNING, DEBUG
 from Configurables import k4DataSvc, MarlinProcessorWrapper
 from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
 from k4FWCore.parseArgs import parser
-from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer
+from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -56,7 +56,9 @@ CONFIG = {
              "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
 }
 
-from Configurables import GeoSvc, TrackingCellIDEncodingSvc
+REC_COLLECTION_CONTENTS_FILE = "collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
+
+from Configurables import GeoSvc, TrackingCellIDEncodingSvc, Lcio2EDM4hepTool
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
@@ -134,7 +136,6 @@ if not reco_args.trackingOnly:
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
 
-
 DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
 
 DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"]
@@ -148,6 +149,15 @@ if CONFIG["OutputMode"] == "LCIO":
     algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
+    # Make sure that all collections are always available by patching in missing ones on-the-fly
+    collPatcherRec = MarlinProcessorWrapper(
+        "CollPatcherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
+    )
+    collPatcherRec.Parameters = {
+        "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
+    }
+    algList.append(collPatcherRec)
+
     Output_REC = create_writer("edm4hep", "Output_REC", f"{reco_args.outputBasename}_REC")
     algList.append(Output_REC)
 
