@@ -17,10 +17,10 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import VTXdigitizer
+from Configurables import VTXdigitizerDetailed
 
 
-VTXBarrelDigitizer = VTXdigitizer("VTXBarrelDigitizer",
+VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
                                   inputSimHits = "VertexBarrelCollection",
                                   outputDigiHits = "VTXTrackerBarrelHits",
                                   outputSimDigiAssociation = "VTXTrackerBarrelHitsRelations",
@@ -33,7 +33,7 @@ VTXBarrelDigitizer = VTXdigitizer("VTXBarrelDigitizer",
                                   OutputLevel = WARNING
                                   )
 
-VTXEndcapDigitizer = VTXdigitizer("VTXEndcapDigitizer",
+VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
                                   inputSimHits = "VertexEndcapCollection",
                                   outputDigiHits = "VTXTrackerEndcapHits",
                                   outputSimDigiAssociation = "VTXTrackerEndcapHitsRelations",
@@ -46,7 +46,7 @@ VTXEndcapDigitizer = VTXdigitizer("VTXEndcapDigitizer",
                                   OutputLevel = WARNING
                                   )
 
-InnerTrackerBarrelDigitizer = VTXdigitizer("InnerTrackerBarrelDigitizer",
+InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer",
                                   inputSimHits = "InnerTrackerBarrelCollection",
                                   outputDigiHits = "InnerTrackerBarrelHits",
                                   outputSimDigiAssociation = "InnerTrackerBarrelHitsRelations",
@@ -59,7 +59,7 @@ InnerTrackerBarrelDigitizer = VTXdigitizer("InnerTrackerBarrelDigitizer",
                                   OutputLevel = WARNING
                                   )
 
-InnerTrackerEndcapDigitizer = VTXdigitizer("InnerTrackerEndcapDigitizer",
+InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer",
                                   inputSimHits = "InnerTrackerEndcapCollection",
                                   outputDigiHits = "InnerTrackerEndcapHits",
                                   outputSimDigiAssociation = "InnerTrackerEndcapHitsRelations",
@@ -72,7 +72,7 @@ InnerTrackerEndcapDigitizer = VTXdigitizer("InnerTrackerEndcapDigitizer",
                                   OutputLevel = WARNING
                                   )
 
-OuterTrackerBarrelDigitizer = VTXdigitizer("OuterTrackerBarrelDigitizer",
+OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer",
                                   inputSimHits = "OuterTrackerBarrelCollection",
                                   outputDigiHits = "OuterTrackerBarrelHits",
                                   outputSimDigiAssociation = "OuterTrackerBarrelHitsRelations",
@@ -85,7 +85,7 @@ OuterTrackerBarrelDigitizer = VTXdigitizer("OuterTrackerBarrelDigitizer",
                                   OutputLevel = WARNING
                                   )
 
-OuterTrackerEndcapDigitizer = VTXdigitizer("OuterTrackerEndcapDigitizer",
+OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer",
                                   inputSimHits = "OuterTrackerEndcapCollection",
                                   outputDigiHits = "OuterTrackerEndcapHits",
                                   outputSimDigiAssociation = "OuterTrackerEndcapHitsRelations",
