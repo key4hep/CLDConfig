@@ -89,3 +89,4 @@ add_test(NAME marlin
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND Marlin --global.LCIOInputFiles=test.slcio --InitDD4hep.DD4hepXMLFile=${DETECTOR} CLDReconstruction.xml
 )
+set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
