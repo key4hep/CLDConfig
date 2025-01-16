@@ -915,7 +915,7 @@
     <parameter name="StripSplittingOn" type="int">0 </parameter>
 
     <processor name="MyDDMarlinPandora_10ns" type="DDPandoraPFANewProcessor">
-      <parameter name="PandoraSettingsXmlFile" type="String"> PandoraSettingsFCCee/PandoraSettingsDefault.xml </parameter>
+      <parameter name="PandoraSettingsXmlFile" type="String"> PandoraSettingsCLD/PandoraSettingsDefault.xml </parameter>
       <parameter name="SoftwareCompensationWeights" type="FloatVec">2.40821 -0.0515852 0.000711414 -0.0254891 -0.0121505 -1.63084e-05 0.062149 0.0690735 -0.223064</parameter>
       <!-- Calibration constants -->
       <parameter name="ECalToMipCalibration" type="float">175.439</parameter>
