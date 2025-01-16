@@ -84,3 +84,8 @@ add_test(NAME Help
          COMMAND k4run --help CLDReconstruction.py
 )
 set_property(TEST Help APPEND PROPERTY PASS_REGULAR_EXPRESSION "show this help message and exit")
+
+add_test(NAME marlin
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND Marlin --global.LCIOInputFiles=test.slcio --InitDD4hep.DD4hepXMLFile=${DETECTOR} CLDReconstruction.xml
+)
