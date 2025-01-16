@@ -123,7 +123,7 @@
     <!--Name of the DD4hep compact xml file to load-->
     <parameter name="EncodingStringParameter"> GlobalTrackerReadoutID </parameter>
     <parameter name="DD4hepXMLFile" type="string">
-      /cvmfs/clicdp.cern.ch/iLCSoft/builds/nightly/x86_64-slc6-gcc62-opt/lcgeo/HEAD/FCCee/compact/FCCee_o1_v04/FCCee_o1_v04.xml
+      /cvmfs/sw.hsf.org/key4hep/releases/2024-10-03/x86_64-almalinux9-gcc14.2.0-opt/k4geo/0.21-d5gbnd/share/k4geo/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml
     </parameter>
   </processor>
 
