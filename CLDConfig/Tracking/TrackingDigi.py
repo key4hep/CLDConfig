@@ -19,84 +19,89 @@
 from Gaudi.Configuration import WARNING
 from Configurables import VTXdigitizerDetailed
 
-
 VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
-                                  inputSimHits = "VertexBarrelCollection",
-                                  outputDigiHits = "VTXTrackerBarrelHits",
-                                  outputSimDigiAssociation = "VTXTrackerBarrelHitsRelations",
-                                  detectorName = "Vertex",
-                                  readoutName = "VertexBarrelCollection",
-                                  xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
-                                  yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
-                                  tResolution = [1000,1000,1000,1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                          inputSimHits = "VertexBarrelCollection",
+                                          outputDigiHits = "VTXTrackerBarrelHits",
+                                          outputSimDigiAssociation = "VTXTrackerBarrelHitsRelations",
+                                          detectorName = "VertexBarrel",
+                                          readoutName = "VertexBarrelCollection",
+                                          LocalNormalVectorDir = "x",
+                                          xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                          yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                          tResolution = [1000,1000,1000,1000,1000,1000],
+                                          forceHitsOntoSurface = False,
+                                          OutputLevel = WARNING
+                                          )
 
 VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
-                                  inputSimHits = "VertexEndcapCollection",
-                                  outputDigiHits = "VTXTrackerEndcapHits",
-                                  outputSimDigiAssociation = "VTXTrackerEndcapHitsRelations",
-                                  detectorName = "Vertex",
-                                  readoutName = "VertexEndcapCollection",
-                                  xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
-                                  yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
-                                  tResolution = [1000,1000,1000,1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                          inputSimHits = "VertexEndcapCollection",
+                                          outputDigiHits = "VTXTrackerEndcapHits",
+                                          outputSimDigiAssociation = "VTXTrackerEndcapHitsRelations",
+                                          detectorName = "VertexEndcap",
+                                          readoutName = "VertexEndcapCollection",
+                                          LocalNormalVectorDir = "y",
+                                          xResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                          yResolution = [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
+                                          tResolution = [1000,1000,1000,1000,1000,1000],
+                                          forceHitsOntoSurface = False,
+                                          OutputLevel = WARNING
+                                          )
 
 InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer",
-                                  inputSimHits = "InnerTrackerBarrelCollection",
-                                  outputDigiHits = "InnerTrackerBarrelHits",
-                                  outputSimDigiAssociation = "InnerTrackerBarrelHitsRelations",
-                                  detectorName = "InnerTrackers",
-                                  readoutName = "InnerTrackerBarrelCollection",
-                                  xResolution = [0.007, 0.007, 0.007],
-                                  yResolution = [0.09, 0.09, 0.09],
-                                  tResolution = [1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                                   inputSimHits = "InnerTrackerBarrelCollection",
+                                                   outputDigiHits = "InnerTrackerBarrelHits",
+                                                   outputSimDigiAssociation = "InnerTrackerBarrelHitsRelations",
+                                                   detectorName = "InnerTrackerBarrel",
+                                                   readoutName = "InnerTrackerBarrelCollection",
+                                                   LocalNormalVectorDir = "z",
+                                                   xResolution = [0.007, 0.007, 0.007],
+                                                   yResolution = [0.09, 0.09, 0.09],
+                                                   tResolution = [1000,1000,1000],
+                                                   forceHitsOntoSurface = False,
+                                                   OutputLevel = WARNING
+                                                   )
 
 InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer",
-                                  inputSimHits = "InnerTrackerEndcapCollection",
-                                  outputDigiHits = "InnerTrackerEndcapHits",
-                                  outputSimDigiAssociation = "InnerTrackerEndcapHitsRelations",
-                                  detectorName = "InnerTrackers",
-                                  readoutName = "InnerTrackerEndcapCollection",
-                                  xResolution = [0.005, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007],
-                                  yResolution = [0.005, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
-                                  tResolution = [1000,1000,1000,1000,1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                                   inputSimHits = "InnerTrackerEndcapCollection",
+                                                   outputDigiHits = "InnerTrackerEndcapHits",
+                                                   outputSimDigiAssociation = "InnerTrackerEndcapHitsRelations",
+                                                   detectorName = "InnerTrackerEndcap",
+                                                   readoutName = "InnerTrackerEndcapCollection",
+                                                   LocalNormalVectorDir = "z",
+                                                   xResolution = [0.005, 0.007, 0.007, 0.007, 0.007, 0.007, 0.007],
+                                                   yResolution = [0.005, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
+                                                   tResolution = [1000,1000,1000,1000,1000,1000,1000],
+                                                   forceHitsOntoSurface = False,
+                                                   OutputLevel = WARNING
+                                                   )
 
 OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer",
-                                  inputSimHits = "OuterTrackerBarrelCollection",
-                                  outputDigiHits = "OuterTrackerBarrelHits",
-                                  outputSimDigiAssociation = "OuterTrackerBarrelHitsRelations",
-                                  detectorName = "OuterTrackers",
-                                  readoutName = "OuterTrackerBarrelCollection",
-                                  xResolution = [0.007, 0.007, 0.007],
-                                  yResolution = [0.09, 0.09, 0.09],
-                                  tResolution = [1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                                   inputSimHits = "OuterTrackerBarrelCollection",
+                                                   outputDigiHits = "OuterTrackerBarrelHits",
+                                                   outputSimDigiAssociation = "OuterTrackerBarrelHitsRelations",
+                                                   detectorName = "OuterTrackerBarrel",
+                                                   readoutName = "OuterTrackerBarrelCollection",
+                                                   LocalNormalVectorDir = "z",
+                                                   xResolution = [0.007, 0.007, 0.007],
+                                                   yResolution = [0.09, 0.09, 0.09],
+                                                   tResolution = [1000,1000,1000],
+                                                   forceHitsOntoSurface = False,
+                                                   OutputLevel = WARNING
+                                                   )
 
 OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer",
-                                  inputSimHits = "OuterTrackerEndcapCollection",
-                                  outputDigiHits = "OuterTrackerEndcapHits",
-                                  outputSimDigiAssociation = "OuterTrackerEndcapHitsRelations",
-                                  detectorName = "OuterTrackers",
-                                  readoutName = "OuterTrackerEndcapCollection",
-                                  xResolution = [0.007, 0.007, 0.007, 0.007],
-                                  yResolution = [0.09, 0.09, 0.09, 0.09],
-                                  tResolution = [1000,1000,1000,1000],
-                                  forceHitsOntoSurface = False,
-                                  OutputLevel = WARNING
-                                  )
+                                                   inputSimHits = "OuterTrackerEndcapCollection",
+                                                   outputDigiHits = "OuterTrackerEndcapHits",
+                                                   outputSimDigiAssociation = "OuterTrackerEndcapHitsRelations",
+                                                   detectorName = "OuterTrackerEndcap",
+                                                   readoutName = "OuterTrackerEndcapCollection",
+                                                   LocalNormalVectorDir = "z",
+                                                   xResolution = [0.007, 0.007, 0.007, 0.007],
+                                                   yResolution = [0.09, 0.09, 0.09, 0.09],
+                                                   tResolution = [1000,1000,1000,1000],
+                                                   forceHitsOntoSurface = False,
+                                                   OutputLevel = WARNING
+                                                   )
 
 TrackingDigiSequence = [
     VTXBarrelDigitizer,
