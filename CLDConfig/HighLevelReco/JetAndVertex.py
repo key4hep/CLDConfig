@@ -141,9 +141,9 @@ VertexFinderUnconstrained.OutputLevel = WARNING
 VertexFinderUnconstrained.ProcessorType = "LcfiplusProcessor"
 VertexFinderUnconstrained.Parameters = {
                                         "Algorithms": ["PrimaryVertexFinder", "BuildUpVertex"],
-                                        "BeamSizeX": ["38.2E-3"],
-                                        "BeamSizeY": ["68E-6"],
-                                        "BeamSizeZ": ["1.97"],
+                                        "BeamSizeX": ["0.0098"],
+                                        "BeamSizeY": ["2.54E-5"],
+                                        "BeamSizeZ": ["0.646"],
                                         "BuildUpVertex.AVFTemperature": ["5.0"],
                                         "BuildUpVertex.AssocIPTracks": ["1"],
                                         "BuildUpVertex.AssocIPTracksChi2RatioSecToPri": ["2.0"],

@@ -1320,9 +1320,9 @@
     <parameter name="MCPCollection" type="string" value="MCParticle" />
     <parameter name="MCPFORelation" type="string" value="RecoMCTruthLink" />
     <parameter name="MagneticField" type="float" value="2.0"/> <!-- FCCee B field -->
-    <parameter name="BeamSizeX" type="float" value="38.2E-3"/> <!-- FCCee beam sizes at the sqrt(s) = 182.5 GeV [as of FCC Week 2018] -->
-    <parameter name="BeamSizeY" type="float" value="68E-6"/>
-    <parameter name="BeamSizeZ" type="float" value="1.97"/>
+    <parameter name="BeamSizeX" type="float" value="0.0098"/> <!-- FCCee beam sizes at the sqrt(s) = 240 GeV [as of Dec 2022] -->
+    <parameter name="BeamSizeY" type="float" value="2.54E-5"/> <!-- See: https://github.com/HEP-FCC/FCCeePhysicsPerformance/blob/master/General/README.md#vertex-distribution -->
+    <parameter name="BeamSizeZ" type="float" value="0.646"/>
     <!-- parameters for primary vertex finder -->
     <parameter name="PrimaryVertexFinder.BeamspotSmearing" type="boolean" value="false" />
     <parameter name="PrimaryVertexFinder.TrackMaxD0" type="double" value="20." />
