@@ -33,6 +33,7 @@ parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("
 parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
+parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
 tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
@@ -75,10 +76,20 @@ if len(geoservice.detectors) > 1:
     # we are making assumptions for reconstruction parameters based on the detector option, so we limit the possibilities
     raise RuntimeError("Too many XML files for the detector path, please only specify the main file!")
 
+# from https://github.com/HEP-FCC/FCCeePhysicsPerformance/blob/d6ecee2c2c3ed5d76db55a3ae18ced349b2b914a/General/README.md?plain=1#L457-L467
+# for december 2022
+BEAM_SPOT_SIZES = { 91:  (5.96e-3, 23.8e-6, 0.397),
+                    160: (14.7e-3, 46.5e-6, 0.97),
+                    240: (9.8e-3,  25.4e-6, 0.65),
+                    365: (27.3e-3, 48.8e-6, 1.33),
+                   }
+
 sequenceLoader = SequenceLoader(
     algList,
     # global_vars can be used in sequence-loaded modules without explicit import
-    global_vars={"CONFIG": CONFIG, "geoservice": geoservice, "reco_args": reco_args},
+    global_vars={"CONFIG": CONFIG, "geoservice": geoservice, "reco_args": reco_args,
+                 "BEAM_SPOT_SIZES": BEAM_SPOT_SIZES,
+                 },
 )
 
 if reco_args.inputFiles:
