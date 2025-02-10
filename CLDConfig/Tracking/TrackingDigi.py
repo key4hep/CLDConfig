@@ -28,7 +28,9 @@ VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
                                           LocalNormalVectorDir = "x",
                                           tResolution = [1000,1000,1000,1000,1000,1000],
                                           forceHitsOntoSurface = False,
-                                          OutputLevel = WARNING
+                                          OutputLevel = WARNING,
+                                          DebugHistos = True,
+                                          DebugFileName = "Debug_VTXBarrelDigitizer.root"
                                           )
 
 VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
@@ -40,7 +42,9 @@ VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
                                           LocalNormalVectorDir = "y",
                                           tResolution = [1000,1000,1000,1000,1000,1000],
                                           forceHitsOntoSurface = False,
-                                          OutputLevel = WARNING
+                                          OutputLevel = WARNING,
+                                          DebugHistos = True,
+                                          DebugFileName = "Debug_VTXEndcapDigitizer.root"
                                           )
 
 InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer",
@@ -52,7 +56,9 @@ InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer"
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [1000,1000,1000],
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING
+                                                   OutputLevel = WARNING,
+                                                   DebugHistos = True,
+                                                   DebugFileName = "Debug_InnerTrackerBarrelDigitizer.root"
                                                    )
 
 InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer",
@@ -64,7 +70,9 @@ InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer"
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [1000,1000,1000,1000,1000,1000,1000],
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING
+                                                   OutputLevel = WARNING,
+                                                   DebugHistos = True,
+                                                   DebugFileName = "Debug_InnerTrackerEndcapDigitizer.root"
                                                    )
 
 OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer",
@@ -76,7 +84,9 @@ OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer"
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [1000,1000,1000],
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING
+                                                   OutputLevel = WARNING,
+                                                   DebugHistos = True,
+                                                   DebugFileName = "Debug_OuterTrackerBarrelDigitizer.root"
                                                    )
 
 OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer",
@@ -88,7 +98,9 @@ OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer"
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [1000,1000,1000,1000],
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING
+                                                   OutputLevel = WARNING,
+                                                   DebugHistos = True,
+                                                   DebugFileName = "Debug_OuterTrackerEndcapDigitizer.root"
                                                    )
 
 TrackingDigiSequence = [
