@@ -46,17 +46,17 @@ MyConformalTracking.Parameters = {
                                   "Steps":
                                   [
                                       "[VTXTrackerBarrel]",
-                                      "@Collections", ":", "VXDTrackerHitsLCIO",
+                                      "@Collections", ":", "VXDTrackerHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks",
                                       "[VTXTrackerEndcap]",
-                                      "@Collections", ":", "VXDEndcapTrackerHitsLCIO",
+                                      "@Collections", ":", "VXDEndcapTrackerHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
                                       "@Functions", ":", "CombineCollections,", "ExtendTracks",
                                       "[LowerCellAngle1]",
-                                      "@Collections", ":", "VXDTrackerHitsLCIO,", "VXDEndcapTrackerHitsLCIO",
+                                      "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.05;", "MaxCellAngleRZ", ":", "0.05;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks",
@@ -66,19 +66,19 @@ MyConformalTracking.Parameters = {
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "BuildNewTracks,", "SortTracks",
                                       "[Tracker]",
-                                      "@Collections", ":", "ITrackerHitsLCIO,", "OTrackerHitsLCIO,", "ITrackerEndcapHitsLCIO,", "OTrackerEndcapHitsLCIO",
+                                      "@Collections", ":", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "2000;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "1.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "ExtendTracks",
                                       "[Displaced]",
-                                      "@Collections", ":", "VXDTrackerHitsLCIO,", "VXDEndcapTrackerHitsLCIO,", "ITrackerHitsLCIO,", "OTrackerHitsLCIO,", "ITrackerEndcapHitsLCIO,", "OTrackerEndcapHitsLCIO",
+                                      "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits,", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "1000;", "MinClustersOnTrack", ":", "5;", "MaxDistance", ":", "0.015;", "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "OnlyZSchi2cut,", "RadialSearch",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks"
                                   ],
                                   "ThetaRange": ["0.05"],
                                   "TooManyTracks": ["100000"],
-                                  "TrackerHitCollectionNames": ["VXDTrackerHitsLCIO", "VXDEndcapTrackerHitsLCIO", "ITrackerHitsLCIO", "OTrackerHitsLCIO", "ITrackerEndcapHitsLCIO", "OTrackerEndcapHitsLCIO"],
+                                  "TrackerHitCollectionNames": ["VXDTrackerHits", "VXDEndcapTrackerHits", "ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
                                   "trackPurity": ["0.7"]
                                   }
 # EDM4hep to LCIO converter
@@ -86,18 +86,18 @@ edmConvTool = EDM4hep2LcioTool("EDM4hep2Lcio")
 edmConvTool.convertAll = False
 # Next Step : do the conversion only for new collections
 edmConvTool.collNameMapping = {
-    "VXDTrackerHits": "VXDTrackerHitsLCIO",
-    "VXDEndcapTrackerHits": "VXDEndcapTrackerHitsLCIO",
-    "ITrackerHits": "ITrackerHitsLCIO",
-    "OTrackerHits": "OTrackerHitsLCIO",
-    "ITrackerEndcapHits": "ITrackerEndcapHitsLCIO",
-    "OTrackerEndcapHits": "OTrackerEndcapHitsLCIO",
-#    "VXDTrackerHitRelations": "VXDTrackerHitRelations", 
-#    "VXDEndcapTrackerHitRelations": "VXDEndcapTrackerHitRelations",
-#    "InnerTrackerBarrelHitsRelations": "InnerTrackerBarrelHitsRelations",
-#    "OuterTrackerBarrelHitsRelations": "OuterTrackerBarrelHitsRelations",
-#    "InnerTrackerEndcapHitsRelations": "InnerTrackerEndcapHitsRelations",
-#    "OuterTrackerEndcapHitsRelations": "OuterTrackerEndcapHitsRelations"
+    "VXDTrackerHitsEDM4HEP": "VXDTrackerHits",
+    "VXDEndcapTrackerHitsEDM4HEP": "VXDEndcapTrackerHits",
+    "ITrackerHitsEDM4HEP": "ITrackerHits",
+    "OTrackerHitsEDM4HEP": "OTrackerHits",
+    "ITrackerEndcapHitsEDM4HEP": "ITrackerEndcapHits",
+    "OTrackerEndcapHitsEDM4HEP": "OTrackerEndcapHits",
+    "VXDTrackerHitRelationsEDM4HEP": "VXDTrackerHitRelations", 
+    "VXDEndcapTrackerHitRelationsEDM4HEP": "VXDEndcapTrackerHitRelations",
+    "InnerTrackerBarrelHitsRelationsEDM4HEP": "InnerTrackerBarrelHitsRelations",
+    "OuterTrackerBarrelHitsRelationsEDM4HEP": "OuterTrackerBarrelHitsRelations",
+    "InnerTrackerEndcapHitsRelationsEDM4HEP": "InnerTrackerEndcapHitsRelations",
+    "OuterTrackerEndcapHitsRelationsEDM4HEP": "OuterTrackerEndcapHitsRelations"
 }
 edmConvTool.OutputLevel = WARNING
 MyConformalTracking.EDM4hep2LcioTool = edmConvTool
