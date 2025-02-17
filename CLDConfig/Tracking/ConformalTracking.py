@@ -83,23 +83,23 @@ MyConformalTracking.Parameters = {
                                   }
 # EDM4hep to LCIO converter
 edmConvTool = EDM4hep2LcioTool("EDM4hep2Lcio")
-edmConvTool.convertAll = False
+#edmConvTool.convertAll = True
 # Next Step : do the conversion only for new collections
 edmConvTool.collNameMapping = {
-    "VXDTrackerHitsEDM4HEP": "VXDTrackerHits",
-    "VXDEndcapTrackerHitsEDM4HEP": "VXDEndcapTrackerHits",
-    "ITrackerHitsEDM4HEP": "ITrackerHits",
-    "OTrackerHitsEDM4HEP": "OTrackerHits",
-    "ITrackerEndcapHitsEDM4HEP": "ITrackerEndcapHits",
-    "OTrackerEndcapHitsEDM4HEP": "OTrackerEndcapHits",
-    "VXDTrackerHitRelationsEDM4HEP": "VXDTrackerHitRelations", 
-    "VXDEndcapTrackerHitRelationsEDM4HEP": "VXDEndcapTrackerHitRelations",
-    "InnerTrackerBarrelHitsRelationsEDM4HEP": "InnerTrackerBarrelHitsRelations",
-    "OuterTrackerBarrelHitsRelationsEDM4HEP": "OuterTrackerBarrelHitsRelations",
-    "InnerTrackerEndcapHitsRelationsEDM4HEP": "InnerTrackerEndcapHitsRelations",
-    "OuterTrackerEndcapHitsRelationsEDM4HEP": "OuterTrackerEndcapHitsRelations"
+    "VXDTrackerHits": "VXDTrackerHits",
+    "VXDEndcapTrackerHits": "VXDEndcapTrackerHits",
+    "ITrackerHits": "ITrackerHits",
+    "OTrackerHits": "OTrackerHits",
+    "ITrackerEndcapHits": "ITrackerEndcapHits",
+    "OTrackerEndcapHits": "OTrackerEndcapHits",
+    "VXDTrackerHitRelations": "VXDTrackerHitRelations", 
+    "VXDEndcapTrackerHitRelations": "VXDEndcapTrackerHitRelations",
+    "InnerTrackerBarrelHitsRelations": "InnerTrackerBarrelHitsRelations",
+    "OuterTrackerBarrelHitsRelations": "OuterTrackerBarrelHitsRelations",
+    "InnerTrackerEndcapHitsRelations": "InnerTrackerEndcapHitsRelations",
+    "OuterTrackerEndcapHitsRelations": "OuterTrackerEndcapHitsRelations"
 }
-edmConvTool.OutputLevel = WARNING
+edmConvTool.OutputLevel = DEBUG
 MyConformalTracking.EDM4hep2LcioTool = edmConvTool
 
 ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
