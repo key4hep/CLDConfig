@@ -39,7 +39,7 @@ refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v 
 refit_args_marlin = {k: [str(v)] if isinstance(v, float) else v for k, v in refit_args_marlin.items()}
 
 
-if args.native:
+if args[0].native:
     from Configurables import RefitFinal
 
     Refit = RefitFinal(
