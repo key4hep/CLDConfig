@@ -17,25 +17,42 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from k4FWCore.parseArgs import parser
+args = parser.parse_known_args()
+
+refit_args = {
+    "EnergyLossOn": True,
+    "InputRelationCollectionName": ["SiTrackRelations"],
+    "InputTrackCollectionName": ["SiTracks"],
+    "Max_Chi2_Incr": 1.79769e30,
+    "MinClustersOnTrackAfterFit": 3,
+    "MultipleScatteringOn": True,
+    "OutputRelationCollectionName": ["SiTracks_Refitted_Relation"],
+    "OutputTrackCollectionName": ["SiTracks_Refitted"],
+    "ReferencePoint": -1,
+    "SmoothOn": False,
+    "extrapolateForward": True,
+    "OutputLevel": WARNING,
+}
+
+refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in refit_args.items()}
+refit_args_marlin = {k: [str(v)] if isinstance(v, float) else v for k, v in refit_args_marlin.items()}
 
 
-Refit = MarlinProcessorWrapper("Refit")
-Refit.OutputLevel = WARNING
-Refit.ProcessorType = "RefitFinal"
-Refit.Parameters = {
-                    "EnergyLossOn": ["true"],
-                    "InputRelationCollectionName": ["SiTrackRelations"],
-                    "InputTrackCollectionName": ["SiTracks"],
-                    "Max_Chi2_Incr": ["1.79769e+30"],
-                    "MinClustersOnTrackAfterFit": ["3"],
-                    "MultipleScatteringOn": ["true"],
-                    "OutputRelationCollectionName": ["SiTracks_Refitted_Relation"],
-                    "OutputTrackCollectionName": ["SiTracks_Refitted"],
-                    "ReferencePoint": ["-1"],
-                    "SmoothOn": ["false"],
-                    "extrapolateForward": ["true"]
-                    }
+if args.native:
+    from Configurables import RefitFinal
+
+    Refit = RefitFinal(
+        "RefitFinal",
+        **refit_args
+    )
+else:
+    from Configurables import MarlinProcessorWrapper
+
+    Refit = MarlinProcessorWrapper("Refit")
+    Refit.OutputLevel = WARNING
+    Refit.ProcessorType = "RefitFinal"
+    Refit.Parameters = refit_args_marlin
 
 RefitSequence = [
     Refit,
