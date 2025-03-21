@@ -33,7 +33,7 @@ truth_track_finder_args = {
 # Change True to ["true"] and False to ["false"] if using MarlinProcessorWrapper
 truth_track_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in truth_track_finder_args.items()}
 
-if args.native:
+if args[0].native:
     from Configurables import TruthTrackFinder
     MyTruthTrackFinder = TruthTrackFinder(
         "TruthTrackFinder",

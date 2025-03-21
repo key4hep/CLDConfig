@@ -299,7 +299,7 @@ clones_and_split_tracks_finder_args = {
 clone_and_split_tracks_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in clones_and_split_tracks_finder_args.items()}
 clone_and_split_tracks_finder_args_marlin = {k: [str(v)] if isinstance(v, float) else v for k, v in clone_and_split_tracks_finder_args_marlin.items()}
 
-if args.native:
+if args[0].native:
     from Configurables import ConformalTracking, ClonesAndSplitTracksFinder
 
     MyConformalTracking = ConformalTracking(
