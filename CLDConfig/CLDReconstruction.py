@@ -33,6 +33,7 @@ parser_group.add_argument("--trackingOnly", action="store_true", help="Run only 
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
 parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
+parser_group.add_argument("--native", action="store_true", help="Use the native EDM4hep tracking", default=False)
 tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
