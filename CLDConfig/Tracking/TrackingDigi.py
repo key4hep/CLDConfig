@@ -101,7 +101,7 @@ outer_endcap_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinsta
 outer_endcap_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in outer_endcap_planar_digi_processor_args_marlin.items()}
 
 
-if args.native:
+if args[0].native:
     from Configurables import DDPlanarDigi
 
     VXDBarrelDigitiser = DDPlanarDigi(
