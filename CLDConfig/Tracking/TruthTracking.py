@@ -22,7 +22,7 @@ args = parser.parse_known_args()
 
 truth_track_finder_args = {
     "FitForward": True,
-    "MCParticleCollectionName": ["MCParticles"],
+    "MCParticleCollectionName": ["MCParticle"],
     "SiTrackCollectionName": ["SiTracks"],
     "SiTrackRelationCollectionName": ["SiTrackRelations"],
     "SimTrackerHitRelCollectionNames": ["VXDTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
