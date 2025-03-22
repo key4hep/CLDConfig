@@ -22,7 +22,7 @@ args = parser.parse_known_args()
 
 truth_track_finder_args = {
     "FitForward": True,
-    "MCParticleCollectionName": ["MCParticle"],
+    "MCParticleCollectionName": ["MCParticles"],
     "SiTrackCollectionName": ["SiTracks"],
     "SiTrackRelationCollectionName": ["SiTrackRelations"],
     "SimTrackerHitRelCollectionNames": ["VXDTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
@@ -31,6 +31,7 @@ truth_track_finder_args = {
 }
 # Change True to ["true"] and False to ["false"] if using MarlinProcessorWrapper
 truth_track_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in truth_track_finder_args.items()}
+truth_track_finder_args_marlin["MCParticleCollectionName"] = ["MCParticles"]
 
 if args[0].native:
     from Configurables import TruthTrackFinder
