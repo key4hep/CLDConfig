@@ -28,7 +28,6 @@ truth_track_finder_args = {
     "SimTrackerHitRelCollectionNames": ["VXDTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
     "TrackerHitCollectionNames": ["VXDTrackerHits", "ITrackerHits", "OTrackerHits", "VXDEndcapTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
     "UseTruthInPrefit": False,
-    "OutputLevel": WARNING
 }
 # Change True to ["true"] and False to ["false"] if using MarlinProcessorWrapper
 truth_track_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in truth_track_finder_args.items()}
@@ -37,7 +36,8 @@ if args[0].native:
     from Configurables import TruthTrackFinder
     MyTruthTrackFinder = TruthTrackFinder(
         "TruthTrackFinder",
-        **truth_track_finder_args
+        **truth_track_finder_args,
+        OutputLevel=WARNING,
     )
 
 else:
