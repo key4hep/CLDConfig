@@ -32,7 +32,6 @@ refit_args = {
     "ReferencePoint": -1,
     "SmoothOn": False,
     "extrapolateForward": True,
-    "OutputLevel": WARNING,
 }
 
 refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in refit_args.items()}
@@ -44,7 +43,8 @@ if args[0].native:
 
     Refit = RefitFinal(
         "RefitFinal",
-        **refit_args
+        **refit_args,
+        OutputLevel=WARNING,
     )
 else:
     from Configurables import MarlinProcessorWrapper
