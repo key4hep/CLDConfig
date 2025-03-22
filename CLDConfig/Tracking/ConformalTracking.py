@@ -274,6 +274,9 @@ conformal_tracking_args = {
 conformal_tracking_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in conformal_tracking_args.items()}
 conformal_tracking_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in conformal_tracking_args_marlin.items()}
 
+# Not implemented in Gaudi
+conformal_tracking_args.pop("DebugHits")
+
 conformal_tracking_args.pop("Steps")
 conformal_tracking_args["stepCollections"] = collections
 conformal_tracking_args["stepParametersNames"] = names
