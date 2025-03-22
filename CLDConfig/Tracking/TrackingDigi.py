@@ -28,7 +28,6 @@ vxd_barrel_digitiser_args = {
     "SimTrkHitRelCollection": ["VXDTrackerHitRelations"],
     "SubDetectorName": ["Vertex"],
     "TrackerHitCollectionName": ["VXDTrackerHits"],
-    "OutputLevel": WARNING,
 }
 
 vxd_endcap_digitiser_args = {
@@ -39,7 +38,6 @@ vxd_endcap_digitiser_args = {
     "SimTrkHitRelCollection": ["VXDEndcapTrackerHitRelations"],
     "SubDetectorName": ["Vertex"],
     "TrackerHitCollectionName": ["VXDEndcapTrackerHits"],
-    "OutputLevel": WARNING,
 }
 
 inner_planar_digi_processor_args = {
@@ -50,7 +48,6 @@ inner_planar_digi_processor_args = {
     "SimTrkHitRelCollection": ["InnerTrackerBarrelHitsRelations"],
     "SubDetectorName": ["InnerTrackers"],
     "TrackerHitCollectionName": ["ITrackerHits"],
-    "OutputLevel": WARNING,
 }
 
 inner_endcap_planar_digi_processor_args = {
@@ -61,7 +58,6 @@ inner_endcap_planar_digi_processor_args = {
     "SimTrkHitRelCollection": ["InnerTrackerEndcapHitsRelations"],
     "SubDetectorName": ["InnerTrackers"],
     "TrackerHitCollectionName": ["ITrackerEndcapHits"],
-    "OutputLevel": WARNING,
 }
 
 outer_planar_digi_processor_args = {
@@ -72,7 +68,6 @@ outer_planar_digi_processor_args = {
     "SimTrkHitRelCollection": ["OuterTrackerBarrelHitsRelations"],
     "SubDetectorName": ["OuterTrackers"],
     "TrackerHitCollectionName": ["OTrackerHits"],
-    "OutputLevel": WARNING,
 }
 
 outer_endcap_planar_digi_processor_args = {
@@ -83,7 +78,6 @@ outer_endcap_planar_digi_processor_args = {
     "SimTrkHitRelCollection": ["OuterTrackerEndcapHitsRelations"],
     "SubDetectorName": ["OuterTrackers"],
     "TrackerHitCollectionName": ["OTrackerEndcapHits"],
-    "OutputLevel": WARNING,
 }
 
 
@@ -106,28 +100,34 @@ if args[0].native:
 
     VXDBarrelDigitiser = DDPlanarDigi(
         "VXDBarrelDigitiser",
-        **vxd_barrel_digitiser_args
+        **vxd_barrel_digitiser_args,
+        OutputLevel=WARNING
     )
     VXDEndcapDigitiser = DDPlanarDigi(
         "VXDEndcapDigitiser",
-        **vxd_endcap_digitiser_args
+        **vxd_endcap_digitiser_args,
+        OutputLevel=WARNING
     )
     InnerPlanarDigiProcessor = DDPlanarDigi(
         "InnerPlanarDigiProcessor",
-        **inner_planar_digi_processor_args
+        **inner_planar_digi_processor_args,
+        OutputLevel=WARNING
     )
     InnerEndcapPlanarDigiProcessor = DDPlanarDigi(
         "InnerEndcapPlanarDigiProcessor",
-        **inner_endcap_planar_digi_processor_args
+        **inner_endcap_planar_digi_processor_args,
+        OutputLevel=WARNING
     )
     OuterPlanarDigiProcessor = DDPlanarDigi(
         "OuterPlanarDigiProcessor",
-        **outer_planar_digi_processor_args
+        **outer_planar_digi_processor_args,
+        OutputLevel=WARNING
     )
 
     OuterEndcapPlanarDigiProcessor = DDPlanarDigi(
         "OuterEndcapPlanarDigiProcessor",
-        **outer_endcap_planar_digi_processor_args
+        **outer_endcap_planar_digi_processor_args,
+        OutputLevel=WARNING
     )
 
 else:
