@@ -35,7 +35,7 @@ refit_args = {
 }
 
 refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in refit_args.items()}
-refit_args_marlin = {k: [str(v)] if isinstance(v, float) else v for k, v in refit_args_marlin.items()}
+refit_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in refit_args_marlin.items()}
 
 
 if args[0].native:
