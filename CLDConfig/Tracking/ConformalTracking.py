@@ -293,7 +293,6 @@ clones_and_split_tracks_finder_args = {
     "maxSignificanceTheta": 3.,
     "mergeSplitTracks": False,
     "minTrackPt": 1.,
-    "OutputLevel": WARNING,
 }
 
 clone_and_split_tracks_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in clones_and_split_tracks_finder_args.items()}
@@ -304,12 +303,14 @@ if args[0].native:
 
     MyConformalTracking = ConformalTracking(
         "ConformalTracking",
-        **conformal_tracking_args
+        **conformal_tracking_args,
+        OutputLevel=WARNING,
     )
 
     clones_and_split_tracks_finder = ClonesAndSplitTracksFinder(
         "ClonesAndSplitTracksFinder",
-        **clones_and_split_tracks_finder_args
+        **clones_and_split_tracks_finder_args,
+        OutputLevel=WARNING,
     )
 
 else:
