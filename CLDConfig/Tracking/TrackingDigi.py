@@ -26,7 +26,7 @@ vxd_barrel_digitiser_args = {
     "ResolutionV": [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
     "SimTrackerHitCollectionName": ["VertexBarrelCollection"],
     "SimTrkHitRelCollection": ["VXDTrackerHitRelations"],
-    "SubDetectorName": ["Vertex"],
+    "SubDetectorName": "Vertex",
     "TrackerHitCollectionName": ["VXDTrackerHits"],
 }
 
@@ -36,7 +36,7 @@ vxd_endcap_digitiser_args = {
     "ResolutionV": [0.003, 0.003, 0.003, 0.003, 0.003, 0.003],
     "SimTrackerHitCollectionName": ["VertexEndcapCollection"],
     "SimTrkHitRelCollection": ["VXDEndcapTrackerHitRelations"],
-    "SubDetectorName": ["Vertex"],
+    "SubDetectorName": "Vertex",
     "TrackerHitCollectionName": ["VXDEndcapTrackerHits"],
 }
 
@@ -46,7 +46,7 @@ inner_planar_digi_processor_args = {
     "ResolutionV": [0.09],
     "SimTrackerHitCollectionName": ["InnerTrackerBarrelCollection"],
     "SimTrkHitRelCollection": ["InnerTrackerBarrelHitsRelations"],
-    "SubDetectorName": ["InnerTrackers"],
+    "SubDetectorName": "InnerTrackers",
     "TrackerHitCollectionName": ["ITrackerHits"],
 }
 
@@ -56,7 +56,7 @@ inner_endcap_planar_digi_processor_args = {
     "ResolutionV": [0.005, 0.09, 0.09, 0.09, 0.09, 0.09, 0.09],
     "SimTrackerHitCollectionName": ["InnerTrackerEndcapCollection"],
     "SimTrkHitRelCollection": ["InnerTrackerEndcapHitsRelations"],
-    "SubDetectorName": ["InnerTrackers"],
+    "SubDetectorName": "InnerTrackers",
     "TrackerHitCollectionName": ["ITrackerEndcapHits"],
 }
 
@@ -66,7 +66,7 @@ outer_planar_digi_processor_args = {
     "ResolutionV": [0.09, 0.09, 0.09],
     "SimTrackerHitCollectionName": ["OuterTrackerBarrelCollection"],
     "SimTrkHitRelCollection": ["OuterTrackerBarrelHitsRelations"],
-    "SubDetectorName": ["OuterTrackers"],
+    "SubDetectorName": "OuterTrackers",
     "TrackerHitCollectionName": ["OTrackerHits"],
 }
 
@@ -76,23 +76,29 @@ outer_endcap_planar_digi_processor_args = {
     "ResolutionV": [0.09, 0.09, 0.09, 0.09, 0.09],
     "SimTrackerHitCollectionName": ["OuterTrackerEndcapCollection"],
     "SimTrkHitRelCollection": ["OuterTrackerEndcapHitsRelations"],
-    "SubDetectorName": ["OuterTrackers"],
+    "SubDetectorName": "OuterTrackers",
     "TrackerHitCollectionName": ["OTrackerEndcapHits"],
 }
 
 
 vxd_barrel_digitiser_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in vxd_barrel_digitiser_args.items()}
 vxd_barrel_digitiser_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in vxd_barrel_digitiser_args_marlin.items()}
+vxd_barrel_digitiser_args_marlin["SubDetectorName"] = [vxd_barrel_digitiser_args["SubDetectorName"]]
 vxd_endcap_digitiser_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in vxd_endcap_digitiser_args.items()}
 vxd_endcap_digitiser_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in vxd_endcap_digitiser_args_marlin.items()}
+vxd_endcap_digitiser_args_marlin["SubDetectorName"] = [vxd_endcap_digitiser_args["SubDetectorName"]]
 inner_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in inner_planar_digi_processor_args.items()}
 inner_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in inner_planar_digi_processor_args_marlin.items()}
+inner_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_planar_digi_processor_args["SubDetectorName"]]
 inner_endcap_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in inner_endcap_planar_digi_processor_args.items()}
 inner_endcap_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in inner_endcap_planar_digi_processor_args_marlin.items()}
+inner_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_endcap_planar_digi_processor_args["SubDetectorName"]]
 outer_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in outer_planar_digi_processor_args.items()}
 outer_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in outer_planar_digi_processor_args_marlin.items()}
+outer_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_planar_digi_processor_args["SubDetectorName"]]
 outer_endcap_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in outer_endcap_planar_digi_processor_args.items()}
 outer_endcap_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in outer_endcap_planar_digi_processor_args_marlin.items()}
+outer_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_endcap_planar_digi_processor_args["SubDetectorName"]]
 
 
 if args[0].native:
