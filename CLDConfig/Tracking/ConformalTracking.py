@@ -83,7 +83,7 @@ MyConformalTracking.Parameters = {
                                   }
 # EDM4hep to LCIO converter
 edmConvTool = EDM4hep2LcioTool("EDM4hep2Lcio")
-#edmConvTool.convertAll = True
+edmConvTool.convertAll = False
 # Next Step : do the conversion only for new collections
 edmConvTool.collNameMapping = {
     "VXDTrackerHits": "VXDTrackerHits",
@@ -99,7 +99,7 @@ edmConvTool.collNameMapping = {
     "InnerTrackerEndcapHitsRelations": "InnerTrackerEndcapHitsRelations",
     "OuterTrackerEndcapHitsRelations": "OuterTrackerEndcapHitsRelations"
 }
-edmConvTool.OutputLevel = DEBUG
+edmConvTool.OutputLevel = WARNING
 MyConformalTracking.EDM4hep2LcioTool = edmConvTool
 
 ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
