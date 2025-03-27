@@ -225,7 +225,7 @@ conformal_tracking_args = {
     "DebugHits": ["DebugHits"],
     "DebugPlots": False,
     "DebugTiming": False,
-    "MCParticleCollectionName": ["MCParticle"],
+    "MCParticleCollectionName": ["MCParticles"],
     "MaxHitInvertedFit": 0,
     "MinClustersOnTrackAfterFit": 3,
     "RelationsNames": ["VXDTrackerHitRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
@@ -273,6 +273,7 @@ conformal_tracking_args = {
 
 conformal_tracking_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in conformal_tracking_args.items()}
 conformal_tracking_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in conformal_tracking_args_marlin.items()}
+conformal_tracking_args_marlin["MCParticleCollectionName"] = ["MCParticle"],
 
 # Not implemented in Gaudi
 conformal_tracking_args.pop("DebugHits")
