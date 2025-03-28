@@ -136,7 +136,7 @@ for name, param_dict in parameters.items():
     marlin_parameters = []
     for i, (k, v) in enumerate(param_dict["params"].items()):
         marlin_parameters.extend([k, ":", f"{v};"])
-    
+
     marlin_flags = []
     for i in range(len(param_dict["flags"])):
         marlin_flags.append(f"{param_dict['flags'][i]}")
