@@ -22,204 +22,120 @@ from Configurables import MarlinProcessorWrapper
 
 # geoservice comes from the `global_vars` of the SequenceLoader
 if any(small_vtx in geoservice.detectors[0] for small_vtx in ["_o2_", "_o3_", "_o4_"]):
-    CT_MAX_DIST = "0.05;"  # semi-colon is important!
+    CT_MAX_DIST = 0.05
 elif "_o1_" in  geoservice.detectors[0]:
-    CT_MAX_DIST = "0.03;"  # semi-colon is important!
+    CT_MAX_DIST = 0.03
 else:
     raise RuntimeError("Unknown detector model to chose CT_MAX_DISTANCE")
 
 from k4FWCore.parseArgs import parser
 args = parser.parse_known_args()
 
-collections = [
-    ["VXDTrackerHits"],
-    ["VXDEndcapTrackerHits"],
-    ["VXDTrackerHits", "VXDEndcapTrackerHits"],
-    [],
-    ["ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
-    [
-        "VXDTrackerHits",
-        "VXDEndcapTrackerHits",
-        "ITrackerHits",
-        "OTrackerHits",
-        "ITrackerEndcapHits",
-        "OTrackerEndcapHits",
-    ],
-]
-params = [
-    [
-        "MaxCellAngle",
-        ":",
-        "0.01;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.01;",
-        "Chi2Cut",
-        ":",
-        "100;",
-        "MinClustersOnTrack",
-        ":",
-        "4;",
-        "MaxDistance",
-        ":",
-        CT_MAX_DIST,
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "10.0;",
-    ],
-    [
-        "MaxCellAngle",
-        ":",
-        "0.01;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.01;",
-        "Chi2Cut",
-        ":",
-        "100;",
-        "MinClustersOnTrack",
-        ":",
-        "4;",
-        "MaxDistance",
-        ":",
-        CT_MAX_DIST,
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "10.0;",
-    ],
-    [
-        "MaxCellAngle",
-        ":",
-        "0.05;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.05;",
-        "Chi2Cut",
-        ":",
-        "100;",
-        "MinClustersOnTrack",
-        ":",
-        "4;",
-        "MaxDistance",
-        ":",
-        CT_MAX_DIST,
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "10.0;",
-    ],
-    [
-        "MaxCellAngle",
-        ":",
-        "0.1;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.1;",
-        "Chi2Cut",
-        ":",
-        "2000;",
-        "MinClustersOnTrack",
-        ":",
-        "4;",
-        "MaxDistance",
-        ":",
-        CT_MAX_DIST,
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "10.0;",
-    ],
-    [
-        "MaxCellAngle",
-        ":",
-        "0.1;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.1;",
-        "Chi2Cut",
-        ":",
-        "2000;",
-        "MinClustersOnTrack",
-        ":",
-        "4;",
-        "MaxDistance",
-        ":",
-        CT_MAX_DIST,
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "1.0;",
-    ],
-    [
-        "MaxCellAngle",
-        ":",
-        "0.1;",
-        "MaxCellAngleRZ",
-        ":",
-        "0.1;",
-        "Chi2Cut",
-        ":",
-        "1000;",
-        "MinClustersOnTrack",
-        ":",
-        "5;",
-        "MaxDistance",
-        ":",
-        "0.015;",
-        "SlopeZRange",
-        "10.0;",
-        "HighPTCut",
-        "10.0;",
-    ],
-]
-flags = [
-    ["HighPTFit", "VertexToTracker"],
-    ["HighPTFit", "VertexToTracker"],
-    ["HighPTFit", "VertexToTracker", "RadialSearch"],
-    ["HighPTFit", "VertexToTracker", "RadialSearch"],
-    ["HighPTFit", "VertexToTracker", "RadialSearch"],
-    ["OnlyZSchi2cut", "RadialSearch"],
-]
-functions = [
-    [
-        "CombineCollections",
-        "BuildNewTracks",
-    ],
-    [
-        "CombineCollections",
-        "ExtendTracks",
-    ],
-    [
-        "CombineCollections",
-        "BuildNewTracks",
-    ],
-    [
-        "BuildNewTracks",
-        "SortTracks",
-    ],
-    [
-        "CombineCollections",
-        "ExtendTracks",
-    ],
-    [
-        "CombineCollections",
-        "BuildNewTracks",
-    ],
-]
+# The keys are simply a name are not passed to ConformalTracking
+parameters = {
+        "VXDBarrel": {
+            "collections": ["VXDTrackerHits"],
+            "params": {
+                "MaxCellAngle": 0.01,
+                "MaxCellAngleRZ": 0.01,
+                "Chi2Cut": 100,
+                "MinClustersOnTrack": 4,
+                "MaxDistance": CT_MAX_DIST,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 10.0,
+            },
+            "flags": ["HighPTFit", "VertexToTracker"],
+            "functions": ["CombineCollections", "BuildNewTracks"],
+        },
+        "VXDEncap": {
+            "collections": ["VXDEndcapTrackerHits"],
+            "params": {
+                "MaxCellAngle": 0.01,
+                "MaxCellAngleRZ": 0.01,
+                "Chi2Cut": 100,
+                "MinClustersOnTrack": 4,
+                "MaxDistance": CT_MAX_DIST,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 10.0,
+            },
+            "flags": ["HighPTFit", "VertexToTracker"],
+            "functions": ["CombineCollections", "ExtendTracks"],
+        },
+        "LowerCellAngle1": {
+            "collections": ["VXDTrackerHits", "VXDEndcapTrackerHits"],
+            "params": {
+                "MaxCellAngle": 0.05,
+                "MaxCellAngleRZ": 0.05,
+                "Chi2Cut": 100,
+                "MinClustersOnTrack": 4,
+                "MaxDistance": CT_MAX_DIST,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 10.0,
+            },
+            "flags": ["HighPTFit", "VertexToTracker", "RadialSearch"],
+            "functions": ["CombineCollections", "BuildNewTracks"],
+        },
+        "LowerCellAngle2": {
+            "collections": [],
+            "params": {
+                "MaxCellAngle": 0.1,
+                "MaxCellAngleRZ": 0.1,
+                "Chi2Cut": 2000,
+                "MinClustersOnTrack": 4,
+                "MaxDistance": CT_MAX_DIST,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 10.0,
+            },
+            "flags": ["HighPTFit", "VertexToTracker", "RadialSearch"],
+            "functions": ["BuildNewTracks", "SortTracks"],
+        },
+        "Tracker": {
+            "collections": ["ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
+            "params": {
+                "MaxCellAngle": 0.1,
+                "MaxCellAngleRZ": 0.1,
+                "Chi2Cut": 2000,
+                "MinClustersOnTrack": 4,
+                "MaxDistance": CT_MAX_DIST,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 1.0,
+            },
+            "flags": ["HighPTFit", "VertexToTracker", "RadialSearch"],
+            "functions": ["CombineCollections", "ExtendTracks"],
+        },
+        "Displaced": {
+            "collections": ["VXDTrackerHits", "VXDEndcapTrackerHits", "ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
+            "params": {
+                "MaxCellAngle": 0.1,
+                "MaxCellAngleRZ": 0.1,
+                "Chi2Cut": 1000,
+                "MinClustersOnTrack": 5,
+                "MaxDistance": 0.015,
+                "SlopeZRange": 10.0,
+                "HighPTCut": 10.0,
+            },
+            "flags": ["OnlyZSchi2cut", "RadialSearch"],
+            "functions": ["CombineCollections", "BuildNewTracks"],
+        },
+    }
 
-names = []
-values = []
-for ls in params:
-    current_names = []
-    current_values = []
-    ls = [x for x in ls if x != ":"]
-    for i in range(0, len(ls), 2):
-        current_names.append(ls[i])
-        current_values.append(float(ls[i + 1].replace(";", "")))
-    names.append(current_names)
-    values.append(current_values)
+collections = [elem["collections"] for elem in parameters.values()]
+names = [list(elem["params"].keys()) for elem in parameters.values()]
+values = [list(elem["params"].values()) for elem in parameters.values()]
+flags = [elem["flags"] for elem in parameters.values()]
+functions = [elem["functions"] for elem in parameters.values()]
+
+steps_marlin = []
+
+for name, param_dict in parameters.items():
+    current_step = [
+        f"[{name}]",
+        "@Collections", ":", ",".join(param_dict["collections"]),
+        "@Parameters", ":", *[f"{k}:{v};" for k, v in param_dict["params"].items()],
+        "@Flags", ":", ",".join(param_dict["flags"]),
+        "@Functions", ":", ",".join(param_dict["functions"]),
+    ]
+    steps_marlin.extend(current_step)
 
 conformal_tracking_args = {
     "DebugHits": ["DebugHits"],
@@ -232,39 +148,6 @@ conformal_tracking_args = {
     "RetryTooManyTracks": False,
     "SiTrackCollectionName": ["SiTracksCT"],
     "SortTreeResults": True,
-    "Steps":
-    [
-        "[VXDBarrel]",
-        "@Collections", ":", "VXDTrackerHits",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
-        "@Flags", ":", "HighPTFit,", "VertexToTracker",
-        "@Functions", ":", "CombineCollections,", "BuildNewTracks",
-        "[VXDEncap]",
-        "@Collections", ":", "VXDEndcapTrackerHits",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
-        "@Flags", ":", "HighPTFit,", "VertexToTracker",
-        "@Functions", ":", "CombineCollections,", "ExtendTracks",
-        "[LowerCellAngle1]",
-        "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.05;", "MaxCellAngleRZ", ":", "0.05;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
-        "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
-        "@Functions", ":", "CombineCollections,", "BuildNewTracks",
-        "[LowerCellAngle2]",
-        "@Collections", ":",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "2000;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
-        "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
-        "@Functions", ":", "BuildNewTracks,", "SortTracks",
-        "[Tracker]",
-        "@Collections", ":", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "2000;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "1.0;",
-        "@Flags", ":", "HighPTFit,", "VertexToTracker,", "RadialSearch",
-        "@Functions", ":", "CombineCollections,", "ExtendTracks",
-        "[Displaced]",
-        "@Collections", ":", "VXDTrackerHits,", "VXDEndcapTrackerHits,", "ITrackerHits,", "OTrackerHits,", "ITrackerEndcapHits,", "OTrackerEndcapHits",
-        "@Parameters", ":", "MaxCellAngle", ":", "0.1;", "MaxCellAngleRZ", ":", "0.1;", "Chi2Cut", ":", "1000;", "MinClustersOnTrack", ":", "5;", "MaxDistance", ":", "0.015;", "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
-        "@Flags", ":", "OnlyZSchi2cut,", "RadialSearch",
-        "@Functions", ":", "CombineCollections,", "BuildNewTracks"
-    ],
     "ThetaRange": 0.05,
     "TooManyTracks": 100000,
     "TrackerHitCollectionNames": ["VXDTrackerHits", "VXDEndcapTrackerHits", "ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
@@ -275,15 +158,17 @@ conformal_tracking_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) els
 conformal_tracking_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in conformal_tracking_args_marlin.items()}
 conformal_tracking_args_marlin["MCParticleCollectionName"] = ["MCParticle"],
 
-# Not implemented in Gaudi
-conformal_tracking_args.pop("DebugHits")
+if args[0].native:
+    # Not implemented in Gaudi
+    conformal_tracking_args.pop("DebugHits")
 
-conformal_tracking_args.pop("Steps")
-conformal_tracking_args["stepCollections"] = collections
-conformal_tracking_args["stepParametersNames"] = names
-conformal_tracking_args["stepParametersValues"] = values
-conformal_tracking_args["stepParametersFlags"] = flags
-conformal_tracking_args["stepParametersFunctions"] = functions
+    conformal_tracking_args["stepCollections"] = collections
+    conformal_tracking_args["stepParametersNames"] = names
+    conformal_tracking_args["stepParametersValues"] = values
+    conformal_tracking_args["stepParametersFlags"] = flags
+    conformal_tracking_args["stepParametersFunctions"] = functions
+else:
+    conformal_tracking_args_marlin["Steps"] = steps_marlin
 
 clones_and_split_tracks_finder_args = {
     "EnergyLossOn": True,
