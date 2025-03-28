@@ -128,12 +128,27 @@ functions = [elem["functions"] for elem in parameters.values()]
 steps_marlin = []
 
 for name, param_dict in parameters.items():
+    marlin_collections = []
+    for i in range(len(param_dict["collections"])):
+        marlin_collections.append(f"{param_dict['collections'][i]}")
+        if i < len(param_dict["collections"]) - 1:
+            marlin_collections.append(",")
+    marlin_flags = []
+    for i in range(len(param_dict["flags"])):
+        marlin_flags.append(f"{param_dict['flags'][i]}")
+        if i < len(param_dict["flags"]) - 1:
+            marlin_flags.append(",")
+    marlin_functions = []
+    for i in range(len(param_dict["functions"])):
+        marlin_functions.append(f"{param_dict['functions'][i]}")
+        if i < len(param_dict["functions"]) - 1:
+            marlin_functions.append(",")
     current_step = [
         f"[{name}]",
-        "@Collections", ":", ",".join(param_dict["collections"]),
+        "@Collections", ":", *marlin_collections,
         "@Parameters", ":", *[f"{k}:{v};" for k, v in param_dict["params"].items()],
-        "@Flags", ":", ",".join(param_dict["flags"]),
-        "@Functions", ":", ",".join(param_dict["functions"]),
+        "@Flags", ":", *marlin_flags,
+        "@Functions", ":", *marlin_functions,
     ]
     steps_marlin.extend(current_step)
 
