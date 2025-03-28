@@ -133,6 +133,10 @@ for name, param_dict in parameters.items():
         marlin_collections.append(f"{param_dict['collections'][i]}")
         if i < len(param_dict["collections"]) - 1:
             marlin_collections.append(",")
+    marlin_parameters = []
+    for i, (k, v) in enumerate(param_dict["params"].items()):
+        marlin_parameters.extend([k, ":", f"{v};"])
+    
     marlin_flags = []
     for i in range(len(param_dict["flags"])):
         marlin_flags.append(f"{param_dict['flags'][i]}")
@@ -146,7 +150,7 @@ for name, param_dict in parameters.items():
     current_step = [
         f"[{name}]",
         "@Collections", ":", *marlin_collections,
-        "@Parameters", ":", *[f"{k}:{v};" for k, v in param_dict["params"].items()],
+        "@Parameters", ":", *marlin_parameters,
         "@Flags", ":", *marlin_flags,
         "@Functions", ":", *marlin_functions,
     ]
