@@ -19,6 +19,7 @@
 from Gaudi.Configuration import WARNING
 from Configurables import MarlinProcessorWrapper
 
+import sys
 
 MyDDCaloDigiParameters = {
                                 "Histograms": ["0"],
@@ -93,40 +94,40 @@ MyDDCaloDigiParameters = {
                                 "HCALTimeResolution": ["10"],
 }
 
-MyDDCaloDigi = {}
 
-MyDDCaloDigi["10ns"] = MarlinProcessorWrapper("MyDDCaloDigi_10ns")
-MyDDCaloDigi["10ns"].OutputLevel = WARNING
-MyDDCaloDigi["10ns"].ProcessorType = "DDCaloDigi"
-MyDDCaloDigi["10ns"].Parameters = MyDDCaloDigiParameters.copy()
-MyDDCaloDigi["10ns"].Parameters |= {
-                                "CalibrECAL": ["37.5227197175", "37.5227197175"],
-                                "ECALEndcapCorrectionFactor": ["1.03245503522"],
-                                "ECALBarrelTimeWindowMax": ["10"],
-                                "ECALEndcapTimeWindowMax": ["10"],
-                                "CalibrHCALBarrel": ["45.9956826061"],
-                                "CalibrHCALEndcap": ["46.9252540291"],
-                                "CalibrHCALOther": ["57.4588011802"],
-                                "HCALBarrelTimeWindowMax": ["10"],
-                                "HCALEndcapTimeWindowMax": ["10"],
-                                }
+MyDDCaloDigi = MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")
+MyDDCaloDigi.OutputLevel = WARNING
+MyDDCaloDigi.ProcessorType = "DDCaloDigi"
+MyDDCaloDigi.Parameters = MyDDCaloDigiParameters.copy()
 
-MyDDCaloDigi["400ns"] = MarlinProcessorWrapper("MyDDCaloDigi_400ns")
-MyDDCaloDigi["400ns"].OutputLevel = WARNING
-MyDDCaloDigi["400ns"].ProcessorType = "DDCaloDigi"
-MyDDCaloDigi["400ns"].Parameters = MyDDCaloDigiParameters.copy()
-MyDDCaloDigi["400ns"].Parameters |= {
-                                 "CalibrECAL": ["37.4591745147", "37.4591745147"],
-                                 "ECALEndcapCorrectionFactor": ["1.01463983425"],
-                                 "ECALBarrelTimeWindowMax": ["400"],
-                                 "ECALEndcapTimeWindowMax": ["400"],
-                                 "CalibrHCALBarrel": ["42.544403752"],
-                                 "CalibrHCALEndcap": ["42.9667604345"],
-                                 "CalibrHCALOther": ["51.3503963688"],
-                                 "HCALBarrelTimeWindowMax": ["400"],
-                                 "HCALEndcapTimeWindowMax": ["400"],
-                                 }
+if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
+    MyDDCaloDigi.Parameters |= {
+                            "CalibrECAL": ["37.5227197175", "37.5227197175"],
+                            "ECALEndcapCorrectionFactor": ["1.03245503522"],
+                            "ECALBarrelTimeWindowMax": ["10"],
+                            "ECALEndcapTimeWindowMax": ["10"],
+                            "CalibrHCALBarrel": ["45.9956826061"],
+                            "CalibrHCALEndcap": ["46.9252540291"],
+                            "CalibrHCALOther": ["57.4588011802"],
+                            "HCALBarrelTimeWindowMax": ["10"],
+                            "HCALEndcapTimeWindowMax": ["10"],
+                            }
 
-CaloDigiSequence = [
-    MyDDCaloDigi[CONFIG["CalorimeterIntegrationTimeWindow"]]
-]
+elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
+    MyDDCaloDigi.Parameters |= {
+                            "CalibrECAL": ["37.4591745147", "37.4591745147"],
+                            "ECALEndcapCorrectionFactor": ["1.01463983425"],
+                            "ECALBarrelTimeWindowMax": ["400"],
+                            "ECALEndcapTimeWindowMax": ["400"],
+                            "CalibrHCALBarrel": ["42.544403752"],
+                            "CalibrHCALEndcap": ["42.9667604345"],
+                            "CalibrHCALOther": ["51.3503963688"],
+                            "HCALBarrelTimeWindowMax": ["400"],
+                            "HCALEndcapTimeWindowMax": ["400"],
+                            }
+else:
+    print(f"The value {CONFIG['CalorimeterIntegrationTimeWindow']} "
+          "for the calorimeter integration time window is not a valid choice")
+    sys.exit(1)
+
+CaloDigiSequence = [MyDDCaloDigi]
