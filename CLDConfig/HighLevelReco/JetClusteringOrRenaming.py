@@ -20,31 +20,32 @@ from Gaudi.Configuration import WARNING
 from Configurables import MarlinProcessorWrapper
 
 
-RenameCollection = MarlinProcessorWrapper("RenameCollection")
-RenameCollection.OutputLevel = WARNING
-RenameCollection.ProcessorType = "MergeCollections"
-RenameCollection.Parameters = {
-                               "CollectionParameterIndex": ["0"],
-                               "InputCollectionIDs": ["0"],
-                               "InputCollections": ["PandoraPFOs"],
-                               "OutputCollection": ["PFOsFromJets"]
-                               }
-
-MyFastJetProcessor = MarlinProcessorWrapper("MyFastJetProcessor")
-MyFastJetProcessor.OutputLevel = WARNING
-MyFastJetProcessor.ProcessorType = "FastJetProcessor"
-MyFastJetProcessor.Parameters = {
-                                 "algorithm": ["ValenciaPlugin", "1.2", "1.0", "0.7"],
-                                 "clusteringMode": ["ExclusiveNJets", "2"],
-                                 "jetOut": ["JetsAfterGamGamRemoval"],
-                                 "recParticleIn": ["TightSelectedPandoraPFOs"],
-                                 "recParticleOut": ["PFOsFromJets"],
-                                 "recombinationScheme": ["E_scheme"],
-                                 "storeParticlesInJets": ["true"]
-                                 }
-
-JetClusteringOrRenamingSequence = []
 if CONFIG["Overlay"] == "False":
-    JetClusteringOrRenamingSequence.append(RenameCollection)
+    RenameCollection = MarlinProcessorWrapper("RenameCollection")
+    RenameCollection.OutputLevel = WARNING
+    RenameCollection.ProcessorType = "MergeCollections"
+    RenameCollection.Parameters = {
+                                "CollectionParameterIndex": ["0"],
+                                "InputCollectionIDs": ["0"],
+                                "InputCollections": ["PandoraPFOs"],
+                                "OutputCollection": ["PFOsFromJets"]
+                                }
+
 else:
-    JetClusteringOrRenamingSequence.append(MyFastJetProcessor)
+    MyFastJetProcessor = MarlinProcessorWrapper("MyFastJetProcessor")
+    MyFastJetProcessor.OutputLevel = WARNING
+    MyFastJetProcessor.ProcessorType = "FastJetProcessor"
+    MyFastJetProcessor.Parameters = {
+                                    "algorithm": ["ValenciaPlugin", "1.2", "1.0", "0.7"],
+                                    "clusteringMode": ["ExclusiveNJets", "2"],
+                                    "jetOut": ["JetsAfterGamGamRemoval"],
+                                    "recParticleIn": ["TightSelectedPandoraPFOs"],
+                                    "recParticleOut": ["PFOsFromJets"],
+                                    "recombinationScheme": ["E_scheme"],
+                                    "storeParticlesInJets": ["true"]
+                                    }
+
+if CONFIG["Overlay"] == "False":
+    JetClusteringOrRenamingSequence = [RenameCollection]
+else:
+    JetClusteringOrRenamingSequence = [MyFastJetProcessor]
