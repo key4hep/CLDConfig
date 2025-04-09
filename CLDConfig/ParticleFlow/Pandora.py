@@ -19,6 +19,8 @@
 from Gaudi.Configuration import WARNING
 from Configurables import MarlinProcessorWrapper
 
+import sys
+
 
 MyDDMarlinPandoraParameters = {
                                      "FinalEnergyDensityBin": ["110."],
@@ -104,50 +106,51 @@ MyDDMarlinPandoraParameters = {
                                      "StripSplittingOn": ["0"],
 }
 
-MyDDMarlinPandora = {}
+MyDDMarlinPandora = MarlinProcessorWrapper(f"MyDDMarlinPandora_{CONFIG['CalorimeterIntegrationTimeWindow']}")
+MyDDMarlinPandora.OutputLevel = WARNING
+MyDDMarlinPandora.ProcessorType = "DDPandoraPFANewProcessor"
+MyDDMarlinPandora.Parameters = MyDDMarlinPandoraParameters.copy()
 
-MyDDMarlinPandora["10ns"] = MarlinProcessorWrapper("MyDDMarlinPandora_10ns")
-MyDDMarlinPandora["10ns"].OutputLevel = WARNING
-MyDDMarlinPandora["10ns"].ProcessorType = "DDPandoraPFANewProcessor"
-MyDDMarlinPandora["10ns"].Parameters = MyDDMarlinPandoraParameters.copy()
-MyDDMarlinPandora["10ns"].Parameters |= {
-                                     "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault.xml"],
-                                     "SoftwareCompensationWeights": ["2.40821", "-0.0515852", "0.000711414", "-0.0254891", "-0.0121505", "-1.63084e-05", "0.062149", "0.0690735", "-0.223064"],
-                                     "ECalToMipCalibration": ["175.439"],
-                                     "HCalToMipCalibration": ["45.6621"],
-                                     "ECalMipThreshold": ["0.5"],
-                                     "HCalMipThreshold": ["0.3"],
-                                     "ECalToEMGeVCalibration": ["1.01776966108"],
-                                     "HCalToEMGeVCalibration": ["1.01776966108"],
-                                     "ECalToHadGeVCalibrationBarrel": ["1.11490774181"],
-                                     "ECalToHadGeVCalibrationEndCap": ["1.11490774181"],
-                                     "HCalToHadGeVCalibration": ["1.00565042407"],
-                                     "MuonToMipCalibration": ["20703.9"],
-                                     "DigitalMuonHits": ["0"],
-                                     "MaxHCalHitHadronicEnergy": ["10000000."],
-                                     }
+if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
 
-MyDDMarlinPandora["400ns"] = MarlinProcessorWrapper("MyDDMarlinPandora_400ns")
-MyDDMarlinPandora["400ns"].OutputLevel = WARNING
-MyDDMarlinPandora["400ns"].ProcessorType = "DDPandoraPFANewProcessor"
-MyDDMarlinPandora["400ns"].Parameters = MyDDMarlinPandoraParameters.copy()
-MyDDMarlinPandora["400ns"].Parameters |= {
-                                      "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault_400nsCalTimeWindow.xml"],
-                                      "SoftwareCompensationWeights": ["2.43375", "-0.0430951", "0.000244914", "-0.145478", "-0.00044577", "-8.37222e-05", "0.237484", "0.243491", "-0.0713701"],
-                                      "ECalToMipCalibration": ["175.439"],
-                                      "HCalToMipCalibration": ["49.7512"],
-                                      "ECalMipThreshold": ["0.5"],
-                                      "HCalMipThreshold": ["0.3"],
-                                      "ECalToEMGeVCalibration": ["1.02513816926"],
-                                      "HCalToEMGeVCalibration": ["1.02513816926"],
-                                      "ECalToHadGeVCalibrationBarrel": ["1.07276660331"],
-                                      "ECalToHadGeVCalibrationEndCap": ["1.07276660331"],
-                                      "HCalToHadGeVCalibration": ["1.01147686143"],
-                                      "MuonToMipCalibration": ["20703.9"],
-                                      "DigitalMuonHits": ["0"],
-                                      "MaxHCalHitHadronicEnergy": ["10000000."],
-                                      }
+    MyDDMarlinPandora.Parameters |= {
+                                "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault.xml"],
+                                "SoftwareCompensationWeights": ["2.40821", "-0.0515852", "0.000711414", "-0.0254891", "-0.0121505", "-1.63084e-05", "0.062149", "0.0690735", "-0.223064"],
+                                "ECalToMipCalibration": ["175.439"],
+                                "HCalToMipCalibration": ["45.6621"],
+                                "ECalMipThreshold": ["0.5"],
+                                "HCalMipThreshold": ["0.3"],
+                                "ECalToEMGeVCalibration": ["1.01776966108"],
+                                "HCalToEMGeVCalibration": ["1.01776966108"],
+                                "ECalToHadGeVCalibrationBarrel": ["1.11490774181"],
+                                "ECalToHadGeVCalibrationEndCap": ["1.11490774181"],
+                                "HCalToHadGeVCalibration": ["1.00565042407"],
+                                "MuonToMipCalibration": ["20703.9"],
+                                "DigitalMuonHits": ["0"],
+                                "MaxHCalHitHadronicEnergy": ["10000000."],
+                                }
 
-PandoraSequence = [
-    MyDDMarlinPandora[CONFIG["CalorimeterIntegrationTimeWindow"]]
-]
+elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
+
+    MyDDMarlinPandora.Parameters |= {
+                               "PandoraSettingsXmlFile": ["PandoraSettingsCLD/PandoraSettingsDefault_400nsCalTimeWindow.xml"],
+                               "SoftwareCompensationWeights": ["2.43375", "-0.0430951", "0.000244914", "-0.145478", "-0.00044577", "-8.37222e-05", "0.237484", "0.243491", "-0.0713701"],
+                               "ECalToMipCalibration": ["175.439"],
+                               "HCalToMipCalibration": ["49.7512"],
+                               "ECalMipThreshold": ["0.5"],
+                               "HCalMipThreshold": ["0.3"],
+                               "ECalToEMGeVCalibration": ["1.02513816926"],
+                               "HCalToEMGeVCalibration": ["1.02513816926"],
+                               "ECalToHadGeVCalibrationBarrel": ["1.07276660331"],
+                               "ECalToHadGeVCalibrationEndCap": ["1.07276660331"],
+                               "HCalToHadGeVCalibration": ["1.01147686143"],
+                               "MuonToMipCalibration": ["20703.9"],
+                               "DigitalMuonHits": ["0"],
+                               "MaxHCalHitHadronicEnergy": ["10000000."],
+                               }
+else:
+    print(f"The value {CONFIG['CalorimeterIntegrationTimeWindow']} "
+          "for the calorimeter integration time window is not a valid choice")
+    sys.exit(1)
+
+PandoraSequence = [MyDDMarlinPandora]
