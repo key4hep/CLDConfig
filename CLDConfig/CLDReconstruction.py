@@ -35,6 +35,8 @@ parser_group.add_argument("--inputFiles", action="store", nargs="+", metavar=("f
 parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
+parser_group.add_argument("--enableMLJetTagger", action="store_true", help="Enable ML-based jet flavor tagging", default=False)
+parser_group.add_argument("--MLJetTaggerModel", action="store", help="Type of ML model to use for inference", type=str, default="model_ParT_ecm240_cld_o2_v5")
 parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
 tracking_group = parser_group.add_mutually_exclusive_group()
