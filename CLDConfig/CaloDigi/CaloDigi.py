@@ -160,7 +160,7 @@ if reco_args.native:
                     )
             )
 else:
-    MyDDCaloDigi.Parameters |= toMarlinDict(parameters_10ns)
+    MyDDCaloDigi[0].Parameters |= toMarlinDict(parameters_10ns)
 
 
 CaloDigiSequence = MyDDCaloDigi
