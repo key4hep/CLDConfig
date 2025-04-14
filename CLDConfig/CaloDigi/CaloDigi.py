@@ -132,7 +132,7 @@ else:
     MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
     MyDDCaloDigi[0].OutputLevel = WARNING
     MyDDCaloDigi[0].ProcessorType = "DDCaloDigi"
-    MyDDCaloDigi[0].Parameters = MyDDCaloDigiParameters
+    MyDDCaloDigi[0].Parameters = toMarlinDict(MyDDCaloDigiParameters)
 
 
 if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
