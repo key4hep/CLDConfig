@@ -18,6 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from Configurables import MarlinProcessorWrapper, DDCaloDigi
+from py_utils import toMarlinDict
 
 import sys
 
