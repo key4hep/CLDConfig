@@ -240,4 +240,4 @@ def toMarlinDict(dict: Dict[str, Any]) -> Dict[str, Any]:
         Dict[str, Any]: The converted dictionary.
     """
 
-    return {k: [str(v).lower()] if isinstance(v, bool) else [str(elem) for elem in v] if isinstance(v, list) else [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in dict.items()}
+    return {k: [str(v).lower()] if isinstance(v, bool) else [str(elem) for elem in v] if isinstance(v, list) else [str(v)] if isinstance(v, float) or isinstance(v, int) else [v] if isinstance(v, str) else v for k, v in dict.items()}
