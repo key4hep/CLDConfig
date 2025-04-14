@@ -18,6 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
+from py_utils import toMarlinDict
 args = parser.parse_known_args()
 
 vxd_barrel_digitiser_args = {
@@ -81,28 +82,22 @@ outer_endcap_planar_digi_processor_args = {
 }
 
 
-vxd_barrel_digitiser_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in vxd_barrel_digitiser_args.items()}
-vxd_barrel_digitiser_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in vxd_barrel_digitiser_args_marlin.items()}
+vxd_barrel_digitiser_args_marlin = toMarlinDict(vxd_barrel_digitiser_args)
 vxd_barrel_digitiser_args_marlin["SubDetectorName"] = [vxd_barrel_digitiser_args["SubDetectorName"]]
 
-vxd_endcap_digitiser_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in vxd_endcap_digitiser_args.items()}
-vxd_endcap_digitiser_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in vxd_endcap_digitiser_args_marlin.items()}
+vxd_endcap_digitiser_args_marlin = toMarlinDict(vxd_endcap_digitiser_args)
 vxd_endcap_digitiser_args_marlin["SubDetectorName"] = [vxd_endcap_digitiser_args["SubDetectorName"]]
 
-inner_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in inner_planar_digi_processor_args.items()}
-inner_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in inner_planar_digi_processor_args_marlin.items()}
+inner_planar_digi_processor_args_marlin = toMarlinDict(inner_planar_digi_processor_args)
 inner_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_planar_digi_processor_args["SubDetectorName"]]
 
-inner_endcap_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in inner_endcap_planar_digi_processor_args.items()}
-inner_endcap_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in inner_endcap_planar_digi_processor_args_marlin.items()}
+inner_endcap_planar_digi_processor_args_marlin = toMarlinDict(inner_endcap_planar_digi_processor_args)
 inner_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_endcap_planar_digi_processor_args["SubDetectorName"]]
 
-outer_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in outer_planar_digi_processor_args.items()}
-outer_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in outer_planar_digi_processor_args_marlin.items()}
+outer_planar_digi_processor_args_marlin = toMarlinDict(outer_planar_digi_processor_args)
 outer_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_planar_digi_processor_args["SubDetectorName"]]
 
-outer_endcap_planar_digi_processor_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in outer_endcap_planar_digi_processor_args.items()}
-outer_endcap_planar_digi_processor_args_marlin = {k: [str(elem) for elem in v] if isinstance(v, list) else v for k, v in outer_endcap_planar_digi_processor_args_marlin.items()}
+outer_endcap_planar_digi_processor_args_marlin = toMarlinDict(outer_endcap_planar_digi_processor_args)
 outer_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_endcap_planar_digi_processor_args["SubDetectorName"]]
 
 

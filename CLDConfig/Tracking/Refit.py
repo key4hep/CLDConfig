@@ -18,6 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
+from py_utils import toMarlinDict
 args = parser.parse_known_args()
 
 refit_args = {
@@ -37,9 +38,7 @@ refit_args = {
 if args[0].native and not args[0].truthTracking:
     refit_args["InputRelationCollectionName"] = []
 
-refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in refit_args.items()}
-refit_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in refit_args_marlin.items()}
-
+refit_args_marlin = toMarlinDict(refit_args)
 
 if args[0].native:
     from Configurables import RefitFinal
