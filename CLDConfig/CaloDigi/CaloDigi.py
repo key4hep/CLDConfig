@@ -121,13 +121,13 @@ if reco_args.native:
     for key in ["Histograms", "RootFile", "ECAL_apply_realistic_digi", "HCAL_apply_realistic_digi"]:
         MyDDCaloDigiParameters.pop(key)
 else:
-    MyDDCaloDigiParameters["RelationOutputCollection"] = "RelationCaloHit"
+    MyDDCaloDigiParameters["RelationOutputCollection"] = ["RelationCaloHit"]
     MyDDCaloDigiParameters["ECALCollections"] = ECALCollections
     for i in range(len(ECALCollections)):
-        MyDDCaloDigiParameters[f"ECALOutputCollection{i}"] = ECALOutputCollections[i]
+        MyDDCaloDigiParameters[f"ECALOutputCollection{i}"] = [ECALOutputCollections[i]]
     MyDDCaloDigiParameters["HCALCollections"] = HCALCollections
     for i in range(len(HCALCollections)):
-        MyDDCaloDigiParameters[f"HCALOutputCollection{i}"] = HCALOutputCollections[i]
+        MyDDCaloDigiParameters[f"HCALOutputCollection{i}"] = [HCALOutputCollections[i]]
 
     MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
     MyDDCaloDigi[0].OutputLevel = WARNING
