@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
-from Configurables import JetTagger
+from Gaudi.Configuration import WARNING, INFO
+from Configurables import JetTagger, Lcio2EDM4hepTool, MarlinProcessorWrapper
 import yaml
 import os
 
@@ -54,6 +54,14 @@ if reco_args.enableMLJetTagger:
           f"at a center-of-mass energy of: \t {model_config[reco_args.MLJetTaggerModel]['ecm']} GeV\n",
           f"Comment: \t\t\t\t {model_config[reco_args.MLJetTaggerModel]['comment']}\n",
           f"Appending collections to the event: \t {', '.join(flavor_collection_names)}\n",)
+
+
+    # # convert the lcio collection "RefinedJetTags" to edm4hep
+    # lcio2edm4hepConv_jets = Lcio2EDM4hepTool("Lcio2EDM4hep")
+    # lcio2edm4hepConv_jets.convertAll = False
+    # lcio2edm4hepConv_jets.collNameMapping = {"RefinedVertexJets": "RefinedVertexJets"}
+
+    # JetClusteringAndRefiner.Lcio2EDM4hepTool = lcio2edm4hepConv_jets
 
     # create the MLJetTagger algorithm
 

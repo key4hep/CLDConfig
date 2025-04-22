@@ -19,10 +19,10 @@
 import os
 from Gaudi.Configuration import INFO, WARNING, DEBUG
 
-from Configurables import k4DataSvc, MarlinProcessorWrapper
+from Configurables import k4DataSvc, MarlinProcessorWrapper, Lcio2EDM4hepTool
 from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
 from k4FWCore.parseArgs import parser
-from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file
+from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file, attach_lcio2edm4hep_conversion_for_tagging
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -61,7 +61,7 @@ CONFIG = {
 
 REC_COLLECTION_CONTENTS_FILE = "collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 
-from Configurables import GeoSvc, TrackingCellIDEncodingSvc, Lcio2EDM4hepTool
+from Configurables import GeoSvc, TrackingCellIDEncodingSvc
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
@@ -146,7 +146,24 @@ if not reco_args.trackingOnly:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
     sequenceLoader.load("HighLevelReco/JetAndVertex")
+
+# jet-flavor tagging 
+if not reco_args.trackingOnly and reco_args.enableMLJetTagger:
+    # convert all lcio collections to edm4hep - tagger expects edm4hep collections
+
+    # Make sure that all collections are always available by patching in missing ones on-the-fly
+    collPatcher_4tagging = MarlinProcessorWrapper(
+        "CollPatcher_4tagging", OutputLevel=INFO, ProcessorType="PatchCollections"
+    )
+    collPatcher_4tagging.Parameters = {
+        "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
+    }
+    algList.append(collPatcher_4tagging)
+    # actual conversion
+    attach_lcio2edm4hep_conversion_for_tagging(algList)
+    # add the tagger
     sequenceLoader.load("HighLevelReco/MLJetTagger")
+
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
 

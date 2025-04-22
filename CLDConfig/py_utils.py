@@ -155,6 +155,23 @@ def attach_lcio2edm4hep_conversion(algList: list) -> None:
 
     alg.Lcio2EDM4hepTool = lcioConvTool
 
+def attach_lcio2edm4hep_conversion_for_tagging(algList: list) -> None:
+    """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList just before tagging, has the tagger expect edm4hep collections
+    """
+    # find last marlin wrapper
+    for alg in reversed(algList):
+        if isinstance(alg, MarlinProcessorWrapper):
+            break
+
+    from Configurables import Lcio2EDM4hepTool
+    lcioConvTool_4tagging = Lcio2EDM4hepTool("lcio2EDM4hep")
+    lcioConvTool_4tagging.convertAll = True
+    lcioConvTool_4tagging.collNameMapping = {
+        "MCParticle": "MCParticles",
+    }
+
+    alg.Lcio2EDM4hepTool = lcioConvTool_4tagging
+
 
 
 def _create_writer_lcio(writer_name: str, output_name: str, keep_list: Iterable = (), full_subset_list: Iterable = ()):
