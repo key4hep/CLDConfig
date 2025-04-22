@@ -17,16 +17,22 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import k4MLJetTagger
+from Configurables import JetTagger
 import yaml
+import os
 
 if reco_args.enableMLJetTagger:
     # check if jet clustering is also enabled (prerequisite for jet flavor tagging)
     if not reco_args.enableLCFIJet:
         raise ValueError("MLJetTagger requires LCFIPlus jet clustering to be enabled. Please add --enableLCFIJet to the command or disable --enableMLJetTagger.")
-    
-    # load yaml config about model types
-    with open("models_MLJetTagger.yaml", "r") as file:
+
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Construct the path to the YAML file
+    yaml_path = os.path.join(script_dir, "models_MLJetTagger.yaml")
+
+    # Load YAML config
+    with open(yaml_path, "r") as file:
         model_config = yaml.safe_load(file)
     
     # check if the model type is valid
@@ -39,6 +45,8 @@ if reco_args.enableMLJetTagger:
     flavor_collection_names = model_config[reco_args.MLJetTaggerModel]["flavor_collection_names"]
 
     # print out the model configuration
+    print("RUNNING JET TAGGING WITH MLJETTAGGER")
+
     print(f"Using MLJetTagger model: \t\t {reco_args.MLJetTaggerModel}\n",
           f"The model uses the architecture: \t {model_config[reco_args.MLJetTaggerModel]['model']}\n",
           f"was trained on the kinematics: \t {model_config[reco_args.MLJetTaggerModel]['kinematics']}\n",
