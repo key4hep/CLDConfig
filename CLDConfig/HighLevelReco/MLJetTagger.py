@@ -55,16 +55,7 @@ if reco_args.enableMLJetTagger:
           f"Comment: \t\t\t\t {model_config[reco_args.MLJetTaggerModel]['comment']}\n",
           f"Appending collections to the event: \t {', '.join(flavor_collection_names)}\n",)
 
-
-    # # convert the lcio collection "RefinedJetTags" to edm4hep
-    # lcio2edm4hepConv_jets = Lcio2EDM4hepTool("Lcio2EDM4hep")
-    # lcio2edm4hepConv_jets.convertAll = False
-    # lcio2edm4hepConv_jets.collNameMapping = {"RefinedVertexJets": "RefinedVertexJets"}
-
-    # JetClusteringAndRefiner.Lcio2EDM4hepTool = lcio2edm4hepConv_jets
-
     # create the MLJetTagger algorithm
-
     k4MLJetTagger = JetTagger("JetTagger",
                         model_path=onnx_model,
                         json_path=json_onnx_config,

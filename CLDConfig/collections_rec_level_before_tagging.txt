@@ -48,13 +48,6 @@
      PrimaryVertices                                    Vertex
      PrimaryVertices_RP                                 ReconstructedParticle
      RecoMCTruthLink                                    LCRelation[ReconstructedParticle,MCParticle]
-     RefinedJetTag_B                                    ParticleID  
-     RefinedJetTag_C                                    ParticleID  
-     RefinedJetTag_D                                    ParticleID  
-     RefinedJetTag_G                                    ParticleID  
-     RefinedJetTag_S                                    ParticleID  
-     RefinedJetTag_TAU                                  ParticleID  
-     RefinedJetTag_U                                    ParticleID 
      RefinedVertex                                      RefinedVertexJets|SingleVertexProbability
      RefinedVertexJets                                  ReconstructedParticle
      RefinedVertexJets_rel                              LCRelation[ReconstructedParticle,Vertex]

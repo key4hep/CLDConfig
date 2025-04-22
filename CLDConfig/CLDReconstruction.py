@@ -58,7 +58,7 @@ CONFIG = {
              "OutputMode": "EDM4Hep",
              "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
 }
-
+REC_COLLECTION_CONTENTS_FILE_TAGGING = "collections_rec_level_before_tagging.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 REC_COLLECTION_CONTENTS_FILE = "collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 
 from Configurables import GeoSvc, TrackingCellIDEncodingSvc
@@ -156,7 +156,7 @@ if not reco_args.trackingOnly and reco_args.enableMLJetTagger:
         "CollPatcher_4tagging", OutputLevel=INFO, ProcessorType="PatchCollections"
     )
     collPatcher_4tagging.Parameters = {
-        "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
+        "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE_TAGGING)
     }
     algList.append(collPatcher_4tagging)
     # actual conversion
