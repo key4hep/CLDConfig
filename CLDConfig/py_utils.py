@@ -23,7 +23,7 @@ import importlib.abc
 from importlib.machinery import SourceFileLoader
 from Configurables import PodioOutput, MarlinProcessorWrapper
 from typing import Iterable
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import WARNING, DEBUG
 
 
 def import_from(
@@ -156,7 +156,7 @@ def attach_lcio2edm4hep_conversion(algList: list) -> None:
     alg.Lcio2EDM4hepTool = lcioConvTool
 
 def attach_lcio2edm4hep_conversion_for_tagging(algList: list) -> None:
-    """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList just before tagging, has the tagger expect edm4hep collections
+    """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList just before tagging, as the tagger expect edm4hep collections
     """
     # find last marlin wrapper
     for alg in reversed(algList):
@@ -202,11 +202,12 @@ def _create_writer_lcio(writer_name: str, output_name: str, keep_list: Iterable 
 
 def _create_writer_edm4hep(writer_name: str, output_name: str, keep_list: Iterable = ()):
     writer = PodioOutput(writer_name, filename = f"{output_name}.edm4hep.root")
+    writer.OutputLevel = DEBUG
 
     if keep_list:
         writer.outputCommands = ["drop *"] + [f"keep {col}" for col in keep_list]
     else:
-        writer.outputCommands = ["keep *"]
+        writer.outputCommands = ["keep *", "keep RefinedJetTag_B", "keep RefinedJetTag_C", "keep RefinedJetTag_U", "keep RefinedJetTag_G", "keep RefinedJetTag_S", "keep RefinedJetTag_TAU", "keep RefinedJetTag_D"]
 
     return writer
 

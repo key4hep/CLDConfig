@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING, INFO
+from Gaudi.Configuration import WARNING, INFO, DEBUG
 from Configurables import JetTagger, Lcio2EDM4hepTool, MarlinProcessorWrapper
 import yaml
 import os
@@ -63,6 +63,7 @@ if reco_args.enableMLJetTagger:
                         InputJets=["RefinedVertexJets"],
                         InputPrimaryVertices=["PrimaryVertices"],
                         OutputIDCollections=flavor_collection_names,
+                        OutputLevel=DEBUG,
                         )
 
     # append sequence to the algorithm list
