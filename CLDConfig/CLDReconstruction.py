@@ -19,10 +19,10 @@
 import os
 from Gaudi.Configuration import INFO, WARNING, DEBUG
 
-from Configurables import k4DataSvc, MarlinProcessorWrapper, Lcio2EDM4hepTool
-from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
+from Configurables import MarlinProcessorWrapper, Lcio2EDM4hepTool
 from k4FWCore.parseArgs import parser
-from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file, attach_lcio2edm4hep_conversion_for_tagging
+from k4FWCore import ApplicationMgr, IOSvc
+from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, attach_edm4hep2lcio_conversion, create_writer, parse_collection_patch_file, attach_lcio2edm4hep_conversion_for_tagging
 
 import ROOT
 ROOT.gROOT.SetBatch(True)
@@ -45,8 +45,14 @@ reco_args = parser.parse_known_args()[0]
 algList = []
 svcList = []
 
-evtsvc = k4DataSvc("EventDataSvc")
-svcList.append(evtsvc)
+if not reco_args.inputFiles:
+    print('WARNING: No input files specified, the CLD Reconstruction will fail')
+    reco_args.inputFiles = []
+
+io_svc = IOSvc("IOSvc")
+io_svc.Input = reco_args.inputFiles
+io_svc.Output = f"{reco_args.outputBasename}.edm4hep.root"
+svcList.append(io_svc)
 
 CONFIG = {
              "CalorimeterIntegrationTimeWindow": "10ns",
@@ -92,14 +98,6 @@ sequenceLoader = SequenceLoader(
                  "BEAM_SPOT_SIZES": BEAM_SPOT_SIZES,
                  },
 )
-
-if reco_args.inputFiles:
-    read = create_reader(reco_args.inputFiles, evtsvc)
-    read.OutputLevel = INFO
-    algList.append(read)
-else:
-    print('WARNING: No input files specified, the CLD Reconstruction will fail')
-    read = None
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
 MyAIDAProcessor.OutputLevel = WARNING
@@ -188,8 +186,10 @@ if CONFIG["OutputMode"] == "EDM4Hep":
     }
     algList.append(collPatcherRec)
 
-    Output_REC = create_writer("edm4hep", "Output_REC", f"{reco_args.outputBasename}_REC")
-    algList.append(Output_REC)
+    # keep all collections
+    io_svc.outputCommands = ["keep *"]
+
+    # FIXME: add option to write only selected collections with SVC
 
     # FIXME: needs https://github.com/key4hep/k4FWCore/issues/226
     # Output_DST = create_writer("edm4hep", "Output_DST", f"{reco_args.outputBasename}_DST", DST_KEEPLIST)
@@ -197,12 +197,12 @@ if CONFIG["OutputMode"] == "EDM4Hep":
 
 
 # We need to convert the inputs in case we have EDM4hep input
-attach_edm4hep2lcio_conversion(algList, read)
+attach_edm4hep2lcio_conversion(algList) # , read)
 
 # We need to convert the outputs in case we have EDM4hep output
 attach_lcio2edm4hep_conversion(algList)
 
-from Configurables import ApplicationMgr
+
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
                 EvtMax = 3, # Overridden by the --num-events switch to k4run

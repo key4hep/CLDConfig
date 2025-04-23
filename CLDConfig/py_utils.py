@@ -21,7 +21,7 @@ from typing import Union, Optional, Dict, Any, List
 import importlib.util
 import importlib.abc
 from importlib.machinery import SourceFileLoader
-from Configurables import PodioOutput, MarlinProcessorWrapper
+from Configurables import PodioOutput, MarlinProcessorWrapper, EDM4hep2LcioTool
 from typing import Iterable
 from Gaudi.Configuration import WARNING, DEBUG
 
@@ -132,7 +132,42 @@ class SequenceLoader:
         seq = getattr(seq_module, seq_name)
         self.alg_list.extend(seq)
 
+def create_reader(input_files, evtSvc):
+    # FIXME: from https://github.com/key4hep/k4MarlinWrapper/blob/main/k4MarlinWrapper/python/k4MarlinWrapper/inputReader.py#L24-L40 but adapt it to IOSvc
+    """Create the appropriate reader for the input files"""
+    if input_files[0].endswith(".slcio"):
+        if any(not f.endswith(".slcio") for f in input_files):
+            print("All input files need to have the same format (LCIO)")
+            sys.exit(1)
 
+        read = LcioEvent()
+        read.Files = input_files
+    else:
+        if any(not f.endswith(".root") for f in input_files):
+            print("All input files need to have the same format (EDM4hep)")
+            sys.exit(1)
+        read = PodioInput("PodioInput")
+        evtSvc.inputs = input_files
+
+    return read
+
+
+def attach_edm4hep2lcio_conversion(algList):
+    """Attach the edm4hep to lcio conversion if necessary e.g. when using create_reader. Should only be run after algList is complete."""
+    # if not isinstance(read, PodioInput):
+    #     # nothing to convert :)
+    #     return
+
+    # find first wrapper
+    for alg in algList:
+        if isinstance(alg, MarlinProcessorWrapper):
+            break
+
+    EDM4hep2LcioInput = EDM4hep2LcioTool("InputConversion")
+    EDM4hep2LcioInput.convertAll = True
+    # Adjust for the different naming conventions
+    EDM4hep2LcioInput.collNameMapping = {"MCParticles": "MCParticle"}
+    alg.EDM4hep2LcioTool = EDM4hep2LcioInput
 
 def attach_lcio2edm4hep_conversion(algList: list) -> None:
     """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList if necessary
@@ -202,12 +237,11 @@ def _create_writer_lcio(writer_name: str, output_name: str, keep_list: Iterable 
 
 def _create_writer_edm4hep(writer_name: str, output_name: str, keep_list: Iterable = ()):
     writer = PodioOutput(writer_name, filename = f"{output_name}.edm4hep.root")
-    writer.OutputLevel = DEBUG
 
     if keep_list:
         writer.outputCommands = ["drop *"] + [f"keep {col}" for col in keep_list]
     else:
-        writer.outputCommands = ["keep *", "keep RefinedJetTag_B", "keep RefinedJetTag_C", "keep RefinedJetTag_U", "keep RefinedJetTag_G", "keep RefinedJetTag_S", "keep RefinedJetTag_TAU", "keep RefinedJetTag_D"]
+        writer.outputCommands = ["keep *"]
 
     return writer
 
