@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import WARNING, DEBUG, INFO
 from Configurables import VTXdigitizerDetailed
 
 VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
@@ -27,8 +27,10 @@ VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
                                           readoutName = "VertexBarrelCollection",
                                           LocalNormalVectorDir = "x",
                                           tResolution = [0.,0.,0.,0.,0.,0.],
+                                          Threshold = 3000.0,
+                                          ThresholdSmearing = 35.0,
                                           forceHitsOntoSurface = False,
-                                          OutputLevel = WARNING,
+                                          OutputLevel = INFO,
                                           DebugHistos = True,
                                           DebugFileName = "Debug_VTXBarrelDigitizer.root"
                                           )
@@ -41,8 +43,10 @@ VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
                                           readoutName = "VertexEndcapCollection",
                                           LocalNormalVectorDir = "y",
                                           tResolution = [0.,0.,0.,0.,0.,0.],
+                                          Threshold = 3000.0,
+                                          ThresholdSmearing = 35.0,
                                           forceHitsOntoSurface = False,
-                                          OutputLevel = WARNING,
+                                          OutputLevel = INFO,
                                           DebugHistos = True,
                                           DebugFileName = "Debug_VTXEndcapDigitizer.root"
                                           )
@@ -55,8 +59,10 @@ InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer"
                                                    readoutName = "InnerTrackerBarrelCollection",
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [0.,0.,0.],
+                                                   Threshold = 3000.0,
+                                                   ThresholdSmearing = 35.0,
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING,
+                                                   OutputLevel = INFO,
                                                    DebugHistos = True,
                                                    DebugFileName = "Debug_InnerTrackerBarrelDigitizer.root"
                                                    )
@@ -69,8 +75,10 @@ InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer"
                                                    readoutName = "InnerTrackerEndcapCollection",
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [0.,0.,0.,0.,0.,0.,0.],
+                                                   Threshold = 3000.0,
+                                                   ThresholdSmearing = 35.0,
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING,
+                                                   OutputLevel = INFO,
                                                    DebugHistos = True,
                                                    DebugFileName = "Debug_InnerTrackerEndcapDigitizer.root"
                                                    )
@@ -83,8 +91,10 @@ OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer"
                                                    readoutName = "OuterTrackerBarrelCollection",
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [0.,0.,0.],
+                                                   Threshold = 3000.0,
+                                                   ThresholdSmearing = 35.0,
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING,
+                                                   OutputLevel = INFO,
                                                    DebugHistos = True,
                                                    DebugFileName = "Debug_OuterTrackerBarrelDigitizer.root"
                                                    )
@@ -97,8 +107,10 @@ OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer"
                                                    readoutName = "OuterTrackerEndcapCollection",
                                                    LocalNormalVectorDir = "z",
                                                    tResolution = [0.,0.,0.,0.],
+                                                   Threshold = 3000.0,
+                                                   ThresholdSmearing = 35.0,
                                                    forceHitsOntoSurface = False,
-                                                   OutputLevel = WARNING,
+                                                   OutputLevel = INFO,
                                                    DebugHistos = True,
                                                    DebugFileName = "Debug_OuterTrackerEndcapDigitizer.root"
                                                    )
