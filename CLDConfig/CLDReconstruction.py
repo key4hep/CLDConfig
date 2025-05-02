@@ -30,7 +30,8 @@ ROOT.gROOT.SetBatch(True)
 
 
 parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
-parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
+# Need the dummy input such that the IOHandlerHelper.add_reader call below does not crash when called with --help
+parser_group.add_argument("--inputFiles", action="store", nargs="+", metavar=("file1", "file2"), help="One or multiple input files", default=["dummy_input.edm4hep.root"])
 parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
@@ -94,7 +95,6 @@ sequenceLoader = SequenceLoader(
 )
 
 io_handler = IOHandlerHelper(algList, iosvc)
-# FIXME: breaks --help as inputFiles are empty
 io_handler.add_reader(reco_args.inputFiles)
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
