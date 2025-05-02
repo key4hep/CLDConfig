@@ -16,7 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
 from Configurables import JetTagger
 import yaml
 import os
@@ -34,7 +33,7 @@ if reco_args.enableMLJetTagger:
     # Load YAML config
     with open(yaml_path, "r") as file:
         model_config = yaml.safe_load(file)
-    
+
     # check if the model type is valid
     if reco_args.MLJetTaggerModel not in model_config:
         raise ValueError(f"Invalid model type '{reco_args.MLJetTaggerModel}'. Valid options are: {', '.join(model_config.keys())}.")
@@ -60,7 +59,7 @@ if reco_args.enableMLJetTagger:
     k4MLJetTagger = JetTagger("JetTagger",
                         model_path=onnx_model,
                         json_path=json_onnx_config,
-                        flavor_collection_names = flavor_collection_names, # to make sure the order and nameing is correct
+                        flavor_collection_names = flavor_collection_names, # to make sure the order and naming is correct
                         InputJets=["RefinedVertexJets"],
                         InputPrimaryVertices=["PrimaryVertices"],
                         OutputIDCollections=flavor_collection_names,
