@@ -146,6 +146,12 @@ if not reco_args.trackingOnly:
     sequenceLoader.load("HighLevelReco/MLJetTagger")
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
+from Configurables import EDM4hep2LcioTool
+input_conv = EDM4hep2LcioTool("EventNumber_InputConverter")
+input_conv.convertAll = True
+input_conv.collNameMapping = {"MCParticles": "MCParticle"}
+input_conv.OutputLevel = DEBUG
+EventNumber.EDM4hep2LcioTool = input_conv
 
 DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
 
