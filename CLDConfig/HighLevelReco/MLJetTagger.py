@@ -69,3 +69,5 @@ if reco_args.enableMLJetTagger:
     MLJetTaggerSequence = [
         k4MLJetTagger,
     ]
+else:
+    MLJetTaggerSequence = []
