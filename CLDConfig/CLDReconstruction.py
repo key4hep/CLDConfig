@@ -24,10 +24,6 @@ from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conve
 from k4FWCore.parseArgs import parser
 from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file
 
-import ROOT
-ROOT.gROOT.SetBatch(True)
-
-
 parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
 parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
 parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
