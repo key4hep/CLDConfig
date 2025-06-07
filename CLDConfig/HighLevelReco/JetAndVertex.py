@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import WARNING, INFO
 from Configurables import MarlinProcessorWrapper
 
 
@@ -135,6 +135,12 @@ if reco_args.enableLCFIJet:
                                         "UpdateVertexRPDaughters": ["0"],
                                         "UseMCP": ["0"]
                                         }
+    JetClusteringAndRefinerPatcher = MarlinProcessorWrapper(
+        "JetClusteringAndRefinerPatcher", OutputLevel=INFO, ProcessorType="PatchCollections"
+    )
+    JetClusteringAndRefinerPatcher.Parameters = {
+        "PatchCollections": ["yth", "VertexJets|y01,y12,y23,y34,y45,y56,y67,y78,y89,y910"]
+    }
 
 if CONFIG["VertexUnconstrained"] == "ON":
     VertexFinderUnconstrained = MarlinProcessorWrapper("VertexFinderUnconstrained")
@@ -192,13 +198,14 @@ if CONFIG["VertexUnconstrained"] == "ON":
                                             }
 
 JetAndVertexSequence = [
-    VertexFinder,
+    VertexFinder
 ]
 
 # FIXME: LCFIPlus causes occasional breakage: https://github.com/lcfiplus/LCFIPlus/issues/69
 # due to not adding the jet clustering parameters to every event as PID information
 if reco_args.enableLCFIJet:
     JetAndVertexSequence.append(JetClusteringAndRefiner)
+    JetAndVertexSequence.append(JetClusteringAndRefinerPatcher)
 
 if CONFIG["VertexUnconstrained"] == "ON":
     JetAndVertexSequence.append(VertexFinderUnconstrained)
