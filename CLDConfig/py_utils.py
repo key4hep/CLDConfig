@@ -21,9 +21,9 @@ from typing import Union, Optional, Dict, Any, List
 import importlib.util
 import importlib.abc
 from importlib.machinery import SourceFileLoader
-from Configurables import PodioOutput, MarlinProcessorWrapper
+from Configurables import PodioOutput, MarlinProcessorWrapper, EDM4hep2LcioTool
 from typing import Iterable
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import WARNING, DEBUG
 
 
 def import_from(
@@ -132,7 +132,42 @@ class SequenceLoader:
         seq = getattr(seq_module, seq_name)
         self.alg_list.extend(seq)
 
+def create_reader(input_files, evtSvc):
+    # FIXME: from https://github.com/key4hep/k4MarlinWrapper/blob/main/k4MarlinWrapper/python/k4MarlinWrapper/inputReader.py#L24-L40 but adapt it to IOSvc
+    """Create the appropriate reader for the input files"""
+    if input_files[0].endswith(".slcio"):
+        if any(not f.endswith(".slcio") for f in input_files):
+            print("All input files need to have the same format (LCIO)")
+            sys.exit(1)
 
+        read = LcioEvent()
+        read.Files = input_files
+    else:
+        if any(not f.endswith(".root") for f in input_files):
+            print("All input files need to have the same format (EDM4hep)")
+            sys.exit(1)
+        read = PodioInput("PodioInput")
+        evtSvc.inputs = input_files
+
+    return read
+
+
+def attach_edm4hep2lcio_conversion(algList):
+    """Attach the edm4hep to lcio conversion if necessary e.g. when using create_reader. Should only be run after algList is complete."""
+    # if not isinstance(read, PodioInput):
+    #     # nothing to convert :)
+    #     return
+
+    # find first wrapper
+    for alg in algList:
+        if isinstance(alg, MarlinProcessorWrapper):
+            break
+
+    EDM4hep2LcioInput = EDM4hep2LcioTool("InputConversion")
+    EDM4hep2LcioInput.convertAll = True
+    # Adjust for the different naming conventions
+    EDM4hep2LcioInput.collNameMapping = {"MCParticles": "MCParticle"}
+    alg.EDM4hep2LcioTool = EDM4hep2LcioInput
 
 def attach_lcio2edm4hep_conversion(algList: list) -> None:
     """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList if necessary
@@ -154,6 +189,23 @@ def attach_lcio2edm4hep_conversion(algList: list) -> None:
     }
 
     alg.Lcio2EDM4hepTool = lcioConvTool
+
+def attach_lcio2edm4hep_conversion_for_tagging(algList: list) -> None:
+    """Attaches a conversion from lcio to edm4hep at the last MarlinWrapper in algList just before tagging, as the tagger expect edm4hep collections
+    """
+    # find last marlin wrapper
+    for alg in reversed(algList):
+        if isinstance(alg, MarlinProcessorWrapper):
+            break
+
+    from Configurables import Lcio2EDM4hepTool
+    lcioConvTool_4tagging = Lcio2EDM4hepTool("lcio2EDM4hep")
+    lcioConvTool_4tagging.convertAll = True
+    lcioConvTool_4tagging.collNameMapping = {
+        "MCParticle": "MCParticles",
+    }
+
+    alg.Lcio2EDM4hepTool = lcioConvTool_4tagging
 
 
 
