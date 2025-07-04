@@ -19,16 +19,20 @@
 import os
 from Gaudi.Configuration import INFO, WARNING, DEBUG
 
-from Configurables import k4DataSvc, MarlinProcessorWrapper
-from k4MarlinWrapper.inputReader import create_reader, attach_edm4hep2lcio_conversion
+from Gaudi.Configurables import EventDataSvc, MarlinProcessorWrapper, GeoSvc, TrackingCellIDEncodingSvc
+from k4FWCore import ApplicationMgr, IOSvc
 from k4FWCore.parseArgs import parser
-from py_utils import SequenceLoader, attach_lcio2edm4hep_conversion, create_writer, parse_collection_patch_file
+from py_utils import SequenceLoader, parse_collection_patch_file
+from k4MarlinWrapper.io_helpers import IOHandlerHelper
 
 parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
-parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
+# Need the dummy input such that the IOHandlerHelper.add_reader call below does not crash when called with --help
+parser_group.add_argument("--inputFiles", action="store", nargs="+", metavar=("file1", "file2"), help="One or multiple input files", default=["dummy_input.edm4hep.root"])
 parser_group.add_argument("--outputBasename", help="Basename of the output file(s)", default="output")
 parser_group.add_argument("--trackingOnly", action="store_true", help="Run only track reconstruction", default=False)
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
+parser_group.add_argument("--enableMLJetTagger", action="store_true", help="Enable ML-based jet flavor tagging", default=False)
+parser_group.add_argument("--MLJetTaggerModel", action="store", help="Type of ML model to use for inference", type=str, default="model_ParT_ecm240_cld_o2_v5")
 parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
 tracking_group = parser_group.add_mutually_exclusive_group()
@@ -36,11 +40,12 @@ tracking_group.add_argument("--conformalTracking", action="store_true", default=
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
 reco_args = parser.parse_known_args()[0]
 
-algList = []
-svcList = []
 
-evtsvc = k4DataSvc("EventDataSvc")
-svcList.append(evtsvc)
+evtsvc = EventDataSvc("EventDataSvc")
+iosvc = IOSvc()
+
+svcList = [evtsvc, iosvc]
+algList = []
 
 CONFIG = {
              "CalorimeterIntegrationTimeWindow": "10ns",
@@ -55,7 +60,6 @@ CONFIG = {
 
 REC_COLLECTION_CONTENTS_FILE = "collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 
-from Configurables import GeoSvc, TrackingCellIDEncodingSvc, Lcio2EDM4hepTool
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
@@ -88,13 +92,8 @@ sequenceLoader = SequenceLoader(
                  },
 )
 
-if reco_args.inputFiles:
-    read = create_reader(reco_args.inputFiles, evtsvc)
-    read.OutputLevel = INFO
-    algList.append(read)
-else:
-    print('WARNING: No input files specified, the CLD Reconstruction will fail')
-    read = None
+io_handler = IOHandlerHelper(algList, iosvc)
+io_handler.add_reader(reco_args.inputFiles)
 
 MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
 MyAIDAProcessor.OutputLevel = WARNING
@@ -140,8 +139,15 @@ if not reco_args.trackingOnly:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
     sequenceLoader.load("HighLevelReco/JetAndVertex")
+    sequenceLoader.load("HighLevelReco/MLJetTagger")
 # event number processor, down here to attach the conversion back to edm4hep to it
 algList.append(EventNumber)
+from Configurables import EDM4hep2LcioTool
+input_conv = EDM4hep2LcioTool("EventNumber_InputConverter")
+input_conv.convertAll = True
+input_conv.collNameMapping = {"MCParticles": "MCParticle"}
+input_conv.OutputLevel = DEBUG
+EventNumber.EDM4hep2LcioTool = input_conv
 
 DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
 
@@ -149,10 +155,22 @@ DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsPa
 
 # TODO: replace all the ugly strings by something sensible like Enum
 if CONFIG["OutputMode"] == "LCIO":
-    Output_REC = create_writer("lcio", "Output_REC", f"{reco_args.outputBasename}_REC")
-    algList.append(Output_REC)
+    Output_REC = io_handler.add_lcio_writer("Output_REC")
+    Output_REC.Parameters = {
+        "LCIOOutputFile": [f"{reco_args.outputBasename}_REC.slcio"],
+        "LCIOWriteMode": ["WRITE_NEW"],
+    }
 
-    Output_DST = create_writer("lcio", "Output_DST", f"{reco_args.outputBasename}_DST", DST_KEEPLIST, DST_SUBSETLIST)
+    Output_DST = io_handler.add_lcio_writer("Output_DST")
+    dropped_types = ["MCParticle", "LCRelation", "SimCalorimeterHit", "CalorimeterHit", "SimTrackerHit", "TrackerHit", "TrackerHitPlane", "Track", "ReconstructedParticle", "LCFloatVec"]
+    Output_DST.Parameters = {
+        "LCIOOutputFile": [f"{reco_args.outputBasename}_DST.slcio"],
+        "LCIOWriteMode": ["WRITE_NEW"],
+        "DropCollectionNames": [],
+        "DropCollectionTypes": dropped_types,
+        "FullSubsetCollections": DST_SUBSETLIST,
+        "KeepCollectionNames": DST_KEEPLIST,
+    }
     algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
@@ -165,21 +183,14 @@ if CONFIG["OutputMode"] == "EDM4Hep":
     }
     algList.append(collPatcherRec)
 
-    Output_REC = create_writer("edm4hep", "Output_REC", f"{reco_args.outputBasename}_REC")
-    algList.append(Output_REC)
-
+    io_handler.add_edm4hep_writer(f"{reco_args.outputBasename}_REC.edm4hep.root", ["keep *"])
     # FIXME: needs https://github.com/key4hep/k4FWCore/issues/226
-    # Output_DST = create_writer("edm4hep", "Output_DST", f"{reco_args.outputBasename}_DST", DST_KEEPLIST)
-    # algList.append(Output_DST)
+    # <DST output for edm4hep>
 
 
-# We need to convert the inputs in case we have EDM4hep input
-attach_edm4hep2lcio_conversion(algList, read)
+# We need to attach all the necessary converters
+io_handler.finalize_converters()
 
-# We need to convert the outputs in case we have EDM4hep output
-attach_lcio2edm4hep_conversion(algList)
-
-from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
                 EvtMax = 3, # Overridden by the --num-events switch to k4run
