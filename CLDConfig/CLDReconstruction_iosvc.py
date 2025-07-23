@@ -135,7 +135,7 @@ sequenceLoader.load("Tracking/Refit")
 # # calorimeter digitization and pandora
 if not reco_args.trackingOnly:
     sequenceLoader.load("CaloDigi/CaloDigi")
-#     sequenceLoader.load("CaloDigi/MuonDigi")
+    sequenceLoader.load("CaloDigi/MuonDigi")
 #     sequenceLoader.load("ParticleFlow/Pandora")
 #     sequenceLoader.load("CaloDigi/LumiCal")
 # # monitoring and Reco to MCTruth linking
