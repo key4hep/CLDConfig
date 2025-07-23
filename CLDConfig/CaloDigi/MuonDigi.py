@@ -17,21 +17,28 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from py_utils import toMarlinDict
+from Configurables import DDSimpleMuonDigi
 
+MyDDSimpleMuonDigiParameters = {
+    "CalibrMUON": 70.1,
+    "MUONCollection": ["YokeBarrelCollection", "YokeEndcapCollection"],
+    "MUONOutputCollection": ["MUON"],
+    "MaxHitEnergyMUON": 2.0,
+    "MuonThreshold": 1e-06,
+    "RelationOutputCollection": ["RelationMuonHit"]
+}
 
-MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
-MyDDSimpleMuonDigi.OutputLevel = WARNING
-MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
-MyDDSimpleMuonDigi.Parameters = {
-                                 "CalibrMUON": ["70.1"],
-                                 "MUONCollections": ["YokeBarrelCollection", "YokeEndcapCollection"],
-                                 "MUONOutputCollection": ["MUON"],
-                                 "MaxHitEnergyMUON": ["2.0"],
-                                 "MuonThreshold": ["1e-06"],
-                                 "RelationOutputCollection": ["RelationMuonHit"]
-                                 }
-
+if reco_args.native:
+    MyDDSimpleMuonDigi = DDSimpleMuonDigi(**MyDDSimpleMuonDigiParameters)
+else:
+    from Configurables import MarlinProcessorWrapper
+    MyDDSimpleMuonDigiParameters["MUONCollections"] = MyDDSimpleMuonDigiParameters["MUONCollection"]
+    MyDDSimpleMuonDigiParameters["MUONOutputCollections"] = MyDDSimpleMuonDigiParameters["MUONOutputCollection"]
+    MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
+    MyDDSimpleMuonDigi.OutputLevel = WARNING
+    MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
+    MyDDSimpleMuonDigi.Parameters = toMarlinDict(MyDDSimpleMuonDigiParameters)
 MuonDigiSequence = [
     MyDDSimpleMuonDigi,
 ]
