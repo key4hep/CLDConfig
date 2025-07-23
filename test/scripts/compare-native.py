@@ -1,4 +1,6 @@
-# A simple script to compare the PFOs from the Gaudi and Marlin output
+#!/usr/bin/env python
+
+# A simple script to compare collections between the native and wrapped Marlin reconstruction output
 import argparse
 from podio.reading import get_reader
 
@@ -25,15 +27,15 @@ for i, frame_native in enumerate(events_native):
     frame_wrapped = events_wrapped[i]
     collections_native = set(frame_native.getAvailableCollections())
     collections_wrapped = set(frame_wrapped.getAvailableCollections())
-    missing = collections_native - collections_wrapped
-    extra = collections_wrapped - collections_native
+    extra = collections_native - collections_wrapped
+    missing = collections_wrapped - collections_native
     common = collections_native & collections_wrapped
     if missing:
-        print(f"Event {i}: Missing collections in wrapped: {missing}")
+        print(f"Event {i}: Missing collections in native: {missing}")
         if not missing.issubset(EXPECTED_MISSING):
             print("Unexpected missing collections found!")
     if extra:
-        print(f"Event {i}: Extra collections in wrapped: {extra}")
+        print(f"Event {i}: Extra collections in native: {extra}")
         if not extra.issubset(EXPECTED_EXTRA):
             print("Unexpected extra collections found!")
     are_sizes_different = False
