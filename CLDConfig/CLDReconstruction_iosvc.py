@@ -136,8 +136,8 @@ sequenceLoader.load("Tracking/Refit")
 if not reco_args.trackingOnly:
     sequenceLoader.load("CaloDigi/CaloDigi")
     sequenceLoader.load("CaloDigi/MuonDigi")
+    sequenceLoader.load("CaloDigi/LumiCal")
 #     sequenceLoader.load("ParticleFlow/Pandora")
-#     sequenceLoader.load("CaloDigi/LumiCal")
 # # monitoring and Reco to MCTruth linking
 # sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
 # sequenceLoader.load("Diagnostics/Tracking")
