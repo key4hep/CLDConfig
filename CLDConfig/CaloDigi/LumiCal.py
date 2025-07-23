@@ -57,6 +57,4 @@ else:
     LumiCalReco.ProcessorType = "MarlinLumiCalClusterer"
     LumiCalReco.Parameters = toMarlinDict(LumiCalParameters)
 
-LumiCalSequence = [
-    LumiCalReco,
-]
+LumiCalSequence = [LumiCalReco]
