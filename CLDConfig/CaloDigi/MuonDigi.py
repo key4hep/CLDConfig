@@ -16,9 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from Configurables import DDSimpleMuonDigi
 from Gaudi.Configuration import WARNING
 from py_utils import toMarlinDict
-from Configurables import DDSimpleMuonDigi
 
 MyDDSimpleMuonDigiParameters = {
     "CalibrMUON": 70.1,
@@ -30,7 +30,7 @@ MyDDSimpleMuonDigiParameters = {
 }
 
 if reco_args.native:
-    MyDDSimpleMuonDigi = DDSimpleMuonDigi(**MyDDSimpleMuonDigiParameters)
+    MyDDSimpleMuonDigi = DDSimpleMuonDigi("MyDDSimpleMuonDigi", **MyDDSimpleMuonDigiParameters)
 else:
     from Configurables import MarlinProcessorWrapper
     MyDDSimpleMuonDigiParameters["MUONCollections"] = MyDDSimpleMuonDigiParameters["MUONCollection"]
