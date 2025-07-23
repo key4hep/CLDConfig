@@ -39,6 +39,5 @@ else:
     MyDDSimpleMuonDigi.OutputLevel = WARNING
     MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
     MyDDSimpleMuonDigi.Parameters = toMarlinDict(MyDDSimpleMuonDigiParameters)
-MuonDigiSequence = [
-    MyDDSimpleMuonDigi,
-]
+
+MuonDigiSequence = [MyDDSimpleMuonDigi]
