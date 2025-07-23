@@ -17,7 +17,8 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper, DDCaloDigi
+from Configurables import DDCaloDigi
+from Configurables import CollectionMerger
 from py_utils import toMarlinDict
 
 import sys
@@ -121,6 +122,7 @@ if reco_args.native:
     for key in ["Histograms", "RootFile", "ECAL_apply_realistic_digi", "HCAL_apply_realistic_digi"]:
         MyDDCaloDigiParameters.pop(key)
 else:
+    from Configurables import MarlinProcessorWrapper
     MyDDCaloDigiParameters["RelationOutputCollection"] = ["RelationCaloHit"]
     MyDDCaloDigiParameters["ECALCollections"] = ECALCollections
     for i in range(len(ECALCollections)):
@@ -160,6 +162,13 @@ if reco_args.native:
                     OutputLevel=WARNING,
                     )
             )
+    merger = CollectionMerger(
+        "CollectionMerger",
+        InputCollections=[f"GaudiRelationCaloHit{outcol}" for outcol in out_collections],
+        OutputCollection=["RelationCaloHit"],
+    )
+    MyDDCaloDigi.append(merger)
+
 else:
     MyDDCaloDigi[0].Parameters |= toMarlinDict(parameters_10ns)
 
