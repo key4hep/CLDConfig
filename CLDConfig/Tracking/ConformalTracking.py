@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from k4FWCore.parseArgs import parser
 
 
 # geoservice comes from the `global_vars` of the SequenceLoader
@@ -28,7 +28,6 @@ elif "_o1_" in  geoservice.detectors[0]:
 else:
     raise RuntimeError("Unknown detector model to chose CT_MAX_DISTANCE")
 
-from k4FWCore.parseArgs import parser
 args = parser.parse_known_args()
 
 # The keys are simply a name are not passed to ConformalTracking
