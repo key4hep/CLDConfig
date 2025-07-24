@@ -155,6 +155,9 @@ if reco_args.native:
 else:
     from Configurables import MarlinProcessorWrapper
     MyDDMarlinPandoraParameters["MCParticleCollectionName"] = ["MCParticle"]
+    # These have been changed from int to True/False in the algorithm, so they have to be changed back
+    for var in ["UseNonVertexTracks", "UseUnmatchedNonVertexTracks", "UseUnmatchedVertexTracks", "ShouldFormTrackRelationships", "UseEcalScLayers", "StripSplittingOn"]:
+        MyDDMarlinPandoraParameters[var] = int(MyDDMarlinPandoraParameters[var])
     MyDDMarlinPandora = MarlinProcessorWrapper(f"MyDDMarlinPandora_{CONFIG['CalorimeterIntegrationTimeWindow']}")
     MyDDMarlinPandora.OutputLevel = WARNING
     MyDDMarlinPandora.ProcessorType = "DDPandoraPFANewProcessor"
