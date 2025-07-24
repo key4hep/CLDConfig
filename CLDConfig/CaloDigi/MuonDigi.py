@@ -24,6 +24,7 @@ from py_utils import toMarlinDict
 input_collections = ["YokeBarrelCollection", "YokeEndcapCollection"]
 output_collections = ["MuonYokeBarrelCollection", "MuonYokeEndcapCollection"]
 output_relation = ["RelationMuonYokeBarrelHit", "RelationMuonYokeEndcapHit"]
+names = ["Barrel", "Endcap"]
 
 MyDDSimpleMuonDigiParameters = {
     "CalibrMUON": 70.1,
@@ -34,7 +35,7 @@ MyDDSimpleMuonDigiParameters = {
 if reco_args.native:
     MuonDigiSequence = []
     for i in range(len(input_collections)):
-        MyDDSimpleMuonDigi = DDSimpleMuonDigi("MyDDSimpleMuonDigi",
+        MyDDSimpleMuonDigi = DDSimpleMuonDigi(f"MyDDSimpleMuonDigi_{names[i]}",
                                               MUONCollection=[input_collections[i]],
                                               MUONOutputCollection=[output_collections[i]],
                                               RelationOutputCollection=[output_relation[i]],
