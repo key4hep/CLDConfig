@@ -91,10 +91,11 @@ set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
 
 add_test(NAME "run_wrapper_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction_iosvc.py --inputFiles sim.edm4hep.root --native --outputBasename output_REC_native
+         COMMAND k4run CLDReconstruction_iosvc.py --inputFiles sim.edm4hep.root --native --outputBasename output_native
 )
 
 add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND "${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py"
 )
+set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native")
