@@ -27,6 +27,7 @@ ECALCollections = ["ECalBarrelCollection", "ECalEndcapCollection"]
 ECALOutputCollections = ["ECALBarrel", "ECALEndcap"]
 HCALCollections = ["HCalBarrelCollection", "HCalEndcapCollection", "HCalRingCollection"]
 HCALOutputCollections = ["HCALBarrel", "HCALEndcap", "HCALOther"]
+ECALorHCAL = [True, True, False, False, False]
 
 MyDDCaloDigiParameters = {
     "Histograms": 0,
@@ -135,13 +136,14 @@ if reco_args.native:
     MyDDCaloDigi = []
     collections = ECALCollections + HCALCollections
     out_collections = ECALOutputCollections + HCALOutputCollections
-    for incol, outcol in zip(collections, out_collections):
+    for i, (incol, outcol) in enumerate(zip(collections, out_collections)):
         MyDDCaloDigi.append(
             DDCaloDigi(
                     f"{incol}Digitiser",
                     **final_parameters,
                     InputCaloHitCollection=[incol],
                     OutputCaloHitCollection=[outcol],
+                    InputColIsECAL=ECALorHCAL[i],
                     RelationOutputCollection=[f"GaudiRelationCaloHit{outcol}"],
                     OutputLevel=WARNING,
                     )
