@@ -24,7 +24,7 @@ from py_utils import toMarlinDict
 import sys
 
 ECALCollections = ["ECalBarrelCollection", "ECalEndcapCollection"]
-ECALOutputCollections = ["ECALBarrel", "ECALEndcap", ""]
+ECALOutputCollections = ["ECALBarrel", "ECALEndcap"]
 HCALCollections = ["HCalBarrelCollection", "HCalEndcapCollection", "HCalRingCollection"]
 HCALOutputCollections = ["HCALBarrel", "HCALEndcap", "HCALOther"]
 
@@ -116,41 +116,25 @@ parameters_400ns = {
     "HCALEndcapTimeWindowMax": 400,
 }
 
-
-if reco_args.native:
-    # Not implemented
-    for key in ["Histograms", "RootFile", "ECAL_apply_realistic_digi", "HCAL_apply_realistic_digi"]:
-        MyDDCaloDigiParameters.pop(key)
-else:
-    from Configurables import MarlinProcessorWrapper
-    MyDDCaloDigiParameters["RelationOutputCollection"] = ["RelationCaloHit"]
-    MyDDCaloDigiParameters["ECALCollections"] = ECALCollections
-    for i in range(len(ECALCollections)):
-        MyDDCaloDigiParameters[f"ECALOutputCollection{i}"] = [ECALOutputCollections[i]]
-    MyDDCaloDigiParameters["HCALCollections"] = HCALCollections
-    for i in range(len(HCALCollections)):
-        MyDDCaloDigiParameters[f"HCALOutputCollection{i}"] = [HCALOutputCollections[i]]
-
-    MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
-    MyDDCaloDigi[0].OutputLevel = WARNING
-    MyDDCaloDigi[0].ProcessorType = "DDCaloDigi"
-    MyDDCaloDigi[0].Parameters = toMarlinDict(MyDDCaloDigiParameters)
-
-
 if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
-    parameters = parameters_10ns
+    MyDDCaloDigiParameters |= parameters_10ns
 elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
-    parameters = parameters_400ns
+    MyDDCaloDigiParameters |= parameters_400ns
 else:
     print(f"The value {CONFIG['CalorimeterIntegrationTimeWindow']} "
           "for the calorimeter integration time window is not a valid choice")
     sys.exit(1)
 
+
 if reco_args.native:
-    final_parameters = MyDDCaloDigiParameters | parameters
+    # Not implemented in the algorithm
+    for key in ["Histograms", "RootFile", "ECAL_apply_realistic_digi", "HCAL_apply_realistic_digi"]:
+        MyDDCaloDigiParameters.pop(key)
+
+    final_parameters = MyDDCaloDigiParameters
     MyDDCaloDigi = []
     collections = ECALCollections + HCALCollections
-    out_collections = [elem for elem in ECALOutputCollections + HCALOutputCollections if elem]
+    out_collections = ECALOutputCollections + HCALOutputCollections
     for incol, outcol in zip(collections, out_collections):
         MyDDCaloDigi.append(
             DDCaloDigi(
@@ -168,9 +152,20 @@ if reco_args.native:
         OutputCollection=["RelationCaloHit"],
     )
     MyDDCaloDigi.append(merger)
-
 else:
-    MyDDCaloDigi[0].Parameters |= toMarlinDict(parameters_10ns)
+    from Configurables import MarlinProcessorWrapper
+    MyDDCaloDigiParameters["RelationOutputCollection"] = ["RelationCaloHit"]
+    MyDDCaloDigiParameters["ECALCollections"] = ECALCollections
+    for i in range(len(ECALCollections)):
+        MyDDCaloDigiParameters[f"ECALOutputCollection{i}"] = [ECALOutputCollections[i]]
+    MyDDCaloDigiParameters["HCALCollections"] = HCALCollections
+    for i in range(len(HCALCollections)):
+        MyDDCaloDigiParameters[f"HCALOutputCollection{i}"] = [HCALOutputCollections[i]]
+
+    MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
+    MyDDCaloDigi[0].OutputLevel = WARNING
+    MyDDCaloDigi[0].ProcessorType = "DDCaloDigi"
+    MyDDCaloDigi[0].Parameters = toMarlinDict(MyDDCaloDigiParameters)
 
 
 CaloDigiSequence = MyDDCaloDigi
