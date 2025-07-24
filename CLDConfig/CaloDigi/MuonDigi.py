@@ -37,7 +37,7 @@ if reco_args.native:
         MyDDSimpleMuonDigi = DDSimpleMuonDigi("MyDDSimpleMuonDigi",
                                               MUONCollection=[input_collections[i]],
                                               MUONOutputCollection=[output_collections[i]],
-                                              MUONRelationOutputCollection=[output_relation[i]],
+                                              RelationOutputCollection=[output_relation[i]],
                                               **MyDDSimpleMuonDigiParameters)
         MuonDigiSequence.append(MyDDSimpleMuonDigi)
     merger = CollectionMerger("MuonYokeMerger")
