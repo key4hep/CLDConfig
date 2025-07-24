@@ -91,8 +91,9 @@ set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
 
 add_test(NAME "run_wrapper_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction_iosvc.py --inputFiles sim.edm4hep.root --native --outputBasename output_native
+         COMMAND k4run CLDReconstruction_iosvc.py --inputFiles test.edm4hep.root --native --outputBasename output_native
 )
+set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS edm4hep_input)
 
 add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
