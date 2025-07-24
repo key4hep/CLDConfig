@@ -96,6 +96,6 @@ add_test(NAME "run_wrapper_native"
 
 add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND "${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py"
+         COMMAND "${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_REC.edm4hep.root"
 )
 set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native")
