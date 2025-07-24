@@ -25,6 +25,8 @@ input_collections = ["YokeBarrelCollection", "YokeEndcapCollection"]
 output_collections = ["MuonYokeBarrelCollection", "MuonYokeEndcapCollection"]
 output_relation = ["RelationMuonYokeBarrelHit", "RelationMuonYokeEndcapHit"]
 names = ["Barrel", "Endcap"]
+single_output_collection = "MUON"
+single_output_relation = "RelationMuonHit"
 
 MyDDSimpleMuonDigiParameters = {
     "CalibrMUON": 70.1,
@@ -41,19 +43,19 @@ if reco_args.native:
                                               RelationOutputCollection=[output_relation[i]],
                                               **MyDDSimpleMuonDigiParameters)
         MuonDigiSequence.append(MyDDSimpleMuonDigi)
-    merger = CollectionMerger("MuonYokeMerger")
+    merger = CollectionMerger("MuonCollectionMerger")
     merger.InputCollections = output_collections
-    merger.OutputCollection = ["MUON"]
+    merger.OutputCollection = [single_output_collection]
 
     relation_merger = CollectionMerger("MuonRelationMerger")
     relation_merger.InputCollections = output_relation
-    relation_merger.OutputCollection = ["RelationMuonHit"]
+    relation_merger.OutputCollection = [single_output_relation]
     MuonDigiSequence += [merger, relation_merger]
 else:
     from Configurables import MarlinProcessorWrapper
-    MyDDSimpleMuonDigiParameters["MUONCollection"] = input_collections
-    MyDDSimpleMuonDigiParameters["MUONCollections"] = ["MUON"]
-    MyDDSimpleMuonDigiParameters["MUONOutputCollections"] = ["RelationMuonHit"]
+    MyDDSimpleMuonDigiParameters["MUONCollections"] = input_collections
+    MyDDSimpleMuonDigiParameters["MUONOutputCollection"] = [single_output_collection]
+    MyDDSimpleMuonDigiParameters["RelationOutputCollection"] = [single_output_relation]
     MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
     MyDDSimpleMuonDigi.OutputLevel = WARNING
     MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
