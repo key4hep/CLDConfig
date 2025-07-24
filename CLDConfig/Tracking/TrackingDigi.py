@@ -29,9 +29,8 @@ VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
                                           tResolution = [0.,0.,0.,0.,0.,0.],
                                           Threshold = 0.0, #3000.0,
                                           ThresholdSmearing = 0.0, #35.0,
-                                          forceHitsOntoSurface = False,
                                           OutputLevel = WARNING,
-                                          DebugHistos = False,
+                                          DebugHistos = True,
                                           DebugFileName = "Debug_VTXBarrelDigitizer.root"
                                           )
 
@@ -45,9 +44,8 @@ VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
                                           tResolution = [0.,0.,0.,0.,0.,0.],
                                           Threshold = 0.0, #3000.0,
                                           ThresholdSmearing = 0.0, #35.0,
-                                          forceHitsOntoSurface = False,
                                           OutputLevel = WARNING,
-                                          DebugHistos = False,
+                                          DebugHistos = True,
                                           DebugFileName = "Debug_VTXEndcapDigitizer.root"
                                           )
 
@@ -61,9 +59,8 @@ InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer"
                                                    tResolution = [0.,0.,0.],
                                                    Threshold = 0.0, #3000.0,
                                                    ThresholdSmearing = 0.0, #35.0,
-                                                   forceHitsOntoSurface = False,
                                                    OutputLevel = WARNING,
-                                                   DebugHistos = False,
+                                                   DebugHistos = True,
                                                    DebugFileName = "Debug_InnerTrackerBarrelDigitizer.root"
                                                    )
 
@@ -77,9 +74,8 @@ InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer"
                                                    tResolution = [0.,0.,0.,0.,0.,0.,0.],
                                                    Threshold = 0.0, #3000.0,
                                                    ThresholdSmearing = 0.0, #35.0,
-                                                   forceHitsOntoSurface = False,
                                                    OutputLevel = WARNING,
-                                                   DebugHistos = False,
+                                                   DebugHistos = True,
                                                    DebugFileName = "Debug_InnerTrackerEndcapDigitizer.root"
                                                    )
 
@@ -93,9 +89,8 @@ OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer"
                                                    tResolution = [0.,0.,0.],
                                                    Threshold = 0.0, #3000.0,
                                                    ThresholdSmearing = 0.0, #35.0,
-                                                   forceHitsOntoSurface = False,
                                                    OutputLevel = WARNING,
-                                                   DebugHistos = False,
+                                                   DebugHistos = True,
                                                    DebugFileName = "Debug_OuterTrackerBarrelDigitizer.root"
                                                    )
 
@@ -109,9 +104,8 @@ OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer"
                                                    tResolution = [0.,0.,0.,0.],
                                                    Threshold = 0.0, #3000.0,
                                                    ThresholdSmearing = 0.0, #35.0,
-                                                   forceHitsOntoSurface = False,
                                                    OutputLevel = WARNING,
-                                                   DebugHistos = False,
+                                                   DebugHistos = True,
                                                    DebugFileName = "Debug_OuterTrackerEndcapDigitizer.root"
                                                    )
 
