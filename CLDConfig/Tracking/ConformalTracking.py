@@ -19,6 +19,7 @@
 from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
 
+from conformal_tracking_utils import configure_conformal_tracking_steps
 
 # geoservice comes from the `global_vars` of the SequenceLoader
 if any(small_vtx in geoservice.detectors[0] for small_vtx in ["_o2_", "_o3_", "_o4_"]):
@@ -118,12 +119,6 @@ parameters = {
         },
     }
 
-collections = [elem["collections"] for elem in parameters.values()]
-names = [list(elem["params"].keys()) for elem in parameters.values()]
-values = [list(elem["params"].values()) for elem in parameters.values()]
-flags = [elem["flags"] for elem in parameters.values()]
-functions = [elem["functions"] for elem in parameters.values()]
-
 steps_marlin = []
 
 for name, param_dict in parameters.items():
@@ -179,12 +174,6 @@ conformal_tracking_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 if args[0].native:
     # Not implemented in Gaudi
     conformal_tracking_args.pop("DebugHits")
-
-    conformal_tracking_args["stepCollections"] = collections
-    conformal_tracking_args["stepParametersNames"] = names
-    conformal_tracking_args["stepParametersValues"] = values
-    conformal_tracking_args["stepParametersFlags"] = flags
-    conformal_tracking_args["stepParametersFunctions"] = functions
 else:
     conformal_tracking_args_marlin["Steps"] = steps_marlin
 
@@ -213,6 +202,7 @@ if args[0].native:
         **conformal_tracking_args,
         OutputLevel=WARNING,
     )
+    configure_conformal_tracking_steps(MyConformalTracking, parameters)
 
     clones_and_split_tracks_finder = ClonesAndSplitTracksFinder(
         "ClonesAndSplitTracksFinder",
