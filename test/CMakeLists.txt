@@ -88,3 +88,15 @@ add_test(NAME marlin
          COMMAND Marlin --global.LCIOInputFiles=test.slcio --InitDD4hep.DD4hepXMLFile=${DETECTOR} CLDReconstruction.xml
 )
 set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
+
+add_test(NAME "run_wrapper_native"
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run CLDReconstruction_iosvc.py --inputFiles test.edm4hep.root --native --outputBasename output_native
+)
+set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME "compare_native"
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND ${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_REC.edm4hep.root --native-file output_native_REC.edm4hep.root
+)
+set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native")
