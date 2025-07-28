@@ -70,11 +70,11 @@ geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
 svcList.append(geoservice)
 
-cellIDSvc = TrackingCellIDEncodingSvc("CellIDSvc")
-cellIDSvc.EncodingStringParameterName = "GlobalTrackerReadoutID"
-cellIDSvc.GeoSvcName = geoservice.name()
-cellIDSvc.OutputLevel = INFO
-svcList.append(cellIDSvc)
+# cellIDSvc = TrackingCellIDEncodingSvc("CellIDSvc")
+# cellIDSvc.EncodingStringParameterName = "GlobalTrackerReadoutID"
+# cellIDSvc.GeoSvcName = geoservice.name()
+# cellIDSvc.OutputLevel = INFO
+# svcList.append(cellIDSvc)
 
 if len(geoservice.detectors) > 1:
     # we are making assumptions for reconstruction parameters based on the detector option, so we limit the possibilities
