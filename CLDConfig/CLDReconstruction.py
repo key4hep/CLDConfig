@@ -162,7 +162,6 @@ if CONFIG["OutputMode"] == "LCIO":
         "FullSubsetCollections": DST_SUBSETLIST,
         "KeepCollectionNames": DST_KEEPLIST,
     }
-    algList.append(Output_DST)
 
 if CONFIG["OutputMode"] == "EDM4Hep":
     # Make sure that all collections are always available by patching in missing ones on-the-fly
