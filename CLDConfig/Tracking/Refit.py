@@ -22,8 +22,8 @@ args = parser.parse_known_args()
 
 refit_args = {
     "EnergyLossOn": True,
-    "InputRelationCollectionName": ["SiTrackRelations"],
     "InputTrackCollectionName": ["SiTracks"],
+    "InputRelationCollectionName": ["SiTrackRelations"],
     "Max_Chi2_Incr": 1.79769e30,
     "MinClustersOnTrackAfterFit": 3,
     "MultipleScatteringOn": True,
@@ -33,6 +33,9 @@ refit_args = {
     "SmoothOn": False,
     "extrapolateForward": True,
 }
+
+if args[0].native and not args[0].truthTracking:
+    refit_args["InputRelationCollectionName"] = []
 
 refit_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in refit_args.items()}
 refit_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in refit_args_marlin.items()}
