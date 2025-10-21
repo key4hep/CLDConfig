@@ -42,6 +42,8 @@ reco_args = parser.parse_known_args()[0]
 
 evtsvc = EventDataSvc("EventDataSvc")
 iosvc = IOSvc()
+if reco_args.native:
+    iosvc.Input = reco_args.inputFiles
 
 svcList = [evtsvc, iosvc]
 algList = []
