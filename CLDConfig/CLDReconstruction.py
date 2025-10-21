@@ -91,28 +91,29 @@ sequenceLoader = SequenceLoader(
                  },
 )
 
-io_handler = IOHandlerHelper(algList, iosvc)
-io_handler.add_reader(reco_args.inputFiles)
+if not reco_args.native:
+    io_handler = IOHandlerHelper(algList, iosvc)
+    io_handler.add_reader(reco_args.inputFiles)
 
-MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
-MyAIDAProcessor.OutputLevel = WARNING
-MyAIDAProcessor.ProcessorType = "AIDAProcessor"
-MyAIDAProcessor.Parameters = {
-                              "Compress": ["1"],
-                              "FileName": [f"{reco_args.outputBasename}_aida"],
-                              "FileType": ["root"]
+    MyAIDAProcessor = MarlinProcessorWrapper("MyAIDAProcessor")
+    MyAIDAProcessor.OutputLevel = WARNING
+    MyAIDAProcessor.ProcessorType = "AIDAProcessor"
+    MyAIDAProcessor.Parameters = {
+                                  "Compress": ["1"],
+                                  "FileName": [f"{reco_args.outputBasename}_aida"],
+                                  "FileType": ["root"]
+                                  }
+
+    EventNumber = MarlinProcessorWrapper("EventNumber")
+    EventNumber.OutputLevel = WARNING
+    EventNumber.ProcessorType = "Statusmonitor"
+    EventNumber.Parameters = {
+                              "HowOften": ["1"]
                               }
 
-EventNumber = MarlinProcessorWrapper("EventNumber")
-EventNumber.OutputLevel = WARNING
-EventNumber.ProcessorType = "Statusmonitor"
-EventNumber.Parameters = {
-                          "HowOften": ["1"]
-                          }
-
-# setup AIDA histogramming and add eventual background overlay
-algList.append(MyAIDAProcessor)
-sequenceLoader.load("Overlay/Overlay")
+    # setup AIDA histogramming and add eventual background overlay
+    algList.append(MyAIDAProcessor)
+    sequenceLoader.load("Overlay/Overlay")
 # tracker hit digitisation
 sequenceLoader.load("Tracking/TrackingDigi")
 
@@ -164,7 +165,7 @@ if CONFIG["OutputMode"] == "LCIO":
         "KeepCollectionNames": DST_KEEPLIST,
     }
 
-if CONFIG["OutputMode"] == "EDM4Hep":
+if CONFIG["OutputMode"] == "EDM4Hep" and not reco_args.native:
     # Make sure that all collections are always available by patching in missing ones on-the-fly
     collPatcherRec = MarlinProcessorWrapper(
         "CollPatcherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
@@ -180,7 +181,8 @@ if CONFIG["OutputMode"] == "EDM4Hep":
 
 
 # We need to attach all the necessary converters
-io_handler.finalize_converters()
+if not reco_args.native:
+    io_handler.finalize_converters()
 
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
