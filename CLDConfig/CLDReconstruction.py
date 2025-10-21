@@ -65,11 +65,12 @@ geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
 svcList.append(geoservice)
 
-cellIDSvc = TrackingCellIDEncodingSvc("CellIDSvc")
-cellIDSvc.EncodingStringParameterName = "GlobalTrackerReadoutID"
-cellIDSvc.GeoSvcName = geoservice.name()
-cellIDSvc.OutputLevel = INFO
-svcList.append(cellIDSvc)
+if not reco_args.native:
+    cellIDSvc = TrackingCellIDEncodingSvc("CellIDSvc")
+    cellIDSvc.EncodingStringParameterName = "GlobalTrackerReadoutID"
+    cellIDSvc.GeoSvcName = geoservice.name()
+    cellIDSvc.OutputLevel = INFO
+    svcList.append(cellIDSvc)
 
 if len(geoservice.detectors) > 1:
     # we are making assumptions for reconstruction parameters based on the detector option, so we limit the possibilities
@@ -132,15 +133,17 @@ if not reco_args.trackingOnly:
     sequenceLoader.load("ParticleFlow/Pandora")
     sequenceLoader.load("CaloDigi/LumiCal")
 # monitoring and Reco to MCTruth linking
-sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
-sequenceLoader.load("Diagnostics/Tracking")
+if not reco_args.native:
+    sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
+    sequenceLoader.load("Diagnostics/Tracking")
 # pfo selector (might need re-optimisation)
-if not reco_args.trackingOnly:
+if not reco_args.trackingOnly and not reco_args.native:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
     sequenceLoader.load("HighLevelReco/JetAndVertex")
 # event number processor, down here to attach the conversion back to edm4hep to it
-algList.append(EventNumber)
+if not reco_args.native:
+    algList.append(EventNumber)
 
 DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
 
@@ -148,6 +151,8 @@ DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsPa
 
 # TODO: replace all the ugly strings by something sensible like Enum
 if CONFIG["OutputMode"] == "LCIO":
+    if reco_args.native:
+        raise RuntimeError("LCIO output is not supported with --native")
     Output_REC = io_handler.add_lcio_writer("Output_REC")
     Output_REC.Parameters = {
         "LCIOOutputFile": [f"{reco_args.outputBasename}_REC.slcio"],
