@@ -23,13 +23,13 @@ args = parser.parse_known_args()
 
 refit_args = {
     "EnergyLossOn": True,
-    "InputTrackCollectionName": ["SiTracks"],
+    "InputTrackCollectionName": "SiTracks",
     "InputRelationCollectionName": ["SiTrackRelations"],
     "Max_Chi2_Incr": 1.79769e30,
     "MinClustersOnTrackAfterFit": 3,
     "MultipleScatteringOn": True,
-    "OutputRelationCollectionName": ["SiTracks_Refitted_Relation"],
-    "OutputTrackCollectionName": ["SiTracks_Refitted"],
+    "OutputRelationCollectionName": "SiTracks_Refitted_Relation",
+    "OutputTrackCollectionName": "SiTracks_Refitted",
     "ReferencePoint": -1,
     "SmoothOn": False,
     "extrapolateForward": True,
