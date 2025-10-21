@@ -159,7 +159,7 @@ conformal_tracking_args = {
     "MinClustersOnTrackAfterFit": 3,
     "RelationsNames": ["VXDTrackerHitRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
     "RetryTooManyTracks": False,
-    "SiTrackCollectionName": ["SiTracksCT"],
+    "SiTrackCollectionName": "SiTracksCT",
     "SortTreeResults": True,
     "ThetaRange": 0.05,
     "TooManyTracks": 100000,
@@ -179,9 +179,9 @@ else:
 
 clones_and_split_tracks_finder_args = {
     "EnergyLossOn": True,
-    "InputTrackCollectionName": ["SiTracksCT"],
+    "InputTrackCollectionName": "SiTracksCT",
     "MultipleScatteringOn": True,
-    "OutputTrackCollectionName": ["SiTracks"],
+    "OutputTrackCollectionName": "SiTracks",
     "SmoothOn": False,
     "extrapolateForward": True,
     "maxSignificancePhi": 3.,
