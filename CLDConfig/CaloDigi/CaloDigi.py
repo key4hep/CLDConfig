@@ -129,7 +129,7 @@ else:
 
 if reco_args.native:
     # Not implemented in the algorithm
-    for key in ["Histograms", "RootFile", "ECAL_apply_realistic_digi", "HCAL_apply_realistic_digi"]:
+    for key in ["Histograms", "RootFile"]:
         MyDDCaloDigiParameters.pop(key)
 
     final_parameters = MyDDCaloDigiParameters
