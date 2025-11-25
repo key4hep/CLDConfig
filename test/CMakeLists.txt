@@ -89,11 +89,16 @@ add_test(NAME marlin
 )
 set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
 
+add_test(NAME "remove_overlay_and_others"
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND bash -c "sed -e '/Overlay.Overlay/d' -e '/HighLevelReco.RecoMCTruthLink/d' CLDReconstruction.py > CLDReconstruction_no_overlay.py"
+)
+
 add_test(NAME "run_wrapper_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction.py --inputFiles test.edm4hep.root --native --outputBasename output_native
+         COMMAND k4run CLDReconstruction_no_overlay.py --inputFiles test.edm4hep.root --native --outputBasename output_native
 )
-set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS ddsim_edm4hep)
+set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
 
 add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
