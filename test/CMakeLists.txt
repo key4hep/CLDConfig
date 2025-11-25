@@ -94,14 +94,21 @@ add_test(NAME "remove_overlay_and_others"
          COMMAND bash -c "sed -e '/Overlay.Overlay/d' -e '/HighLevelReco.RecoMCTruthLink/d' CLDReconstruction.py > CLDReconstruction_no_overlay.py"
 )
 
+add_test(NAME edm4hep_input_no_overlay
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction_no_overlay.py --GeoSvc.detectors=${DETECTOR}
+)
+set_property(TEST edm4hep_input APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
+
+
 add_test(NAME "run_wrapper_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction_no_overlay.py --inputFiles test.edm4hep.root --native --outputBasename output_native
+         COMMAND k4run CLDReconstruction.py --inputFiles test.edm4hep.root --native --outputBasename output_native
 )
-set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
+set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "ddsim_edm4hep")
 
 add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND ${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_REC.edm4hep.root --native-file output_native_REC.edm4hep.root
+         COMMAND ${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_no_overlay_REC.edm4hep.root --native-file output_native_REC.edm4hep.root
 )
 set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native")
