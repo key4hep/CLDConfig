@@ -98,7 +98,7 @@ add_test(NAME edm4hep_input_no_overlay
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction_no_overlay.py --GeoSvc.detectors=${DETECTOR}
 )
-set_property(TEST edm4hep_input APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
+set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
 
 
 add_test(NAME "run_wrapper_native"
