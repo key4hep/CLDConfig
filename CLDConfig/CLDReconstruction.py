@@ -44,6 +44,7 @@ evtsvc = EventDataSvc("EventDataSvc")
 iosvc = IOSvc()
 if reco_args.native:
     iosvc.Input = reco_args.inputFiles
+    iosvc.Output = f"{reco_args.outputBasename}_REC.edm4hep.root"
 
 svcList = [evtsvc, iosvc]
 algList = []
