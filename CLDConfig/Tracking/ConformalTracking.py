@@ -155,7 +155,7 @@ conformal_tracking_args = {
     "DebugHits": ["DebugHits"],
     "DebugPlots": False,
     "DebugTiming": False,
-    "MCParticleCollectionName": "MCParticles",
+    "MCParticleCollectionName": ["MCParticles"],
     "MaxHitInvertedFit": 0,
     "MinClustersOnTrackAfterFit": 3,
     "RelationsNames": ["VXDTrackerHitRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
