@@ -20,11 +20,12 @@ from Gaudi.Configuration import WARNING, DEBUG, INFO
 from Configurables import VTXdigitizerDetailed
 
 VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
-                                          inputSimHits = ["VertexBarrelCollection"],
-                                          outputDigiHits = ["VXDTrackerHits"],
-                                          outputSimDigiAssociation = ["VXDTrackerHitRelations"],
+                                          inputSimHits = "VertexBarrelCollection",
+                                          outputDigiHits = "VXDTrackerHits",
+                                          outputSimDigiAssociation = "VXDTrackerHitRelations",
                                           detectorName = "VertexBarrel",
-                                          LocalNormalVectorDir = "x",
+                                          PixSizePhi = [0.020, 0.020, 0.020, 0.020, 0.020, 0.020], # in mm
+                                          PixSizeTheta = [0.020, 0.020, 0.020, 0.020, 0.020, 0.020], # in mm
                                           tResolution = [0.,0.,0.,0.,0.,0.],
                                           Threshold = 100.0,
                                           ThresholdSmearing = 20.0, 
@@ -34,11 +35,12 @@ VTXBarrelDigitizer = VTXdigitizerDetailed("VTXBarrelDigitizer",
                                           )
 
 VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
-                                          inputSimHits = ["VertexEndcapCollection"],
-                                          outputDigiHits = ["VXDEndcapTrackerHits"],
-                                          outputSimDigiAssociation = ["VXDEndcapTrackerHitRelations"],
+                                          inputSimHits = "VertexEndcapCollection",
+                                          outputDigiHits = "VXDEndcapTrackerHits",
+                                          outputSimDigiAssociation = "VXDEndcapTrackerHitRelations",
                                           detectorName = "VertexEndcap",
-                                          LocalNormalVectorDir = "y",
+                                          PixSizePhi = [0.020, 0.020, 0.020, 0.020, 0.020, 0.020], # in mm
+                                          PixSizeTheta = [0.020, 0.020, 0.020, 0.020, 0.020, 0.020], # in mm
                                           tResolution = [0.,0.,0.,0.,0.,0.],
                                           Threshold = 100.0, 
                                           ThresholdSmearing = 20.0, 
@@ -48,11 +50,12 @@ VTXEndcapDigitizer = VTXdigitizerDetailed("VTXEndcapDigitizer",
                                           )
 
 InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer",
-                                                   inputSimHits = ["InnerTrackerBarrelCollection"],
-                                                   outputDigiHits = ["ITrackerHits"],
-                                                   outputSimDigiAssociation = ["InnerTrackerBarrelHitsRelations"],
+                                                   inputSimHits = "InnerTrackerBarrelCollection",
+                                                   outputDigiHits = "ITrackerHits",
+                                                   outputSimDigiAssociation = "InnerTrackerBarrelHitsRelations",
                                                    detectorName = "InnerTrackerBarrel",
-                                                   LocalNormalVectorDir = "z",
+                                                   PixSizePhi = [0.050, 0.050, 0.050], # in mm
+                                                   PixSizeTheta = [0.300, 0.300, 0.300], # in mm
                                                    tResolution = [0.,0.,0.],
                                                    Threshold = 100.0, 
                                                    ThresholdSmearing = 20.0, 
@@ -62,11 +65,12 @@ InnerTrackerBarrelDigitizer = VTXdigitizerDetailed("InnerTrackerBarrelDigitizer"
                                                    )
 
 InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer",
-                                                   inputSimHits = ["InnerTrackerEndcapCollection"],
-                                                   outputDigiHits = ["ITrackerEndcapHits"],
-                                                   outputSimDigiAssociation = ["InnerTrackerEndcapHitsRelations"],
+                                                   inputSimHits = "InnerTrackerEndcapCollection",
+                                                   outputDigiHits = "ITrackerEndcapHits",
+                                                   outputSimDigiAssociation = "InnerTrackerEndcapHitsRelations",
                                                    detectorName = "InnerTrackerEndcap",
-                                                   LocalNormalVectorDir = "z",
+                                                   PixSizePhi = [0.020, 0.050, 0.050, 0.050, 0.050, 0.050,0.050], # in mm
+                                                   PixSizeTheta = [0.020, 0.300, 0.300, 0.300, 0.300, 0.300, 0.300], # in mm
                                                    tResolution = [0.,0.,0.,0.,0.,0.,0.],
                                                    Threshold = 100.0, 
                                                    ThresholdSmearing = 20.0, 
@@ -76,11 +80,12 @@ InnerTrackerEndcapDigitizer = VTXdigitizerDetailed("InnerTrackerEndcapDigitizer"
                                                    )
 
 OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer",
-                                                   inputSimHits = ["OuterTrackerBarrelCollection"],
-                                                   outputDigiHits = ["OTrackerHits"],
-                                                   outputSimDigiAssociation = ["OuterTrackerBarrelHitsRelations"],
+                                                   inputSimHits = "OuterTrackerBarrelCollection",
+                                                   outputDigiHits = "OTrackerHits",
+                                                   outputSimDigiAssociation = "OuterTrackerBarrelHitsRelations",
                                                    detectorName = "OuterTrackerBarrel",
-                                                   LocalNormalVectorDir = "z",
+                                                   PixSizePhi = [0.050, 0.050, 0.050], # in mm
+                                                   PixSizeTheta = [0.300, 0.300, 0.300], # in mm
                                                    tResolution = [0.,0.,0.],
                                                    Threshold = 100.0, 
                                                    ThresholdSmearing = 20.0, 
@@ -90,11 +95,12 @@ OuterTrackerBarrelDigitizer = VTXdigitizerDetailed("OuterTrackerBarrelDigitizer"
                                                    )
 
 OuterTrackerEndcapDigitizer = VTXdigitizerDetailed("OuterTrackerEndcapDigitizer",
-                                                   inputSimHits = ["OuterTrackerEndcapCollection"],
-                                                   outputDigiHits = ["OTrackerEndcapHits"],
-                                                   outputSimDigiAssociation = ["OuterTrackerEndcapHitsRelations"],
+                                                   inputSimHits = "OuterTrackerEndcapCollection",
+                                                   outputDigiHits = "OTrackerEndcapHits",
+                                                   outputSimDigiAssociation = "OuterTrackerEndcapHitsRelations",
                                                    detectorName = "OuterTrackerEndcap",
-                                                   LocalNormalVectorDir = "z",
+                                                   PixSizePhi = [0.050, 0.050, 0.050, 0.050], # in mm
+                                                   PixSizeTheta = [0.300, 0.300, 0.300, 0.300], # in mm
                                                    tResolution = [0.,0.,0.,0.],
                                                    Threshold = 100.0,
                                                    ThresholdSmearing = 20.0, 
