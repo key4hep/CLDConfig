@@ -20,6 +20,7 @@ from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
 
 from conformal_tracking_utils import configure_conformal_tracking_steps
+from py_utils import toMarlinDict
 
 # geoservice comes from the `global_vars` of the SequenceLoader
 if any(small_vtx in geoservice.detectors[0] for small_vtx in ["_o2_", "_o3_", "_o4_"]):
@@ -167,8 +168,7 @@ conformal_tracking_args = {
     "trackPurity": 0.7
 }
 
-conformal_tracking_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in conformal_tracking_args.items()}
-conformal_tracking_args_marlin = {k: [str(v)] if isinstance(v, float) or isinstance(v, int) else v for k, v in conformal_tracking_args_marlin.items()}
+conformal_tracking_args_marlin = toMarlinDict(conformal_tracking_args)
 conformal_tracking_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 
 if args[0].native:
@@ -191,8 +191,7 @@ clones_and_split_tracks_finder_args = {
     "minTrackPt": 1.,
 }
 
-clone_and_split_tracks_finder_args_marlin = {k: [str(v).lower()] if isinstance(v, bool) else v for k, v in clones_and_split_tracks_finder_args.items()}
-clone_and_split_tracks_finder_args_marlin = {k: [str(v)] if isinstance(v, float) else v for k, v in clone_and_split_tracks_finder_args_marlin.items()}
+clone_and_split_tracks_finder_args_marlin = toMarlinDict(clones_and_split_tracks_finder_args)
 
 if args[0].native:
     from Configurables import ConformalTracking, ClonesAndSplitTracksFinder
