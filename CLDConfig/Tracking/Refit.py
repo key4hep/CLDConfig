@@ -17,25 +17,44 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from k4FWCore.parseArgs import parser
+from py_utils import toMarlinDict
+args = parser.parse_known_args()
 
+refit_args = {
+    "EnergyLossOn": True,
+    "InputTrackCollectionName": "SiTracks",
+    "InputRelationCollectionName": ["SiTrackRelations"],
+    "Max_Chi2_Incr": 1.79769e30,
+    "MinClustersOnTrackAfterFit": 3,
+    "MultipleScatteringOn": True,
+    "OutputRelationCollectionName": "SiTracks_Refitted_Relation",
+    "OutputTrackCollectionName": "SiTracks_Refitted",
+    "ReferencePoint": -1,
+    "SmoothOn": False,
+    "extrapolateForward": True,
+}
 
-Refit = MarlinProcessorWrapper("Refit")
-Refit.OutputLevel = WARNING
-Refit.ProcessorType = "RefitFinal"
-Refit.Parameters = {
-                    "EnergyLossOn": ["true"],
-                    "InputRelationCollectionName": ["SiTrackRelations"],
-                    "InputTrackCollectionName": ["SiTracks"],
-                    "Max_Chi2_Incr": ["1.79769e+30"],
-                    "MinClustersOnTrackAfterFit": ["3"],
-                    "MultipleScatteringOn": ["true"],
-                    "OutputRelationCollectionName": ["SiTracks_Refitted_Relation"],
-                    "OutputTrackCollectionName": ["SiTracks_Refitted"],
-                    "ReferencePoint": ["-1"],
-                    "SmoothOn": ["false"],
-                    "extrapolateForward": ["true"]
-                    }
+if args[0].native and not args[0].truthTracking:
+    refit_args["InputRelationCollectionName"] = []
+
+refit_args_marlin = toMarlinDict(refit_args)
+
+if args[0].native:
+    from Configurables import RefitFinal
+
+    Refit = RefitFinal(
+        "RefitFinal",
+        **refit_args,
+        OutputLevel=WARNING,
+    )
+else:
+    from Configurables import MarlinProcessorWrapper
+
+    Refit = MarlinProcessorWrapper("Refit")
+    Refit.OutputLevel = WARNING
+    Refit.ProcessorType = "RefitFinal"
+    Refit.Parameters = refit_args_marlin
 
 RefitSequence = [
     Refit,

@@ -16,22 +16,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from Configurables import DDSimpleMuonDigi
+from Configurables import CollectionMerger
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from py_utils import toMarlinDict
 
+input_collections = ["YokeBarrelCollection", "YokeEndcapCollection"]
+output_collections = ["MuonYokeBarrelCollection", "MuonYokeEndcapCollection"]
+output_relation = ["RelationMuonYokeBarrelHit", "RelationMuonYokeEndcapHit"]
+names = ["Barrel", "Endcap"]
+single_output_collection = "MUON"
+single_output_relation = "RelationMuonHit"
 
-MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
-MyDDSimpleMuonDigi.OutputLevel = WARNING
-MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
-MyDDSimpleMuonDigi.Parameters = {
-                                 "CalibrMUON": ["70.1"],
-                                 "MUONCollections": ["YokeBarrelCollection", "YokeEndcapCollection"],
-                                 "MUONOutputCollection": ["MUON"],
-                                 "MaxHitEnergyMUON": ["2.0"],
-                                 "MuonThreshold": ["1e-06"],
-                                 "RelationOutputCollection": ["RelationMuonHit"]
-                                 }
+MyDDSimpleMuonDigiParameters = {
+    "CalibrMUON": 70.1,
+    "MaxHitEnergyMUON": 2.0,
+    "MuonThreshold": 1e-06,
+}
 
-MuonDigiSequence = [
-    MyDDSimpleMuonDigi,
-]
+if reco_args.native:
+    MuonDigiSequence = []
+    for i in range(len(input_collections)):
+        MyDDSimpleMuonDigi = DDSimpleMuonDigi(f"MyDDSimpleMuonDigi_{names[i]}",
+                                              MUONCollection=[input_collections[i]],
+                                              MUONOutputCollection=[output_collections[i]],
+                                              RelationOutputCollection=[output_relation[i]],
+                                              **MyDDSimpleMuonDigiParameters)
+        MuonDigiSequence.append(MyDDSimpleMuonDigi)
+    merger = CollectionMerger("MuonCollectionMerger")
+    merger.InputCollections = output_collections
+    merger.OutputCollection = [single_output_collection]
+
+    relation_merger = CollectionMerger("MuonRelationMerger")
+    relation_merger.InputCollections = output_relation
+    relation_merger.OutputCollection = [single_output_relation]
+    MuonDigiSequence += [merger, relation_merger]
+else:
+    from Configurables import MarlinProcessorWrapper
+    MyDDSimpleMuonDigiParameters["MUONCollections"] = input_collections
+    MyDDSimpleMuonDigiParameters["MUONOutputCollection"] = [single_output_collection]
+    MyDDSimpleMuonDigiParameters["RelationOutputCollection"] = [single_output_relation]
+    MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
+    MyDDSimpleMuonDigi.OutputLevel = WARNING
+    MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
+    MyDDSimpleMuonDigi.Parameters = toMarlinDict(MyDDSimpleMuonDigiParameters)
+    MuonDigiSequence = [MyDDSimpleMuonDigi]

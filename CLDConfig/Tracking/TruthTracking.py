@@ -17,21 +17,37 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from Configurables import MarlinProcessorWrapper
+from k4FWCore.parseArgs import parser
+from py_utils import toMarlinDict
+args = parser.parse_known_args()
 
+truth_track_finder_args = {
+    "FitForward": True,
+    "MCParticleCollectionName": ["MCParticles"],
+    "SiTrackCollectionName": ["SiTracks"],
+    "SiTrackRelationCollectionName": ["SiTrackRelations"],
+    "SimTrackerHitRelCollectionNames": ["VXDTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
+    "TrackerHitCollectionNames": ["VXDTrackerHits", "ITrackerHits", "OTrackerHits", "VXDEndcapTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
+    "UseTruthInPrefit": False,
+}
+truth_track_finder_args_marlin = toMarlinDict(truth_track_finder_args)
+truth_track_finder_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 
-MyTruthTrackFinder = MarlinProcessorWrapper("MyTruthTrackFinder")
-MyTruthTrackFinder.OutputLevel = WARNING
-MyTruthTrackFinder.ProcessorType = "TruthTrackFinder"
-MyTruthTrackFinder.Parameters = {
-                                 "FitForward": ["true"],
-                                 "MCParticleCollectionName": ["MCParticle"],
-                                 "SiTrackCollectionName": ["SiTracks"],
-                                 "SiTrackRelationCollectionName": ["SiTrackRelations"],
-                                 "SimTrackerHitRelCollectionNames": ["VXDTrackerHitRelations", "InnerTrackerBarrelHitsRelations", "OuterTrackerBarrelHitsRelations", "VXDEndcapTrackerHitRelations", "InnerTrackerEndcapHitsRelations", "OuterTrackerEndcapHitsRelations"],
-                                 "TrackerHitCollectionNames": ["VXDTrackerHits", "ITrackerHits", "OTrackerHits", "VXDEndcapTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
-                                 "UseTruthInPrefit": ["false"]
-                                 }
+if args[0].native:
+    from Configurables import TruthTrackFinder
+    MyTruthTrackFinder = TruthTrackFinder(
+        "TruthTrackFinder",
+        **truth_track_finder_args,
+        OutputLevel=WARNING,
+    )
+
+else:
+    from Configurables import MarlinProcessorWrapper
+
+    MyTruthTrackFinder = MarlinProcessorWrapper("MyTruthTrackFinder")
+    MyTruthTrackFinder.OutputLevel = WARNING
+    MyTruthTrackFinder.ProcessorType = "TruthTrackFinder"
+    MyTruthTrackFinder.Parameters = truth_track_finder_args_marlin
 
 TruthTrackingSequence = [
     MyTruthTrackFinder,
