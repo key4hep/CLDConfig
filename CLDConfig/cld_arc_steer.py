@@ -24,6 +24,8 @@
 
 # First, load cld steering file
 
+import sys
+sys.path.append('.')
 from cld_steer import *
 # change the compact file to the CLD option 3 (which contains ARC)
 SIM.compactFile = os.environ["K4GEO"]+"/FCCee/CLD/compact/CLD_o3_v01/CLD_o3_v01.xml"

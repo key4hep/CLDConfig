@@ -22,6 +22,8 @@ from Gaudi.Configuration import INFO, WARNING, DEBUG
 from Gaudi.Configurables import EventDataSvc, MarlinProcessorWrapper, GeoSvc, TrackingCellIDEncodingSvc
 from k4FWCore import ApplicationMgr, IOSvc
 from k4FWCore.parseArgs import parser
+import sys
+sys.path.append('.')
 from py_utils import SequenceLoader, parse_collection_patch_file
 from k4MarlinWrapper.io_helpers import IOHandlerHelper
 
