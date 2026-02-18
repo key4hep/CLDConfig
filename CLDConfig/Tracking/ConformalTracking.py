@@ -45,12 +45,12 @@ MyConformalTracking.Parameters = {
                                   "SortTreeResults": ["true"],
                                   "Steps":
                                   [
-                                      "[VTXTrackerBarrel]",
+                                      "[VXDBarrel]",
                                       "@Collections", ":", "VXDTrackerHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
                                       "@Functions", ":", "CombineCollections,", "BuildNewTracks",
-                                      "[VTXTrackerEndcap]",
+                                      "[VXDEncap]",
                                       "@Collections", ":", "VXDEndcapTrackerHits",
                                       "@Parameters", ":", "MaxCellAngle", ":", "0.01;", "MaxCellAngleRZ", ":", "0.01;", "Chi2Cut", ":", "100;", "MinClustersOnTrack", ":", "4;", "MaxDistance", ":", CT_MAX_DIST, "SlopeZRange:", "10.0;", "HighPTCut:", "10.0;",
                                       "@Flags", ":", "HighPTFit,", "VertexToTracker",
