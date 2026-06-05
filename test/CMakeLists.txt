@@ -111,4 +111,4 @@ add_test(NAME "compare_native"
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND ${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_no_overlay_REC.edm4hep.root --native-file output_native_REC.edm4hep.root
 )
-set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native")
+set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native;edm4hep_input_no_overlay")
