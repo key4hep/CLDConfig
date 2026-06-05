@@ -49,7 +49,7 @@ if reco_args.native:
 
     relation_merger = CollectionMerger("MuonRelationMerger")
     relation_merger.InputCollections = output_relation
-    relation_merger.OutputCollection = [single_output_relation]
+    relation_merger.OutputCollection = single_output_relation
     MuonDigiSequence += [merger, relation_merger]
 else:
     from Configurables import MarlinProcessorWrapper
