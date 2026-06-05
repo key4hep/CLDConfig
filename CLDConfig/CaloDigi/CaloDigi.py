@@ -132,7 +132,6 @@ if reco_args.native:
     for key in ["Histograms", "RootFile"]:
         MyDDCaloDigiParameters.pop(key)
 
-    final_parameters = MyDDCaloDigiParameters
     MyDDCaloDigi = []
     collections = ECALCollections + HCALCollections
     out_collections = ECALOutputCollections + HCALOutputCollections
@@ -140,7 +139,7 @@ if reco_args.native:
         MyDDCaloDigi.append(
             DDCaloDigi(
                     f"{incol}Digitiser",
-                    **final_parameters,
+                    **MyDDCaloDigiParameters,
                     InputCaloHitCollection=[incol],
                     OutputCaloHitCollection=[outcol],
                     InputColIsECAL=ECALorHCAL[i],
