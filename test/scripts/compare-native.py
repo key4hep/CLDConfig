@@ -68,4 +68,3 @@ for i, frame_native in enumerate(events_native):
             are_sizes_different = True
     if missing or extra:
         raise ValueError("Collections do not match between Gaudi and wrapped Marlin output.")
-
