@@ -27,6 +27,8 @@ base_dir = os.path.dirname(__file__)
 sys.path.append(base_dir)
 from py_utils import SequenceLoader, parse_collection_patch_file
 from k4MarlinWrapper.io_helpers import IOHandlerHelper
+from Configurables import GeoSvc, TrackingCellIDEncodingSvc
+from Configurables import ApplicationMgr
 
 parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
 parser_group.add_argument("--inputFiles", action="extend", nargs="+", metavar=("file1", "file2"), help="One or multiple input files")
@@ -35,10 +37,14 @@ parser_group.add_argument("--trackingOnly", action="store_true", help="Run only 
 parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable LCFIPlus jet clustering parts", default=False)
 parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
+parser_group.add_argument("--native", action="store_true", help="Use the native EDM4hep tracking", default=False)
 tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
 reco_args = parser.parse_known_args()[0]
+
+if reco_args.native:
+    raise RuntimeError("The native implementation is not in this file, use CLDReconstruction_iosvc.py instead")
 
 algList = []
 svcList = []
@@ -59,7 +65,6 @@ CONFIG = {
 
 REC_COLLECTION_CONTENTS_FILE = f"{base_dir}/collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 
-from Configurables import GeoSvc, TrackingCellIDEncodingSvc, Lcio2EDM4hepTool
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
@@ -184,7 +189,6 @@ attach_edm4hep2lcio_conversion(algList, read)
 # We need to convert the outputs in case we have EDM4hep output
 attach_lcio2edm4hep_conversion(algList)
 
-from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = algList,
                 EvtSel = 'NONE',
                 EvtMax = 3, # Overridden by the --num-events switch to k4run
