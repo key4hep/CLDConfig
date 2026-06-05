@@ -167,4 +167,16 @@ def toMarlinDict(params_dict: Dict[str, Any]) -> Dict[str, Any]:
         Dict[str, Any]: The converted dictionary.
     """
 
-    return {k: [str(v).lower()] if isinstance(v, bool) else [str(elem) for elem in v] if isinstance(v, list) else [str(v)] if isinstance(v, float) or isinstance(v, int) else [v] if isinstance(v, str) else v for k, v in params_dict.items()}
+    result = {}
+    for k, v in params_dict.items():
+        if isinstance(v, bool):
+            result[k] = [str(v).lower()]
+        elif isinstance(v, list):
+            result[k] = [str(elem) for elem in v]
+        elif isinstance(v, float) or isinstance(v, int):
+            result[k] = [str(v)]
+        elif isinstance(v, str):
+            result[k] = [v]
+        else:
+            result[k] = v
+    return result
