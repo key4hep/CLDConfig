@@ -28,7 +28,6 @@ sys.path.append(base_dir)
 from py_utils import SequenceLoader, parse_collection_patch_file
 from k4MarlinWrapper.io_helpers import IOHandlerHelper
 from Configurables import GeoSvc, TrackingCellIDEncodingSvc
-from Configurables import ApplicationMgr
 
 parser_group = parser.add_argument_group("CLDReconstruction.py custom options")
 # Need the dummy input such that the IOHandlerHelper.add_reader call below does not crash when called with --help
