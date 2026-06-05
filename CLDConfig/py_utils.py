@@ -173,7 +173,7 @@ def toMarlinDict(params_dict: Dict[str, Any]) -> Dict[str, Any]:
             result[k] = [str(v).lower()]
         elif isinstance(v, list):
             result[k] = [str(elem) for elem in v]
-        elif isinstance(v, float) or isinstance(v, int):
+        elif isinstance(v, (float, int)):
             result[k] = [str(v)]
         elif isinstance(v, str):
             result[k] = [v]
