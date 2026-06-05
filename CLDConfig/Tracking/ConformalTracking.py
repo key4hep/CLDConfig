@@ -32,7 +32,7 @@ else:
 
 args = parser.parse_known_args()
 
-# The keys are simply a name are not passed to ConformalTracking
+# The keys are simply a name and are not passed to ConformalTracking
 parameters = {
         "VXDBarrel": {
             "collections": ["VXDTrackerHits"],
@@ -125,7 +125,7 @@ steps_marlin = []
 for name, param_dict in parameters.items():
     marlin_collections = []
     for i in range(len(param_dict["collections"])):
-        marlin_collections.append(f"{param_dict['collections'][i]}")
+        marlin_collections.append(param_dict["collections"][i])
         if i < len(param_dict["collections"]) - 1:
             marlin_collections[-1] += ","
     marlin_parameters = []
@@ -134,12 +134,12 @@ for name, param_dict in parameters.items():
 
     marlin_flags = []
     for i in range(len(param_dict["flags"])):
-        marlin_flags.append(f"{param_dict['flags'][i]}")
+        marlin_flags.append(param_dict["flags"][i])
         if i < len(param_dict["flags"]) - 1:
             marlin_flags[-1] += ","
     marlin_functions = []
     for i in range(len(param_dict["functions"])):
-        marlin_functions.append(f"{param_dict['functions'][i]}")
+        marlin_functions.append(param_dict["functions"][i])
         if i < len(param_dict["functions"]) - 1:
             marlin_functions[-1] += ","
     current_step = [
