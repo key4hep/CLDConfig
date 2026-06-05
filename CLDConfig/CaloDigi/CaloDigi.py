@@ -151,7 +151,7 @@ if reco_args.native:
     merger = CollectionMerger(
         "CollectionMerger",
         InputCollections=[f"GaudiRelationCaloHit{outcol}" for outcol in out_collections],
-        OutputCollection=["RelationCaloHit"],
+        OutputCollection="RelationCaloHit",
     )
     MyDDCaloDigi.append(merger)
 else:
