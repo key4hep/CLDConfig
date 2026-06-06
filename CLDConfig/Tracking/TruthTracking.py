@@ -18,7 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 args = parser.parse_known_args()
 
 truth_track_finder_args = {
@@ -30,7 +30,7 @@ truth_track_finder_args = {
     "TrackerHitCollectionNames": ["VXDTrackerHits", "ITrackerHits", "OTrackerHits", "VXDEndcapTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
     "UseTruthInPrefit": False,
 }
-truth_track_finder_args_marlin = toMarlinDict(truth_track_finder_args)
+truth_track_finder_args_marlin = to_marlin_dict(truth_track_finder_args)
 truth_track_finder_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 
 if args[0].native:

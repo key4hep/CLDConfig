@@ -19,7 +19,7 @@
 from Configurables import DDSimpleMuonDigi
 from Configurables import CollectionMerger
 from Gaudi.Configuration import WARNING
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 
 input_collections = ["YokeBarrelCollection", "YokeEndcapCollection"]
 output_collections = ["MuonYokeBarrelCollection", "MuonYokeEndcapCollection"]
@@ -59,5 +59,5 @@ else:
     MyDDSimpleMuonDigi = MarlinProcessorWrapper("MyDDSimpleMuonDigi")
     MyDDSimpleMuonDigi.OutputLevel = WARNING
     MyDDSimpleMuonDigi.ProcessorType = "DDSimpleMuonDigi"
-    MyDDSimpleMuonDigi.Parameters = toMarlinDict(MyDDSimpleMuonDigiParameters)
+    MyDDSimpleMuonDigi.Parameters = to_marlin_dict(MyDDSimpleMuonDigiParameters)
     MuonDigiSequence = [MyDDSimpleMuonDigi]

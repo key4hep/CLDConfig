@@ -19,7 +19,7 @@
 from Gaudi.Configuration import WARNING
 from Configurables import DDCaloDigi
 from Configurables import CollectionMerger
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 
 import sys
 
@@ -166,7 +166,7 @@ else:
     MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
     MyDDCaloDigi[0].OutputLevel = WARNING
     MyDDCaloDigi[0].ProcessorType = "DDCaloDigi"
-    MyDDCaloDigi[0].Parameters = toMarlinDict(MyDDCaloDigiParameters)
+    MyDDCaloDigi[0].Parameters = to_marlin_dict(MyDDCaloDigiParameters)
 
 
 CaloDigiSequence = MyDDCaloDigi

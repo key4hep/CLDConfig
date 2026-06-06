@@ -18,7 +18,7 @@
 #
 from Configurables import GaudiLumiCalClusterer
 from Gaudi.Configuration import WARNING
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 
 LumiCalParameters = {
     "ClusterMinNumHits": 15,
@@ -55,6 +55,6 @@ else:
     LumiCalReco = MarlinProcessorWrapper("LumiCalReco")
     LumiCalReco.OutputLevel = WARNING
     LumiCalReco.ProcessorType = "MarlinLumiCalClusterer"
-    LumiCalReco.Parameters = toMarlinDict(LumiCalParameters)
+    LumiCalReco.Parameters = to_marlin_dict(LumiCalParameters)
 
 LumiCalSequence = [LumiCalReco]

@@ -157,7 +157,7 @@ def parse_collection_patch_file(patch_file: Union[str, os.PathLike]) -> List[str
     return [s for strings in patch_colls for s in strings]
 
 
-def toMarlinDict(params_dict: Dict[str, Any]) -> Dict[str, Any]:
+def to_marlin_dict(params_dict: Dict[str, Any]) -> Dict[str, Any]:
     """Convert a dictionary to a Marlin-compatible format.
 
     Args:

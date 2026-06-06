@@ -18,7 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from Configurables import DDPandoraPFANewAlgorithm
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 
 import sys
 import os
@@ -172,7 +172,7 @@ else:
     MyDDMarlinPandora = MarlinProcessorWrapper(f"MyDDMarlinPandora_{CONFIG['CalorimeterIntegrationTimeWindow']}")
     MyDDMarlinPandora.OutputLevel = WARNING
     MyDDMarlinPandora.ProcessorType = "DDPandoraPFANewProcessor"
-    MyDDMarlinPandora.Parameters = toMarlinDict(MyDDMarlinPandoraParameters)
+    MyDDMarlinPandora.Parameters = to_marlin_dict(MyDDMarlinPandoraParameters)
 
 
 PandoraSequence = [MyDDMarlinPandora]

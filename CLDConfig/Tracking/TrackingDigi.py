@@ -18,7 +18,7 @@
 #
 from Gaudi.Configuration import WARNING
 from k4FWCore.parseArgs import parser
-from py_utils import toMarlinDict
+from py_utils import to_marlin_dict
 args = parser.parse_known_args()
 
 vxd_barrel_digitiser_args = {
@@ -82,22 +82,22 @@ outer_endcap_planar_digi_processor_args = {
 }
 
 
-vxd_barrel_digitiser_args_marlin = toMarlinDict(vxd_barrel_digitiser_args)
+vxd_barrel_digitiser_args_marlin = to_marlin_dict(vxd_barrel_digitiser_args)
 vxd_barrel_digitiser_args_marlin["SubDetectorName"] = [vxd_barrel_digitiser_args["SubDetectorName"]]
 
-vxd_endcap_digitiser_args_marlin = toMarlinDict(vxd_endcap_digitiser_args)
+vxd_endcap_digitiser_args_marlin = to_marlin_dict(vxd_endcap_digitiser_args)
 vxd_endcap_digitiser_args_marlin["SubDetectorName"] = [vxd_endcap_digitiser_args["SubDetectorName"]]
 
-inner_planar_digi_processor_args_marlin = toMarlinDict(inner_planar_digi_processor_args)
+inner_planar_digi_processor_args_marlin = to_marlin_dict(inner_planar_digi_processor_args)
 inner_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_planar_digi_processor_args["SubDetectorName"]]
 
-inner_endcap_planar_digi_processor_args_marlin = toMarlinDict(inner_endcap_planar_digi_processor_args)
+inner_endcap_planar_digi_processor_args_marlin = to_marlin_dict(inner_endcap_planar_digi_processor_args)
 inner_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_endcap_planar_digi_processor_args["SubDetectorName"]]
 
-outer_planar_digi_processor_args_marlin = toMarlinDict(outer_planar_digi_processor_args)
+outer_planar_digi_processor_args_marlin = to_marlin_dict(outer_planar_digi_processor_args)
 outer_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_planar_digi_processor_args["SubDetectorName"]]
 
-outer_endcap_planar_digi_processor_args_marlin = toMarlinDict(outer_endcap_planar_digi_processor_args)
+outer_endcap_planar_digi_processor_args_marlin = to_marlin_dict(outer_endcap_planar_digi_processor_args)
 outer_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_endcap_planar_digi_processor_args["SubDetectorName"]]
 
 
