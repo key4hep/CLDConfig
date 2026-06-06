@@ -48,7 +48,7 @@ parameters = {
             "flags": ["HighPTFit", "VertexToTracker"],
             "functions": ["CombineCollections", "BuildNewTracks"],
         },
-        "VXDEncap": {
+        "VXDEndcap": {
             "collections": ["VXDEndcapTrackerHits"],
             "params": {
                 "MaxCellAngle": 0.01,
