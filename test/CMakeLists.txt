@@ -101,11 +101,17 @@ add_test(NAME edm4hep_input_no_overlay
 set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
 
 
+add_test(NAME tracking_digi_only
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run ${CMAKE_CURRENT_LIST_DIR}/drop_non_digi_collections.py --inputFiles rec_test_edm4hep_no_overlay_REC.edm4hep.root --outputBasename tracking_digi_only
+)
+set_property(TEST tracking_digi_only APPEND PROPERTY DEPENDS edm4hep_input_no_overlay)
+
 add_test(NAME run_wrapper_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction.py --inputFiles test.edm4hep.root --native --outputBasename output_native
+         COMMAND k4run CLDReconstruction.py --inputFiles tracking_digi_only_REC.edm4hep.root --native --outputBasename output_native --GeoSvc.detectors=${DETECTOR}
 )
-set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "ddsim_edm4hep")
+set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "tracking_digi_only")
 
 add_test(NAME compare_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
