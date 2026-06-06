@@ -82,24 +82,6 @@ outer_endcap_planar_digi_processor_args = {
 }
 
 
-vxd_barrel_digitiser_args_marlin = to_marlin_dict(vxd_barrel_digitiser_args)
-vxd_barrel_digitiser_args_marlin["SubDetectorName"] = [vxd_barrel_digitiser_args["SubDetectorName"]]
-
-vxd_endcap_digitiser_args_marlin = to_marlin_dict(vxd_endcap_digitiser_args)
-vxd_endcap_digitiser_args_marlin["SubDetectorName"] = [vxd_endcap_digitiser_args["SubDetectorName"]]
-
-inner_planar_digi_processor_args_marlin = to_marlin_dict(inner_planar_digi_processor_args)
-inner_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_planar_digi_processor_args["SubDetectorName"]]
-
-inner_endcap_planar_digi_processor_args_marlin = to_marlin_dict(inner_endcap_planar_digi_processor_args)
-inner_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [inner_endcap_planar_digi_processor_args["SubDetectorName"]]
-
-outer_planar_digi_processor_args_marlin = to_marlin_dict(outer_planar_digi_processor_args)
-outer_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_planar_digi_processor_args["SubDetectorName"]]
-
-outer_endcap_planar_digi_processor_args_marlin = to_marlin_dict(outer_endcap_planar_digi_processor_args)
-outer_endcap_planar_digi_processor_args_marlin["SubDetectorName"] = [outer_endcap_planar_digi_processor_args["SubDetectorName"]]
-
 
 if args[0].native:
     from Configurables import DDPlanarDigi
@@ -138,6 +120,13 @@ if args[0].native:
 
 else:
     from Configurables import MarlinProcessorWrapper
+
+    vxd_barrel_digitiser_args_marlin = to_marlin_dict(vxd_barrel_digitiser_args)
+    vxd_endcap_digitiser_args_marlin = to_marlin_dict(vxd_endcap_digitiser_args)
+    inner_planar_digi_processor_args_marlin = to_marlin_dict(inner_planar_digi_processor_args)
+    inner_endcap_planar_digi_processor_args_marlin = to_marlin_dict(inner_endcap_planar_digi_processor_args)
+    outer_planar_digi_processor_args_marlin = to_marlin_dict(outer_planar_digi_processor_args)
+    outer_endcap_planar_digi_processor_args_marlin = to_marlin_dict(outer_endcap_planar_digi_processor_args)
 
     VXDBarrelDigitiser = MarlinProcessorWrapper("VXDBarrelDigitiser")
     VXDBarrelDigitiser.OutputLevel = WARNING
