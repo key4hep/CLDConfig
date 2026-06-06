@@ -103,18 +103,18 @@ set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS "ddsim_edm4he
 
 add_test(NAME tracking_digi_only
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run ${CMAKE_CURRENT_LIST_DIR}/drop_non_digi_collections.py --inputFiles rec_test_edm4hep_no_overlay_REC.edm4hep.root --outputBasename tracking_digi_only
+         COMMAND k4run ${CMAKE_CURRENT_LIST_DIR}/drop_non_digi_collections.py --IOSvc.Input rec_test_edm4hep_no_overlay_REC.edm4hep.root --IOSvc.Output tracking_digi_only_REC.edm4hep.root
 )
 set_property(TEST tracking_digi_only APPEND PROPERTY DEPENDS edm4hep_input_no_overlay)
 
-add_test(NAME run_wrapper_native
+add_test(NAME run_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND k4run CLDReconstruction.py --inputFiles tracking_digi_only_REC.edm4hep.root --native --outputBasename output_native --GeoSvc.detectors=${DETECTOR}
 )
-set_property(TEST "run_wrapper_native" APPEND PROPERTY DEPENDS "tracking_digi_only")
+set_property(TEST run_native APPEND PROPERTY DEPENDS "tracking_digi_only")
 
 add_test(NAME compare_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND ${CMAKE_CURRENT_LIST_DIR}/scripts/compare-native.py --wrapped-file rec_test_edm4hep_no_overlay_REC.edm4hep.root --native-file output_native_REC.edm4hep.root
 )
-set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_wrapper_native;edm4hep_input_no_overlay")
+set_property(TEST compare_native APPEND PROPERTY DEPENDS "run_native;edm4hep_input_no_overlay")
