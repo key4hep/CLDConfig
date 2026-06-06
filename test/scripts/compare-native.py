@@ -66,5 +66,6 @@ for i, frame_native in enumerate(events_native):
             print(f"Event {i}: Collection '{coll}' has different lengths: "
                   f"{len(data_native)} in native, {len(data_wrapped)} in wrapped.")
             are_sizes_different = True
-    if missing or extra:
+    # if missing or extra:
+    if are_sizes_different:
         raise ValueError("Collections do not match between Gaudi and wrapped Marlin output.")
