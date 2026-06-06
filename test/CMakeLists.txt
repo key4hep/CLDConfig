@@ -110,6 +110,18 @@ set_property(TEST tracking_digi_only APPEND PROPERTY DEPENDS edm4hep_input_no_ov
 add_test(NAME run_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND k4run CLDReconstruction.py --inputFiles tracking_digi_only_REC.edm4hep.root --native --outputBasename output_native --GeoSvc.detectors=${DETECTOR}
+                 --VXDBarrelDigitiser.TrackerHitCollectionName=VXDTrackerHits_native
+                 --VXDBarrelDigitiser.SimTrkHitRelCollection=VXDTrackerHitRelations_native
+                 --VXDEndcapDigitiser.TrackerHitCollectionName=VXDEndcapTrackerHits_native
+                 --VXDEndcapDigitiser.SimTrkHitRelCollection=VXDEndcapTrackerHitRelations_native
+                 --InnerPlanarDigiProcessor.TrackerHitCollectionName=ITrackerHits_native
+                 --InnerPlanarDigiProcessor.SimTrkHitRelCollection=InnerTrackerBarrelHitsRelations_native
+                 --InnerEndcapPlanarDigiProcessor.TrackerHitCollectionName=ITrackerEndcapHits_native
+                 --InnerEndcapPlanarDigiProcessor.SimTrkHitRelCollection=InnerTrackerEndcapHitsRelations_native
+                 --OuterPlanarDigiProcessor.TrackerHitCollectionName=OTrackerHits_native
+                 --OuterPlanarDigiProcessor.SimTrkHitRelCollection=OuterTrackerBarrelHitsRelations_native
+                 --OuterEndcapPlanarDigiProcessor.TrackerHitCollectionName=OTrackerEndcapHits_native
+                 --OuterEndcapPlanarDigiProcessor.SimTrkHitRelCollection=OuterTrackerEndcapHitsRelations_native
 )
 set_property(TEST run_native APPEND PROPERTY DEPENDS "tracking_digi_only")
 
