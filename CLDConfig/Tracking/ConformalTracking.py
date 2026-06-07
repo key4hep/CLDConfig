@@ -123,31 +123,12 @@ parameters = {
 steps_marlin = []
 
 for name, param_dict in parameters.items():
-    marlin_collections = []
-    for i in range(len(param_dict["collections"])):
-        marlin_collections.append(param_dict["collections"][i])
-        if i < len(param_dict["collections"]) - 1:
-            marlin_collections[-1] += ","
-    marlin_parameters = []
-    for i, (k, v) in enumerate(param_dict["params"].items()):
-        marlin_parameters.extend([k, ":", f"{v};"])
-
-    marlin_flags = []
-    for i in range(len(param_dict["flags"])):
-        marlin_flags.append(param_dict["flags"][i])
-        if i < len(param_dict["flags"]) - 1:
-            marlin_flags[-1] += ","
-    marlin_functions = []
-    for i in range(len(param_dict["functions"])):
-        marlin_functions.append(param_dict["functions"][i])
-        if i < len(param_dict["functions"]) - 1:
-            marlin_functions[-1] += ","
     current_step = [
         f"[{name}]",
-        "@Collections", ":", *marlin_collections,
-        "@Parameters", ":", *marlin_parameters,
-        "@Flags", ":", *marlin_flags,
-        "@Functions", ":", *marlin_functions,
+        "@Collections", ":", ",".join(param_dict["collections"]),
+        "@Parameters", ":", " ".join(f"{k} : {v};" for k, v in param_dict["params"].items()),
+        "@Flags", ":", ",".join(param_dict["flags"]),
+        "@Functions", ":", ",".join(param_dict["functions"]),
     ]
     steps_marlin.extend(current_step)
 
