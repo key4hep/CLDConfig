@@ -33,7 +33,7 @@ else:
 args = parser.parse_known_args()
 
 # The keys are simply a name and are not passed to ConformalTracking
-parameters = {
+steps = {
         "VXDBarrel": {
             "collections": ["VXDTrackerHits"],
             "params": {
@@ -122,7 +122,7 @@ parameters = {
 
 steps_marlin = []
 
-for name, param_dict in parameters.items():
+for name, param_dict in steps.items():
     current_step = [
         f"[{name}]",
         "@Collections", ":", ",".join(param_dict["collections"]),
@@ -182,7 +182,7 @@ if args[0].native:
         **conformal_tracking_args,
         OutputLevel=WARNING,
     )
-    configure_conformal_tracking_steps(MyConformalTracking, parameters)
+    configure_conformal_tracking_steps(MyConformalTracking, steps)
 
     clones_and_split_tracks_finder = ClonesAndSplitTracksFinder(
         "ClonesAndSplitTracksFinder",
