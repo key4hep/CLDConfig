@@ -16,8 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from Gaudi.Configuration import WARNING
+from Gaudi.Configuration import INFO, WARNING, DEBUG
 from Configurables import MarlinProcessorWrapper
+from Configurables import ToolSvc, Lcio2EDM4hepTool, EDM4hep2LcioTool
 
 
 # geoservice comes from the `global_vars` of the SequenceLoader
@@ -80,6 +81,12 @@ MyConformalTracking.Parameters = {
                                   "TrackerHitCollectionNames": ["VXDTrackerHits", "VXDEndcapTrackerHits", "ITrackerHits", "OTrackerHits", "ITrackerEndcapHits", "OTrackerEndcapHits"],
                                   "trackPurity": ["0.7"]
                                   }
+# EDM4hep to LCIO converter (only needed for the Detailed Digitization which produces EDM4hep output)
+if reco_args.detailedDigitization:
+    edmConvTool = EDM4hep2LcioTool("EDM4hep2Lcio")
+    edmConvTool.convertAll = True
+    edmConvTool.OutputLevel = WARNING
+    MyConformalTracking.EDM4hep2LcioTool = edmConvTool
 
 ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
 ClonesAndSplitTracksFinder.OutputLevel = WARNING
