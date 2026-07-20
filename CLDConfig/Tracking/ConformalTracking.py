@@ -184,7 +184,7 @@ if args[0].native:
     )
     configure_conformal_tracking_steps(MyConformalTracking, steps)
 
-    clones_and_split_tracks_finder = ClonesAndSplitTracksFinder(
+    ClonesAndSplitTracksFinder = ClonesAndSplitTracksFinder(
         "ClonesAndSplitTracksFinder",
         **clones_and_split_tracks_finder_args,
         OutputLevel=WARNING,
@@ -197,12 +197,12 @@ else:
     MyConformalTracking.ProcessorType = "ConformalTrackingV2"
     MyConformalTracking.Parameters = conformal_tracking_args_marlin
 
-    clones_and_split_tracks_finder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
-    clones_and_split_tracks_finder.OutputLevel = WARNING
-    clones_and_split_tracks_finder.ProcessorType = "ClonesAndSplitTracksFinder"
-    clones_and_split_tracks_finder.Parameters = clone_and_split_tracks_finder_args_marlin
+    ClonesAndSplitTracksFinder = MarlinProcessorWrapper("ClonesAndSplitTracksFinder")
+    ClonesAndSplitTracksFinder.OutputLevel = WARNING
+    ClonesAndSplitTracksFinder.ProcessorType = "ClonesAndSplitTracksFinder"
+    ClonesAndSplitTracksFinder.Parameters = clone_and_split_tracks_finder_args_marlin
 
 ConformalTrackingSequence = [
     MyConformalTracking,
-    clones_and_split_tracks_finder,
+    ClonesAndSplitTracksFinder,
 ]
