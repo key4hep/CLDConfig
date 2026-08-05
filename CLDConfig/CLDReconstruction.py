@@ -149,6 +149,7 @@ if not reco_args.trackingOnly and not reco_args.native:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
     sequenceLoader.load("HighLevelReco/JetAndVertex")
+    sequenceLoader.load("HighLevelReco/TOF")
 # event number processor, down here to attach the conversion back to edm4hep to it
 if not reco_args.native:
     algList.append(EventNumber)
