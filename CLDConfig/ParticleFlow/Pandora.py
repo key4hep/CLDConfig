@@ -118,7 +118,7 @@ MyDDMarlinPandoraParameters = {
 }
 
 
-if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
+if reco_args.calorimeterIntegrationTimeWindow == "10ns":
 
     MyDDMarlinPandoraParameters |= {
         "PandoraSettingsXmlFile": f"{dir_path}/../PandoraSettingsCLD/PandoraSettingsDefault.xml",
@@ -137,7 +137,7 @@ if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
         "MaxHCalHitHadronicEnergy": 10000000.0,
     }
 
-elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
+elif reco_args.calorimeterIntegrationTimeWindow == "400ns":
 
     MyDDMarlinPandoraParameters |= {
         "PandoraSettingsXmlFile": f"{dir_path}/../PandoraSettingsCLD/PandoraSettingsDefault.xml",
@@ -155,21 +155,17 @@ elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
         "DigitalMuonHits": 0,
         "MaxHCalHitHadronicEnergy": 10000000.0,
     }
-else:
-    print(f"The value {CONFIG['CalorimeterIntegrationTimeWindow']} "
-          "for the calorimeter integration time window is not a valid choice")
-    sys.exit(1)
 
 if reco_args.native:
     MyDDMarlinPandoraParameters.pop("NEventsToSkip")
-    MyDDMarlinPandora = DDPandoraPFANewAlgorithm(f"MyDDMarlinPandora_{CONFIG['CalorimeterIntegrationTimeWindow']}", **MyDDMarlinPandoraParameters)
+    MyDDMarlinPandora = DDPandoraPFANewAlgorithm(f"MyDDMarlinPandora_{reco_args.calorimeterIntegrationTimeWindow}", **MyDDMarlinPandoraParameters)
 else:
     from Configurables import MarlinProcessorWrapper
     MyDDMarlinPandoraParameters["MCParticleCollectionName"] = ["MCParticle"]
     # These have been changed from int to True/False in the algorithm, so they have to be changed back
     for var in ["UseNonVertexTracks", "UseUnmatchedNonVertexTracks", "UseUnmatchedVertexTracks", "ShouldFormTrackRelationships", "UseEcalScLayers", "StripSplittingOn"]:
         MyDDMarlinPandoraParameters[var] = int(MyDDMarlinPandoraParameters[var])
-    MyDDMarlinPandora = MarlinProcessorWrapper(f"MyDDMarlinPandora_{CONFIG['CalorimeterIntegrationTimeWindow']}")
+    MyDDMarlinPandora = MarlinProcessorWrapper(f"MyDDMarlinPandora_{reco_args.calorimeterIntegrationTimeWindow}")
     MyDDMarlinPandora.OutputLevel = WARNING
     MyDDMarlinPandora.ProcessorType = "DDPandoraPFANewProcessor"
     MyDDMarlinPandora.Parameters = to_marlin_dict(MyDDMarlinPandoraParameters)

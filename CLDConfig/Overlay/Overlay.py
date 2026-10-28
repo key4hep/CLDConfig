@@ -83,5 +83,5 @@ Overlay["365GeV"].Parameters |= {
                             }
 
 OverlaySequence = [
-    Overlay[CONFIG["Overlay"]],
+    Overlay[reco_args.overlay],
 ]

@@ -20,7 +20,7 @@ from Gaudi.Configuration import WARNING
 from Configurables import MarlinProcessorWrapper
 
 
-if CONFIG["Overlay"] == "False":
+if reco_args.overlay == "False":
     RenameCollection = MarlinProcessorWrapper("RenameCollection")
     RenameCollection.OutputLevel = WARNING
     RenameCollection.ProcessorType = "MergeCollections"
@@ -45,7 +45,7 @@ else:
                                     "storeParticlesInJets": ["true"]
                                     }
 
-if CONFIG["Overlay"] == "False":
+if reco_args.overlay == "False":
     JetClusteringOrRenamingSequence = [RenameCollection]
 else:
     JetClusteringOrRenamingSequence = [MyFastJetProcessor]

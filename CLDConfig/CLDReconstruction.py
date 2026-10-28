@@ -41,6 +41,11 @@ parser_group.add_argument("--native", action="store_true", help="Use the native 
 tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
+parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimeter integration time window", default="10ns", choices=("10ns", "400ns"))
+parser_group.add_argument("--overlay", help="Background overlay to use", default="False", choices=("False", "91GeV", "365GeV"))
+parser_group.add_argument("--vertexUnconstrained", action="store_true", help="Also run the unconstrained vertex finder", default=False)
+# FIXME: "both" is not implemented yet
+parser_group.add_argument("--outputMode", help="Output file format", default="EDM4hep", choices=("LCIO", "EDM4hep"))
 reco_args = parser.parse_known_args()[0]
 
 
@@ -52,17 +57,6 @@ if reco_args.native:
 
 svcList = [evtsvc, iosvc]
 algList = []
-
-CONFIG = {
-             "CalorimeterIntegrationTimeWindow": "10ns",
-             "CalorimeterIntegrationTimeWindowChoices": ["10ns", "400ns"],
-             "Overlay": "False",
-             "OverlayChoices": ["False", "91GeV", "365GeV"],
-             "VertexUnconstrained": "OFF",
-             "VertexUnconstrainedChoices": ["ON", "OFF"],
-             "OutputMode": "EDM4Hep",
-             "OutputModeChoices": ["LCIO", "EDM4hep"] #, "both"] FIXME: both is not implemented yet
-}
 
 REC_COLLECTION_CONTENTS_FILE = f"{base_dir}/collections_rec_level.txt" # file with the collections to be patched in when writing from LCIO to EDM4hep
 
@@ -94,7 +88,7 @@ BEAM_SPOT_SIZES = { 91:  (5.96e-3, 23.8e-6, 0.397),
 sequenceLoader = SequenceLoader(
     algList,
     # global_vars can be used in sequence-loaded modules without explicit import
-    global_vars={"CONFIG": CONFIG, "geoservice": geoservice, "reco_args": reco_args,
+    global_vars={"geoservice": geoservice, "reco_args": reco_args,
                  "BEAM_SPOT_SIZES": BEAM_SPOT_SIZES,
                  },
     base_dir=base_dir,
@@ -145,6 +139,7 @@ if not reco_args.native:
     sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
     sequenceLoader.load("Diagnostics/Tracking")
 # pfo selector (might need re-optimisation)
+# TODO: avoid logic here, move it somewhere to the top of the file and only check a single flag here
 if not reco_args.trackingOnly and not reco_args.native:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
@@ -158,7 +153,7 @@ DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "
 DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsParticles"]
 
 # TODO: replace all the ugly strings by something sensible like Enum
-if CONFIG["OutputMode"] == "LCIO":
+if reco_args.outputMode == "LCIO":
     if reco_args.native:
         raise RuntimeError("LCIO output is not supported with --native")
     Output_REC = io_handler.add_lcio_writer("Output_REC")
@@ -178,7 +173,7 @@ if CONFIG["OutputMode"] == "LCIO":
         "KeepCollectionNames": DST_KEEPLIST,
     }
 
-if CONFIG["OutputMode"] == "EDM4Hep" and not reco_args.native:
+if reco_args.outputMode == "EDM4hep" and not reco_args.native:
     # Make sure that all collections are always available by patching in missing ones on-the-fly
     collPatcherRec = MarlinProcessorWrapper(
         "CollPatcherREC", OutputLevel=INFO, ProcessorType="PatchCollections"
