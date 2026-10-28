@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from k4FWCore.parseArgs import parser
 from py_utils import to_marlin_dict
-args = parser.parse_known_args()
 
 refit_args = {
     "EnergyLossOn": True,
@@ -35,12 +33,12 @@ refit_args = {
     "extrapolateForward": True,
 }
 
-if args[0].native and not args[0].truthTracking:
+if reco_args.native and not reco_args.truthTracking:
     refit_args["InputRelationCollectionName"] = []
 
 refit_args_marlin = to_marlin_dict(refit_args)
 
-if args[0].native:
+if reco_args.native:
     from Configurables import RefitFinal
 
     Refit = RefitFinal(

@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from k4FWCore.parseArgs import parser
 from py_utils import to_marlin_dict
-args = parser.parse_known_args()
 
 truth_track_finder_args = {
     "FitForward": True,
@@ -33,7 +31,7 @@ truth_track_finder_args = {
 truth_track_finder_args_marlin = to_marlin_dict(truth_track_finder_args)
 truth_track_finder_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 
-if args[0].native:
+if reco_args.native:
     from Configurables import TruthTrackFinder
     MyTruthTrackFinder = TruthTrackFinder(
         "TruthTrackFinder",
