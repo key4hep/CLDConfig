@@ -46,7 +46,6 @@ parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimete
 # native EDM4hep reconstruction, which does not run the overlay, so that both outputs can be compared
 parser_group.add_argument("--overlay", help="Background overlay to use, 'Skip' does not run the overlay processor (nor the RecoMCTruthLink that depends on it)", default="False", choices=("False", "91GeV", "365GeV", "Skip"))
 parser_group.add_argument("--vertexUnconstrained", action="store_true", help="Also run the unconstrained vertex finder", default=False)
-# FIXME: "both" is not implemented yet
 parser_group.add_argument("--outputMode", help="Output file format", default="EDM4hep", choices=("LCIO", "EDM4hep"))
 reco_args = parser.parse_known_args()[0]
 
@@ -75,10 +74,6 @@ geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
 svcList.append(geoservice)
-
-if len(geoservice.detectors) > 1:
-    # we are making assumptions for reconstruction parameters based on the detector option, so we limit the possibilities
-    raise RuntimeError("Too many XML files for the detector path, please only specify the main file!")
 
 # Luminous region (vertex) sizes (sigma_x, sigma_y, sigma_z) in mm, derived from the IP beam sizes
 # sigma_x*, sigma_y* and the bunch length sigma_z (incl. beamstrahlung) given in Table 2 of the
@@ -174,7 +169,6 @@ DST_SUBSETLIST = ["EfficientMCParticles", "InefficientMCParticles", "MCPhysicsPa
 
 # The native flow writes its output via the IOSvc configured above
 if not reco_args.native:
-    # TODO: replace all the ugly strings by something sensible like Enum
     if reco_args.outputMode == "LCIO":
         Output_REC = io_handler.add_lcio_writer("Output_REC")
         Output_REC.Parameters = {
