@@ -89,16 +89,11 @@ add_test(NAME marlin
 )
 set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
 
-add_test(NAME remove_overlay_and_others
-         WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND bash -c "sed -e '/Overlay.Overlay/d' -e '/HighLevelReco.RecoMCTruthLink/d' CLDReconstruction.py > CLDReconstruction_no_overlay.py"
-)
-
 add_test(NAME edm4hep_input_no_overlay
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction_no_overlay.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --overlay=Skip --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
 )
-set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
+set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 
 add_test(NAME tracking_digi_only

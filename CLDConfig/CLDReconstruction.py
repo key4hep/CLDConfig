@@ -42,7 +42,9 @@ tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
 parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimeter integration time window", default="10ns", choices=("10ns", "400ns"))
-parser_group.add_argument("--overlay", help="Background overlay to use", default="False", choices=("False", "91GeV", "365GeV"))
+# "Skip" removes the overlay processor completely. This is used to create the wrapped reference for the
+# native EDM4hep reconstruction, which does not run the overlay, so that both outputs can be compared
+parser_group.add_argument("--overlay", help="Background overlay to use, 'Skip' does not run the overlay processor (nor the RecoMCTruthLink that depends on it)", default="False", choices=("False", "91GeV", "365GeV", "Skip"))
 parser_group.add_argument("--vertexUnconstrained", action="store_true", help="Also run the unconstrained vertex finder", default=False)
 # FIXME: "both" is not implemented yet
 parser_group.add_argument("--outputMode", help="Output file format", default="EDM4hep", choices=("LCIO", "EDM4hep"))
@@ -122,7 +124,9 @@ if not reco_args.native:
 
     # setup AIDA histogramming and add eventual background overlay
     algList.append(MyAIDAProcessor)
-    sequenceLoader.load("Overlay/Overlay")
+    algList.append(EventNumber)
+    if reco_args.overlay != "Skip":
+        sequenceLoader.load("Overlay/Overlay")
 # tracker hit digitisation
 sequenceLoader.load("Tracking/TrackingDigi")
 
@@ -142,7 +146,9 @@ if not reco_args.trackingOnly:
     sequenceLoader.load("CaloDigi/LumiCal")
 # monitoring and Reco to MCTruth linking
 if not reco_args.native:
-    sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
+    # needs the MCPhysicsParticles created by the overlay processor
+    if reco_args.overlay != "Skip":
+        sequenceLoader.load("HighLevelReco/RecoMCTruthLink")
     sequenceLoader.load("Diagnostics/Tracking")
 # pfo selector (might need re-optimisation)
 # TODO: avoid logic here, move it somewhere to the top of the file and only check a single flag here
@@ -150,9 +156,6 @@ if not reco_args.trackingOnly and not reco_args.native:
     sequenceLoader.load("HighLevelReco/PFOSelector")
     sequenceLoader.load("HighLevelReco/JetClusteringOrRenaming")
     sequenceLoader.load("HighLevelReco/JetAndVertex")
-# event number processor, down here to attach the conversion back to edm4hep to it
-if not reco_args.native:
-    algList.append(EventNumber)
 
 DST_KEEPLIST = ["MCParticlesSkimmed", "MCPhysicsParticles", "RecoMCTruthLink", "SiTracks", "SiTracks_Refitted", "PandoraClusters", "PandoraPFOs", "SelectedPandoraPFOs", "LooseSelectedPandoraPFOs", "TightSelectedPandoraPFOs", "RefinedVertexJets", "RefinedVertexJets_rel", "RefinedVertexJets_vtx", "RefinedVertexJets_vtx_RP", "BuildUpVertices", "BuildUpVertices_res", "BuildUpVertices_RP", "BuildUpVertices_res_RP", "BuildUpVertices_V0", "BuildUpVertices_V0_res", "BuildUpVertices_V0_RP", "BuildUpVertices_V0_res_RP", "PrimaryVertices", "PrimaryVertices_res", "PrimaryVertices_RP", "PrimaryVertices_res_RP", "RefinedVertices", "RefinedVertices_RP"]
 
