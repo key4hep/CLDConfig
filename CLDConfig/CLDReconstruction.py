@@ -77,12 +77,18 @@ if len(geoservice.detectors) > 1:
     # we are making assumptions for reconstruction parameters based on the detector option, so we limit the possibilities
     raise RuntimeError("Too many XML files for the detector path, please only specify the main file!")
 
-# from https://github.com/HEP-FCC/FCCeePhysicsPerformance/blob/d6ecee2c2c3ed5d76db55a3ae18ced349b2b914a/General/README.md?plain=1#L457-L467
-# for december 2022
-BEAM_SPOT_SIZES = { 91:  (5.96e-3, 23.8e-6, 0.397),
-                    160: (14.7e-3, 46.5e-6, 0.97),
-                    240: (9.8e-3,  25.4e-6, 0.65),
-                    365: (27.3e-3, 48.8e-6, 1.33),
+# Luminous region (vertex) sizes (sigma_x, sigma_y, sigma_z) in mm, derived from the IP beam sizes
+# sigma_x*, sigma_y* and the bunch length sigma_z (incl. beamstrahlung) given in Table 2 of the
+# FCC Feasibility Study Report Vol. 2 (2025), https://arxiv.org/abs/2505.00274, with a half crossing
+# angle alpha = 15 mrad, following
+# https://github.com/HEP-FCC/FCCeePhysicsPerformance/blob/d6ecee2c2c3ed5d76db55a3ae18ced349b2b914a/General/README.md:
+#   vertex sigma_x = sigma_x* / sqrt(2)
+#   vertex sigma_y = sigma_y* / sqrt(2)
+#   vertex sigma_z = 1 / sqrt(2 sin^2(alpha) / sigma_x*^2 + 2 cos^2(alpha) / sigma_z^2)
+BEAM_SPOT_SIZES = { 91:  (6.36e-3,  28.3e-6, 0.424),
+                    160: (15.56e-3, 31.8e-6, 1.00),
+                    240: (9.19e-3,  22.6e-6, 0.606),
+                    365: (26.16e-3, 31.1e-6, 1.20),
                    }
 
 sequenceLoader = SequenceLoader(
