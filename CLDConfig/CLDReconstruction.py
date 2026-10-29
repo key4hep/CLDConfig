@@ -38,9 +38,8 @@ parser_group.add_argument("--enableLCFIJet", action="store_true", help="Enable L
 parser_group.add_argument("--cms", action="store", help="Choose a Centre-of-Mass energy", default=240, choices=(91, 160, 240, 365), type=int)
 parser_group.add_argument("--compactFile", help="Compact detector file to use", type=str, default=os.environ["K4GEO"] + "/FCCee/CLD/compact/CLD_o2_v07/CLD_o2_v07.xml")
 parser_group.add_argument("--native", action="store_true", help="Use the native EDM4hep tracking", default=False)
-tracking_group = parser_group.add_mutually_exclusive_group()
-tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
-tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
+parser_group.add_argument("--tracking", help="Track pattern recognition to use: conformal tracking, cheated (truth) tracking or ACTS (k4ActsTracking)", default="conformal", choices=("conformal", "truth", "acts"))
+parser_group.add_argument("--actsMaterialMap", help="ACTS material map to use with --tracking=acts. Without one ACTS sees no passive material", type=str, default="")
 parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimeter integration time window", default="10ns", choices=("10ns", "400ns"))
 # "Skip" removes the overlay processor completely. This is used to create the wrapped reference for the
 # native EDM4hep reconstruction, which does not run the overlay, so that both outputs can be compared
@@ -74,6 +73,13 @@ geoservice.detectors = [reco_args.compactFile]
 geoservice.OutputLevel = INFO
 geoservice.EnableGeant4Geo = False
 svcList.append(geoservice)
+
+if reco_args.tracking == "acts":
+    from Configurables import ActsGeoSvc
+    actsGeoSvc = ActsGeoSvc("ActsGeoSvc")
+    actsGeoSvc.MaterialMapFile = reco_args.actsMaterialMap
+    actsGeoSvc.OutputLevel = INFO
+    svcList.append(actsGeoSvc)
 
 # Luminous region (vertex) sizes (sigma_x, sigma_y, sigma_z) in mm, derived from the IP beam sizes
 # sigma_x*, sigma_y* and the bunch length sigma_z (incl. beamstrahlung) given in Table 2 of the
@@ -138,9 +144,11 @@ if run_overlay:
 sequenceLoader.load("Tracking/TrackingDigi")
 
 # tracking
-if reco_args.truthTracking:
+if reco_args.tracking == "truth":
     sequenceLoader.load("Tracking/TruthTracking")
-elif reco_args.conformalTracking:
+elif reco_args.tracking == "acts":
+    sequenceLoader.load("Tracking/ActsTracking")
+elif reco_args.tracking == "conformal":
     sequenceLoader.load("Tracking/ConformalTracking")
 
 sequenceLoader.load("Tracking/Refit")

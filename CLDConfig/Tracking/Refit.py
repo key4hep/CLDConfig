@@ -33,7 +33,7 @@ refit_args = {
     "extrapolateForward": True,
 }
 
-if reco_args.native and not reco_args.truthTracking:
+if reco_args.native and reco_args.tracking != "truth":
     refit_args["InputRelationCollectionName"] = []
 
 refit_args_marlin = to_marlin_dict(refit_args)

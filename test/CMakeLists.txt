@@ -61,21 +61,27 @@ set_property(TEST LCFIJet APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME tracking_truth
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --truthTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_truth_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
+         COMMAND k4run --trackingOnly --tracking=truth --inputFiles=test.edm4hep.root --outputBasename=trkOnly_truth_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST tracking_truth APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME tracking_conformal
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --conformalTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_conformal_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
+         COMMAND k4run --trackingOnly --tracking=conformal --inputFiles=test.edm4hep.root --outputBasename=trkOnly_conformal_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST tracking_conformal APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
-add_test(NAME tracking_both
+add_test(NAME tracking_acts
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --conformalTracking --truthTracking CLDReconstruction.py
+         COMMAND k4run --trackingOnly --tracking=acts --inputFiles=test.edm4hep.root --outputBasename=trkOnly_acts_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
-set_property(TEST tracking_both APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: argument --truthTracking: not allowed with argument --conformalTracking")
+set_property(TEST tracking_acts APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME tracking_invalid
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --trackingOnly --tracking=invalid CLDReconstruction.py
+)
+set_property(TEST tracking_invalid APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: argument --tracking: invalid choice: 'invalid'")
 
 add_test(NAME Help
          WORKING_DIRECTORY ${CLDConfig_DIR}
