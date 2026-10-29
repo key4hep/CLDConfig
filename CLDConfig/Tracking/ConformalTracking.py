@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from k4FWCore.parseArgs import parser
 
 from conformal_tracking_utils import configure_conformal_tracking_steps
 from py_utils import to_marlin_dict
@@ -29,8 +28,6 @@ elif "_o1_" in  geoservice.detectors[0]:
     CT_MAX_DIST = 0.03
 else:
     raise RuntimeError("Unknown detector model to chose CT_MAX_DISTANCE")
-
-args = parser.parse_known_args()
 
 # The keys are simply a name and are not passed to ConformalTracking
 steps = {
@@ -152,7 +149,7 @@ conformal_tracking_args = {
 conformal_tracking_args_marlin = to_marlin_dict(conformal_tracking_args)
 conformal_tracking_args_marlin["MCParticleCollectionName"] = ["MCParticle"]
 
-if args[0].native:
+if reco_args.native:
     # Not implemented in Gaudi
     conformal_tracking_args.pop("DebugHits")
 else:
@@ -174,7 +171,7 @@ clones_and_split_tracks_finder_args = {
 
 clone_and_split_tracks_finder_args_marlin = to_marlin_dict(clones_and_split_tracks_finder_args)
 
-if args[0].native:
+if reco_args.native:
     from Configurables import ConformalTracking, ClonesAndSplitTracksFinder
 
     MyConformalTracking = ConformalTracking(
