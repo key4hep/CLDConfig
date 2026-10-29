@@ -53,3 +53,13 @@ MyRecoMCTruthLinker.Parameters = {
 RecoMCTruthLinkSequence = [
     MyRecoMCTruthLinker,
 ]
+
+# The CalohitMCTruthLink (needed by MLPF) is only created if the cluster collection exists
+if reco_args.particleFlow == "MLPF" and not reco_args.trackingOnly:
+    PatchEmptyClusters = MarlinProcessorWrapper("PatchEmptyClusters")
+    PatchEmptyClusters.OutputLevel = WARNING
+    PatchEmptyClusters.ProcessorType = "PatchCollections"
+    PatchEmptyClusters.Parameters = {
+                                     "PatchCollections": ["PandoraClusters", "Cluster"]
+                                     }
+    RecoMCTruthLinkSequence.insert(0, PatchEmptyClusters)

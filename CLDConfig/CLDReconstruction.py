@@ -42,6 +42,9 @@ tracking_group = parser_group.add_mutually_exclusive_group()
 tracking_group.add_argument("--conformalTracking", action="store_true", default=True, help="Use conformal tracking pattern recognition")
 tracking_group.add_argument("--truthTracking", action="store_true", default=False, help="Cheat tracking pattern recognition")
 parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimeter integration time window", default="10ns", choices=("10ns", "400ns"))
+# MLPF only produces the HitPF collections, the high level reconstruction only runs on the PandoraPFOs
+parser_group.add_argument("--particleFlow", help="Particle flow algorithm to use, 'Both' runs MLPF in addition to Pandora", default="Pandora", choices=("Pandora", "MLPF", "Both"))
+parser_group.add_argument("--MLPFModelDir", help="Directory containing the ONNX models for MLPF", type=str, default="/eos/project/k/key4hep/www/key4hep/testFiles/k4PFHitML")
 # "Skip" removes the overlay processor completely. This is used to create the wrapped reference for the
 # native EDM4hep reconstruction, which does not run the overlay, so that both outputs can be compared
 parser_group.add_argument("--overlay", help="Background overlay to use, 'Skip' does not run the overlay processor (nor the RecoMCTruthLink that depends on it)", default="False", choices=("False", "91GeV", "365GeV", "Skip"))
@@ -51,6 +54,14 @@ reco_args = parser.parse_known_args()[0]
 
 if reco_args.native and reco_args.outputMode == "LCIO":
     parser.error("LCIO output is not supported with --native")
+if reco_args.particleFlow != "Pandora" and not reco_args.trackingOnly:
+    # MLPF needs the calo hit and track truth links from the RecoMCTruthLinker
+    if reco_args.native:
+        parser.error("MLPF is not supported with --native")
+    if reco_args.overlay == "Skip":
+        parser.error("MLPF is not supported with --overlay=Skip")
+    if reco_args.outputMode == "LCIO":
+        parser.error("MLPF is not supported with LCIO output")
 
 # Decide here which stages run, such that the sequence below only needs to check a single flag.
 # Stages without a native implementation (yet) only run in the wrapped Marlin flow
@@ -59,7 +70,9 @@ run_overlay = not reco_args.native and reco_args.overlay != "Skip"
 run_mc_truth_link = run_overlay
 run_diagnostics = not reco_args.native
 run_calo = not reco_args.trackingOnly
-run_high_level_reco = run_calo and not reco_args.native
+run_pandora = run_calo and reco_args.particleFlow in ("Pandora", "Both")
+run_mlpf = run_calo and reco_args.particleFlow in ("MLPF", "Both")
+run_high_level_reco = run_pandora and not reco_args.native
 
 
 evtsvc = EventDataSvc("EventDataSvc")
@@ -149,7 +162,8 @@ sequenceLoader.load("Tracking/Refit")
 if run_calo:
     sequenceLoader.load("CaloDigi/CaloDigi")
     sequenceLoader.load("CaloDigi/MuonDigi")
-    sequenceLoader.load("ParticleFlow/Pandora")
+    if run_pandora:
+        sequenceLoader.load("ParticleFlow/Pandora")
     sequenceLoader.load("CaloDigi/LumiCal")
 # Reco to MCTruth linking
 if run_mc_truth_link:
@@ -196,6 +210,10 @@ if not reco_args.native:
             "PatchCollections": parse_collection_patch_file(REC_COLLECTION_CONTENTS_FILE)
         }
         algList.append(collPatcherRec)
+
+        # MLPF runs last, such that its EDM4hep outputs never have to be converted to LCIO
+        if run_mlpf:
+            sequenceLoader.load("ParticleFlow/MLPF")
 
         io_handler.add_edm4hep_writer(f"{reco_args.outputBasename}_REC.edm4hep.root", ["keep *"])
         # FIXME: needs https://github.com/key4hep/k4FWCore/issues/226

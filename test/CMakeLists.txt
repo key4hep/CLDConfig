@@ -96,6 +96,28 @@ add_test(NAME edm4hep_input_no_overlay
 set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 
+add_test(NAME mlpf_native
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --particleFlow=MLPF --native CLDReconstruction.py
+)
+set_property(TEST mlpf_native APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: MLPF is not supported with --native")
+
+# The MLPF models are only available on EOS
+set(MLPF_MODEL_DIR /eos/project/k/key4hep/www/key4hep/testFiles/k4PFHitML)
+if(EXISTS ${MLPF_MODEL_DIR})
+  add_test(NAME mlpf
+           WORKING_DIRECTORY ${CLDConfig_DIR}
+           COMMAND k4run --particleFlow=MLPF --MLPFModelDir=${MLPF_MODEL_DIR} --inputFiles=test.edm4hep.root --outputBasename=mlpf_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
+  )
+  set_property(TEST mlpf APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+  add_test(NAME mlpf_and_pandora
+           WORKING_DIRECTORY ${CLDConfig_DIR}
+           COMMAND k4run --particleFlow=Both --MLPFModelDir=${MLPF_MODEL_DIR} --inputFiles=test.edm4hep.root --outputBasename=mlpf_and_pandora_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
+  )
+  set_property(TEST mlpf_and_pandora APPEND PROPERTY DEPENDS ddsim_edm4hep)
+endif()
+
 add_test(NAME tracking_digi_only
          WORKING_DIRECTORY ${CLDConfig_DIR}
          COMMAND k4run ${CMAKE_CURRENT_LIST_DIR}/drop_non_digi_collections.py --IOSvc.Input rec_test_edm4hep_no_overlay_REC.edm4hep.root --IOSvc.Output tracking_digi_only_REC.edm4hep.root
