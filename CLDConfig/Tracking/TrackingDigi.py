@@ -17,9 +17,7 @@
 # limitations under the License.
 #
 from Gaudi.Configuration import WARNING
-from k4FWCore.parseArgs import parser
 from py_utils import to_marlin_dict
-args = parser.parse_known_args()
 
 vxd_barrel_digitiser_args = {
     "IsStrip": False,
@@ -83,7 +81,7 @@ outer_endcap_planar_digi_processor_args = {
 
 
 
-if args[0].native:
+if reco_args.native:
     from Configurables import DDPlanarDigi
 
     VXDBarrelDigitiser = DDPlanarDigi(

@@ -32,7 +32,7 @@ add_test(NAME ddsim_cld_arc
 # FIXME: need to call k4run from CLDConfig dir where the pandora config lives
 add_test(NAME lcio_input
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --inputFiles=test.slcio --outputBasename=rec_test_lcio CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --inputFiles=test.slcio --outputBasename=rec_test_lcio CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST lcio_input APPEND PROPERTY DEPENDS ddsim_lcio)
 
@@ -43,39 +43,45 @@ add_test(NAME ddsim_edm4hep
 
 add_test(NAME edm4hep_input
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST edm4hep_input APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME trkOnly
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --trackingOnly --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST trkOnly APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME LCFIJet
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --enableLCFIJet --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --enableLCFIJet --inputFiles=test.edm4hep.root --outputBasename=trkOnly_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST LCFIJet APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME tracking_truth
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --truthTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_truth_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --trackingOnly --tracking=truth --inputFiles=test.edm4hep.root --outputBasename=trkOnly_truth_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST tracking_truth APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 add_test(NAME tracking_conformal
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --conformalTracking --inputFiles=test.edm4hep.root --outputBasename=trkOnly_conformal_test_edm4hep CLDReconstruction.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --trackingOnly --tracking=conformal --inputFiles=test.edm4hep.root --outputBasename=trkOnly_conformal_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
 set_property(TEST tracking_conformal APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
-add_test(NAME tracking_both
+add_test(NAME tracking_acts
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --trackingOnly --conformalTracking --truthTracking CLDReconstruction.py
+         COMMAND k4run --trackingOnly --tracking=acts --inputFiles=test.edm4hep.root --outputBasename=trkOnly_acts_test_edm4hep CLDReconstruction.py --compactFile=${DETECTOR}
 )
-set_property(TEST tracking_both APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: argument --truthTracking: not allowed with argument --conformalTracking")
+set_property(TEST tracking_acts APPEND PROPERTY DEPENDS ddsim_edm4hep)
+
+add_test(NAME tracking_invalid
+         WORKING_DIRECTORY ${CLDConfig_DIR}
+         COMMAND k4run --trackingOnly --tracking=invalid CLDReconstruction.py
+)
+set_property(TEST tracking_invalid APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: argument --tracking: invalid choice: 'invalid'")
 
 add_test(NAME Help
          WORKING_DIRECTORY ${CLDConfig_DIR}
@@ -89,16 +95,11 @@ add_test(NAME marlin
 )
 set_property(TEST marlin APPEND PROPERTY DEPENDS ddsim_lcio)
 
-add_test(NAME remove_overlay_and_others
-         WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND bash -c "sed -e '/Overlay.Overlay/d' -e '/HighLevelReco.RecoMCTruthLink/d' CLDReconstruction.py > CLDReconstruction_no_overlay.py"
-)
-
 add_test(NAME edm4hep_input_no_overlay
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction_no_overlay.py --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run --overlay=Skip --inputFiles=test.edm4hep.root --outputBasename=rec_test_edm4hep_no_overlay CLDReconstruction.py --compactFile=${DETECTOR}
 )
-set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS "ddsim_edm4hep;remove_overlay_and_others")
+set_property(TEST edm4hep_input_no_overlay APPEND PROPERTY DEPENDS ddsim_edm4hep)
 
 
 add_test(NAME tracking_digi_only
@@ -109,7 +110,7 @@ set_property(TEST tracking_digi_only APPEND PROPERTY DEPENDS edm4hep_input_no_ov
 
 add_test(NAME run_native
          WORKING_DIRECTORY ${CLDConfig_DIR}
-         COMMAND k4run CLDReconstruction.py --inputFiles tracking_digi_only_REC.edm4hep.root --native --outputBasename output_native --GeoSvc.detectors=${DETECTOR}
+         COMMAND k4run CLDReconstruction.py --inputFiles tracking_digi_only_REC.edm4hep.root --native --outputBasename output_native --compactFile=${DETECTOR}
                  --VXDBarrelDigitiser.TrackerHitCollectionName=VXDTrackerHits_native
                  --VXDBarrelDigitiser.SimTrkHitRelCollection=VXDTrackerHitRelations_native
                  --VXDEndcapDigitiser.TrackerHitCollectionName=VXDEndcapTrackerHits_native

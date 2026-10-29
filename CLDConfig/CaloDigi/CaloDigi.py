@@ -21,7 +21,6 @@ from Configurables import DDCaloDigi
 from Configurables import CollectionMerger
 from py_utils import to_marlin_dict
 
-import sys
 
 ECALCollections = ["ECalBarrelCollection", "ECalEndcapCollection"]
 ECALOutputCollections = ["ECALBarrel", "ECALEndcap"]
@@ -117,14 +116,10 @@ parameters_400ns = {
     "HCALEndcapTimeWindowMax": 400,
 }
 
-if CONFIG["CalorimeterIntegrationTimeWindow"] == "10ns":
+if reco_args.calorimeterIntegrationTimeWindow == "10ns":
     MyDDCaloDigiParameters |= parameters_10ns
-elif CONFIG["CalorimeterIntegrationTimeWindow"] == "400ns":
+elif reco_args.calorimeterIntegrationTimeWindow == "400ns":
     MyDDCaloDigiParameters |= parameters_400ns
-else:
-    print(f"The value {CONFIG['CalorimeterIntegrationTimeWindow']} "
-          "for the calorimeter integration time window is not a valid choice")
-    sys.exit(1)
 
 
 if reco_args.native:
@@ -163,7 +158,7 @@ else:
     for i in range(len(HCALCollections)):
         MyDDCaloDigiParameters[f"HCALOutputCollection{i}"] = [HCALOutputCollections[i]]
 
-    MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{CONFIG['CalorimeterIntegrationTimeWindow']}")]
+    MyDDCaloDigi = [MarlinProcessorWrapper(f"MyDDCaloDigi_{reco_args.calorimeterIntegrationTimeWindow}")]
     MyDDCaloDigi[0].OutputLevel = WARNING
     MyDDCaloDigi[0].ProcessorType = "DDCaloDigi"
     MyDDCaloDigi[0].Parameters = to_marlin_dict(MyDDCaloDigiParameters)

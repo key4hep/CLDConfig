@@ -136,7 +136,7 @@ if reco_args.enableLCFIJet:
                                         "UseMCP": ["0"]
                                         }
 
-if CONFIG["VertexUnconstrained"] == "ON":
+if reco_args.vertexUnconstrained:
     VertexFinderUnconstrained = MarlinProcessorWrapper("VertexFinderUnconstrained")
     VertexFinderUnconstrained.OutputLevel = WARNING
     VertexFinderUnconstrained.ProcessorType = "LcfiplusProcessor"
@@ -200,5 +200,5 @@ JetAndVertexSequence = [
 if reco_args.enableLCFIJet:
     JetAndVertexSequence.append(JetClusteringAndRefiner)
 
-if CONFIG["VertexUnconstrained"] == "ON":
+if reco_args.vertexUnconstrained:
     JetAndVertexSequence.append(VertexFinderUnconstrained)
