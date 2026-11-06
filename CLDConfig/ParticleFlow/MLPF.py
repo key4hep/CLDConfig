@@ -23,10 +23,9 @@ from Configurables import PFHitML
 
 MLPF = PFHitML("MLPF",
                OutputLevel=WARNING,
-               model_path_clustering=f"{reco_args.MLPFModelDir}/clustering_paper.onnx",
-               model_path_properties_neutral=f"{reco_args.MLPFModelDir}/energy_correction_paper_neutral.onnx",
-               model_path_properties_charged=f"{reco_args.MLPFModelDir}/energy_correction_paper_charged_pid.onnx",
-               bFieldTesla=2.0,
+               ClusteringModelPath=f"{reco_args.MLPFModelDir}/clustering_paper.onnx",
+               NeutralModelPath=f"{reco_args.MLPFModelDir}/energy_correction_paper_neutral.onnx",
+               ChargedModelPath=f"{reco_args.MLPFModelDir}/energy_correction_paper_charged_pid.onnx",
                )
 
 MLPFSequence = [MLPF]
