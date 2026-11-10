@@ -44,7 +44,7 @@ tracking_group.add_argument("--truthTracking", action="store_true", default=Fals
 parser_group.add_argument("--calorimeterIntegrationTimeWindow", help="Calorimeter integration time window", default="10ns", choices=("10ns", "400ns"))
 # MLPF only produces the HitPF collections, the high level reconstruction only runs on the PandoraPFOs
 parser_group.add_argument("--particleFlow", help="Particle flow algorithm to use, 'Both' runs MLPF in addition to Pandora", default="Pandora", choices=("Pandora", "MLPF", "Both"))
-parser_group.add_argument("--MLPFModelDir", help="Directory containing the ONNX models for MLPF", type=str, default="/eos/project/k/key4hep/www/key4hep/testFiles/k4PFHitML")
+parser_group.add_argument("--MLPFModelDir", help="Directory containing the ONNX models for MLPF", type=str, default="/cvmfs/fcc.cern.ch/fcc-data/CLD/o2-v05/CLD-o2-v05_HitPF/1.0")
 # "Skip" removes the overlay processor completely. This is used to create the wrapped reference for the
 # native EDM4hep reconstruction, which does not run the overlay, so that both outputs can be compared
 parser_group.add_argument("--overlay", help="Background overlay to use, 'Skip' does not run the overlay processor (nor the RecoMCTruthLink that depends on it)", default="False", choices=("False", "91GeV", "365GeV", "Skip"))

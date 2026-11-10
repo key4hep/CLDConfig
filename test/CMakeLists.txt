@@ -102,8 +102,8 @@ add_test(NAME mlpf_native
 )
 set_property(TEST mlpf_native APPEND PROPERTY PASS_REGULAR_EXPRESSION "error: MLPF is not supported with --native")
 
-# The MLPF models are only available on EOS
-set(MLPF_MODEL_DIR /eos/project/k/key4hep/www/key4hep/testFiles/k4PFHitML)
+# The MLPF models are only available if fcc.cern.ch is mounted on CVMFS
+set(MLPF_MODEL_DIR /cvmfs/fcc.cern.ch/fcc-data/CLD/o2-v05/CLD-o2-v05_HitPF/1.0)
 if(EXISTS ${MLPF_MODEL_DIR})
   add_test(NAME mlpf
            WORKING_DIRECTORY ${CLDConfig_DIR}
