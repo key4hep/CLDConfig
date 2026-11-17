@@ -1,0 +1,18 @@
+# this yaml file stores and should be filled in with information about how a jet-flavor tagger is trained and the necessary information to run inference
+
+model_ParT_ecm240_cld_o2_v5:
+  model: "ParticleTransformer"
+  ecm: 240
+  detector: "CLD_o2_v5"
+  kinematics: "Z(vv)H(jj)"
+  onnx_model: "/eos/experiment/fcc/ee/jet_flavour_tagging/fullsim_test_spring2024/fullsimCLD240_2mio.onnx"
+  json_onnx_config: "/eos/experiment/fcc/ee/jet_flavour_tagging/fullsim_test_spring2024/preprocess_fullsimCLD240_2mio.json"
+  flavor_collection_names:
+    - "RefinedJetTag_G"
+    - "RefinedJetTag_U"
+    - "RefinedJetTag_S"
+    - "RefinedJetTag_C"
+    - "RefinedJetTag_B"
+    - "RefinedJetTag_D"
+    - "RefinedJetTag_TAU"
+  comment: "The model was trained on 1.9 mio/jets per flavor. First implementation of ML tagging for full sim."
