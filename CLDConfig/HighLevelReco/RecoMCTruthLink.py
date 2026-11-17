@@ -30,7 +30,7 @@ MyRecoMCTruthLinker.Parameters = {
                                   "ClusterMCTruthLinkName": ["ClusterMCTruthLink"],
                                   "FullRecoRelation": ["true"],
                                   "InvertedNonDestructiveInteractionLogic": ["false"],
-                                  "KeepDaughtersPDG": ["22", "111", "310", "13", "211", "321", "3120"],
+                                  "KeepDaughtersPDG": ["22", "111", "310", "13", "211", "321"],
                                   "MCParticleCollection": ["MCPhysicsParticles"],
                                   "MCParticlesSkimmedName": ["MCParticlesSkimmed"],
                                   "MCTruthClusterLinkName": ["MCTruthClusterLink"],
